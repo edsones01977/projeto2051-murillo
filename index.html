@@ -1,95 +1,452 @@
-PROJETO 2051 · MURILLO ALEVATO
-Planejamento Patrimonial · Estratégia NTN-B · Meta R$20.000.000 reais
-Cordier Investimentos · BTG Pactual
-Parâmetros — ajuste e veja o impacto em tempo real
-Aporte anual
-R$ 330.000
 
-R$ 100k
-R$ 700k
-✓ Igual ao mínimo calculado (R$ 330.401)
-IPCA premissa
-6,25 %
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Projeto 2051 · Murillo Alevato · Cordier Investimentos</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1B3A6B;--navy2:#2E5192;--gold:#C9A84C;--gold-bg:#FFF8E7;
+  --white:#fff;--bg:#F0F4FA;--text:#1A1A1A;--muted:#667;--border:#DDE3F0;
+  --green:#1A5E20;--green-bg:#E8F5E9;--green-mid:#A5D6A7;
+  --red:#C62828;--amber:#7B4F00;--radius:10px;
+  --shadow:0 2px 10px rgba(27,58,107,0.10);}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;}
 
-3%
-12%
-Afeta somente o total nominal em 2051
-Taxa futura B45
-5,00 %
+/* HEADER */
+.hdr{background:var(--navy);padding:1.2rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.hdr-title{color:var(--gold);font-size:1.25rem;font-weight:700;letter-spacing:.05em;}
+.hdr-sub{color:rgba(255,255,255,.65);font-size:.8rem;margin-top:2px;}
+.hdr-badge{background:var(--gold);color:var(--navy);font-size:.72rem;
+  font-weight:700;padding:5px 14px;border-radius:20px;white-space:nowrap;}
 
-3%
-8%
-IPCA+ dos aportes anuais (conservador)
-Aporte mínimo calculado
-R$ 330.401
-22.0% do bônus anual
-Free float: R$ 1.169.599/ano
-Cenário A — sem B60
-2051
-Murillo com 65 anos
-Aporte mínimo do bônus
-Cenário B — com B60 turbinado
-2049
-Murillo com 63 anos — 2 anos antes
-2 anos antes do prazo
-Evolução patrimonial
-Composição — Cen. A
-Composição — Cen. B
-Cenário A
-Cenário B (Turbinado)
-Meta R$20M
-Linha do tempo — marcos do Projeto 2051
-Abr
-2026
-R$ 700k → B37
-IPCA+7%
-Out
-2026
-LCA → B55
-R$ 185k
-27
-2027
-RF → B60 (Cen.B)
-R$ 619k real
-+ 1º aporte
-37
-2037
-B37 vence
-Reinvest. IPCA+3,5%
-49
-2049
-META — Cen. B
-Murillo 63 anos
-51
-2051
-META — Cen. A
-Murillo 65 anos
-Evolução ano a ano — Cenário B (Turbinado)
-Ano	Idade	B37 Real	B55 Real	B60 Real	B45 Aportes	Total Real	Total Nominal	% Meta
-2026	40	R$ 749.000	R$ 197.710	—	—	R$ 946.710	R$ 1.005.879	4.7%
-2027	41	R$ 801.430	R$ 211.292	R$ 661.340	R$ 346.500	R$ 2.020.562	R$ 2.281.025	10.1%
-2028	42	R$ 857.530	R$ 225.808	R$ 706.575	R$ 710.325	R$ 2.500.238	R$ 2.998.943	12.5%
-2029	43	R$ 917.557	R$ 241.321	R$ 754.905	R$ 1.092.341	R$ 3.006.124	R$ 3.831.093	15.0%
-2030	44	R$ 981.786	R$ 257.900	R$ 806.540	R$ 1.493.458	R$ 3.539.685	R$ 4.793.020	17.7%
-2031	45	R$ 1.050.511	R$ 275.617	R$ 861.708	R$ 1.914.631	R$ 4.102.468	R$ 5.902.266	20.5%
-2032	46	R$ 1.124.047	R$ 294.552	R$ 920.649	R$ 2.356.863	R$ 4.696.111	R$ 7.178.619	23.5%
-2033	47	R$ 1.202.730	R$ 314.788	R$ 983.621	R$ 2.821.206	R$ 5.322.345	R$ 8.644.394	26.6%
-2034	48	R$ 1.286.921	R$ 336.414	R$ 1.050.901	R$ 3.308.766	R$ 5.983.002	R$ 10.324.752	29.9%
-2035	49	R$ 1.377.006	R$ 359.526	R$ 1.122.782	R$ 3.820.705	R$ 6.680.018	R$ 12.248.053	33.4%
-2036	50	R$ 1.473.396	R$ 384.225	R$ 1.199.581	R$ 4.358.240	R$ 7.415.442	R$ 14.446.258	37.1%
-2037	51	R$ 1.524.965	R$ 410.621	R$ 1.281.632	R$ 4.922.652	R$ 8.139.870	R$ 16.848.636	40.7%
-2038	52	R$ 1.578.339	R$ 438.831	R$ 1.369.296	R$ 5.515.284	R$ 8.901.750	R$ 19.577.246	44.5%
-2039	53	R$ 1.633.581	R$ 468.979	R$ 1.462.955	R$ 6.137.549	R$ 9.703.063	R$ 22.673.262	48.5%
-2040	54	R$ 1.690.756	R$ 501.197	R$ 1.563.022	R$ 6.790.926	R$ 10.545.901	R$ 26.182.902	52.7%
-2041	55	R$ 1.749.933	R$ 535.630	R$ 1.669.932	R$ 7.476.972	R$ 11.432.467	R$ 30.158.030	57.2%
-2042	56	R$ 1.811.180	R$ 572.427	R$ 1.784.156	R$ 8.197.321	R$ 12.365.084	R$ 34.656.846	61.8%
-2043	57	R$ 1.874.572	R$ 611.753	R$ 1.906.192	R$ 8.953.687	R$ 13.346.204	R$ 39.744.647	66.7%
-2044	58	R$ 1.940.182	R$ 653.781	R$ 2.036.575	R$ 9.747.871	R$ 14.378.409	R$ 45.494.686	71.9%
-2045	59	R$ 2.008.088	R$ 698.695	R$ 2.175.877	R$ 10.581.765	R$ 15.464.425	R$ 51.989.131	77.3%
-2046	60	R$ 2.078.371	R$ 746.696	R$ 2.324.707	R$ 11.457.353	R$ 16.607.127	R$ 59.320.147	83.0%
-2047	61	R$ 2.151.114	R$ 797.994	R$ 2.483.717	R$ 12.376.721	R$ 17.809.546	R$ 67.591.097	89.0%
-2048	62	R$ 2.226.403	R$ 852.816	R$ 2.653.603	R$ 13.342.057	R$ 19.074.879	R$ 76.917.894	95.4%
-2049	63	R$ 2.304.327	R$ 911.404	R$ 2.835.110	R$ 14.355.660	R$ 20.406.501	R$ 87.430.523	102.0%
-2050	64	R$ 2.384.979	R$ 974.018	R$ 3.029.031	R$ 15.419.943	R$ 21.807.970	R$ 99.274.731	109.0%
-2051	65	R$ 2.468.453	R$ 1.040.933	R$ 3.236.217	R$ 16.537.440	R$ 23.283.043	R$ 112.613.936	116.4%
-Cordier Investimentos · BTG Pactual · Vila Olímpia, São Paulo · Projeto 2051 — Planejamento Patrimonial Privado · Uso exclusivo do cliente · 2026
+/* CONTAINER */
+.wrap{max-width:1180px;margin:0 auto;padding:1.25rem 1rem;}
+
+/* CARD */
+.card{background:var(--white);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:1.25rem 1.5rem;margin-bottom:1rem;}
+.card-ttl{font-size:.7rem;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;
+  display:flex;align-items:center;gap:8px;}
+.card-ttl::before{content:'';width:3px;height:14px;
+  background:var(--gold);border-radius:2px;flex-shrink:0;}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-bottom:1rem;}
+.kpi{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:1.2rem 1.25rem;border-top:3px solid var(--navy);}
+.kpi.gold{border-top-color:var(--gold);}
+.kpi.green{border-top-color:var(--green);}
+.kpi-lbl{font-size:.68rem;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.06em;margin-bottom:6px;}
+.kpi-val{font-size:1.75rem;font-weight:800;color:var(--navy);line-height:1.1;}
+.kpi-val.g{color:var(--amber);}
+.kpi-val.gr{color:var(--green);}
+.kpi-sub{font-size:.76rem;color:var(--muted);margin-top:4px;}
+.kpi-tag{display:inline-block;font-size:.68rem;font-weight:600;
+  padding:2px 9px;border-radius:10px;margin-top:8px;background:#E8EEF7;color:var(--navy);}
+.kpi-tag.green{background:var(--green-bg);color:var(--green);}
+
+/* CONTROLS */
+.ctrl-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem;}
+.slg label{display:flex;justify-content:space-between;align-items:center;
+  font-size:.78rem;font-weight:600;color:var(--navy);margin-bottom:8px;}
+.slg label span{font-size:.95rem;font-weight:800;color:var(--gold);
+  font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:5px;accent-color:var(--navy);cursor:pointer;}
+.sl-lim{display:flex;justify-content:space-between;font-size:.65rem;
+  color:var(--muted);margin-top:4px;}
+.sl-note{font-size:.72rem;margin-top:6px;font-weight:500;}
+.sl-ok{color:var(--green);}
+.sl-warn{color:var(--red);}
+.sl-info{color:var(--muted);}
+
+/* TABS */
+.tabs{display:flex;gap:2px;border-bottom:2px solid var(--border);margin-bottom:1.25rem;}
+.tab{padding:10px 18px;font-size:.82rem;font-weight:600;color:var(--muted);
+  cursor:pointer;background:none;border:none;border-bottom:3px solid transparent;
+  margin-bottom:-2px;transition:all .15s;}
+.tab:hover{color:var(--navy);}
+.tab.on{color:var(--navy);border-bottom-color:var(--gold);}
+.tp{display:none;}
+.tp.on{display:block;}
+
+/* LEGEND */
+.leg{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:12px;}
+.leg-i{display:flex;align-items:center;gap:6px;font-size:.76rem;color:var(--muted);}
+.leg-sq{width:14px;height:5px;border-radius:2px;flex-shrink:0;}
+
+/* CHART WRAP */
+.chw{position:relative;width:100%;}
+
+/* TIMELINE */
+.tl{display:flex;padding:.75rem 0;overflow-x:auto;gap:0;}
+.tli{flex:1;min-width:110px;text-align:center;position:relative;}
+.tli::before{content:'';position:absolute;top:13px;left:50%;right:-50%;
+  height:2px;background:var(--border);z-index:0;}
+.tli:last-child::before{display:none;}
+.tl-dot{width:28px;height:28px;border-radius:50%;background:var(--navy);
+  margin:0 auto 8px;display:flex;align-items:center;justify-content:center;
+  position:relative;z-index:1;font-size:9px;font-weight:700;color:#fff;}
+.tl-dot.gold{background:var(--gold);color:var(--navy);}
+.tl-dot.green{background:var(--green);}
+.tl-dot.amber{background:#E65100;color:#fff;}
+.tl-yr{font-size:.78rem;font-weight:700;color:var(--navy);}
+.tl-desc{font-size:.68rem;color:var(--muted);margin-top:2px;line-height:1.4;}
+
+/* TABLE */
+.twrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:.78rem;}
+thead tr th{background:var(--navy);color:#fff;padding:9px 12px;
+  text-align:right;font-weight:600;font-size:.7rem;white-space:nowrap;}
+thead tr th:first-child{text-align:center;}
+tbody tr td{padding:7px 12px;text-align:right;border-bottom:1px solid var(--border);}
+tbody tr td:first-child{text-align:center;font-weight:700;color:var(--navy);}
+tbody tr:nth-child(even) td{background:#F8FAFF;}
+tbody tr.hl td{background:var(--green-bg);font-weight:700;color:var(--green);}
+tbody tr.hl td:first-child{color:var(--green);}
+tbody tr.hl2037 td{background:var(--gold-bg);}
+
+/* GOAL BOX */
+.goal-box{background:var(--green-bg);border:1.5px solid var(--green-mid);
+  border-radius:8px;padding:1rem 1.25rem;margin-bottom:1rem;
+  display:flex;align-items:center;gap:12px;}
+.goal-icon{font-size:1.4rem;flex-shrink:0;}
+.goal-text strong{color:var(--green);font-size:.95rem;display:block;}
+.goal-text span{color:var(--muted);font-size:.8rem;}
+
+/* FOOTER */
+footer{background:var(--navy);color:rgba(255,255,255,.55);
+  text-align:center;padding:1rem;font-size:.72rem;margin-top:2rem;}
+footer strong{color:var(--gold);}
+
+@media(max-width:700px){
+  .kpi-grid,.ctrl-grid{grid-template-columns:1fr;}
+  .hdr{justify-content:center;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div>
+    <div class="hdr-title">PROJETO 2051 · MURILLO ALEVATO</div>
+    <div class="hdr-sub">Planejamento Patrimonial · Estratégia NTN-B · Meta R$20.000.000 reais</div>
+  </div>
+  <div class="hdr-badge">Cordier Investimentos · BTG Pactual</div>
+</header>
+
+<div class="wrap">
+
+<!-- CONTROLS -->
+<div class="card">
+  <div class="card-ttl">Parâmetros — ajuste e veja o impacto em tempo real</div>
+  <div class="ctrl-grid">
+    <div class="slg">
+      <label>Aporte anual <span id="v-contrib">R$ 330.401</span></label>
+      <input type="range" id="sl-contrib" min="100000" max="700000" step="5000" value="330401">
+      <div class="sl-lim"><span>R$ 100k</span><span>R$ 700k</span></div>
+      <div id="contrib-note" class="sl-note sl-ok">✓ Igual ao mínimo calculado</div>
+    </div>
+    <div class="slg">
+      <label>IPCA premissa <span id="v-ipca">6,15%</span></label>
+      <input type="range" id="sl-ipca" min="3" max="12" step="0.25" value="6.15">
+      <div class="sl-lim"><span>3%</span><span>12%</span></div>
+      <div class="sl-note sl-info">Afeta somente o total nominal em 2051</div>
+    </div>
+    <div class="slg">
+      <label>Taxa futura B45 <span id="v-b45r">5,00%</span></label>
+      <input type="range" id="sl-b45r" min="3" max="8" step="0.25" value="5">
+      <div class="sl-lim"><span>3%</span><span>8%</span></div>
+      <div class="sl-note sl-info">IPCA+ dos aportes anuais (conservador)</div>
+    </div>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-grid">
+  <div class="kpi">
+    <div class="kpi-lbl">Aporte mínimo calculado</div>
+    <div class="kpi-val" id="kpi-min">R$ 330.401</div>
+    <div class="kpi-sub" id="kpi-min-sub">22,0% do bônus anual</div>
+    <span class="kpi-tag" id="kpi-ff">Free float: R$ 1.169.599/ano</span>
+  </div>
+  <div class="kpi gold">
+    <div class="kpi-lbl">Cenário A — sem B60</div>
+    <div class="kpi-val g" id="kpi-yr-a">2051</div>
+    <div class="kpi-sub" id="kpi-yr-a-sub">Murillo com 65 anos</div>
+    <span class="kpi-tag">Aporte mínimo do bônus</span>
+  </div>
+  <div class="kpi green">
+    <div class="kpi-lbl">Cenário B — com B60 turbinado</div>
+    <div class="kpi-val gr" id="kpi-yr-b">2049</div>
+    <div class="kpi-sub" id="kpi-yr-b-sub">Murillo com 63 anos — 2 anos antes</div>
+    <span class="kpi-tag green" id="kpi-b-tag">RF 2027 → B60 (IPCA+6,84%)</span>
+  </div>
+</div>
+
+<!-- CHARTS -->
+<div class="card">
+  <div class="tabs">
+    <button class="tab on" onclick="setTab(0)">Evolução patrimonial</button>
+    <button class="tab"    onclick="setTab(1)">Composição — Cen. A</button>
+    <button class="tab"    onclick="setTab(2)">Composição — Cen. B</button>
+  </div>
+
+  <div class="tp on" id="tp0">
+    <div class="leg">
+      <span class="leg-i"><span class="leg-sq" style="background:#1B3A6B"></span>Cenário A</span>
+      <span class="leg-i"><span class="leg-sq" style="background:#C9A84C"></span>Cenário B (Turbinado)</span>
+      <span class="leg-i"><span class="leg-sq" style="background:#D32F2F;opacity:.7"></span>Meta R$20M</span>
+    </div>
+    <div class="chw" style="height:340px">
+      <canvas id="ch0" role="img" aria-label="Evolução patrimonial real — Cenário A vs B vs meta R$20M de 2026 a 2051">Gráfico de evolução patrimonial</canvas>
+    </div>
+  </div>
+
+  <div class="tp" id="tp1">
+    <div class="leg">
+      <span class="leg-i"><span class="leg-sq" style="background:#1B3A6B"></span>B37 IPCA+7%</span>
+      <span class="leg-i"><span class="leg-sq" style="background:#2E5192"></span>B55 IPCA+6,87%</span>
+      <span class="leg-i"><span class="leg-sq" style="background:#4CAF50"></span>B45 Aportes</span>
+    </div>
+    <div class="chw" style="height:340px">
+      <canvas id="ch1" role="img" aria-label="Composição patrimonial Cenário A por vértice NTN-B">Composição Cenário A</canvas>
+    </div>
+  </div>
+
+  <div class="tp" id="tp2">
+    <div class="leg">
+      <span class="leg-i"><span class="leg-sq" style="background:#1B3A6B"></span>B37 IPCA+7%</span>
+      <span class="leg-i"><span class="leg-sq" style="background:#2E5192"></span>B55 IPCA+6,87%</span>
+      <span class="leg-i"><span class="leg-sq" style="background:#C9A84C"></span>B60 IPCA+6,84%</span>
+      <span class="leg-i"><span class="leg-sq" style="background:#4CAF50"></span>B45 Aportes</span>
+    </div>
+    <div class="chw" style="height:340px">
+      <canvas id="ch2" role="img" aria-label="Composição patrimonial Cenário B por vértice NTN-B">Composição Cenário B</canvas>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="card">
+  <div class="card-ttl">Linha do tempo — marcos do Projeto 2051</div>
+  <div class="tl">
+    <div class="tli">
+      <div class="tl-dot">Abr</div>
+      <div class="tl-yr">2026</div>
+      <div class="tl-desc">R$ 700k → B37<br>IPCA+7%</div>
+    </div>
+    <div class="tli">
+      <div class="tl-dot gold">Out</div>
+      <div class="tl-yr">2026</div>
+      <div class="tl-desc">LCA → B55<br>R$ 185k</div>
+    </div>
+    <div class="tli">
+      <div class="tl-dot">27</div>
+      <div class="tl-yr">2027</div>
+      <div class="tl-desc">RF → B60 (Cen.B)<br>R$ 619k real<br>+ 1º aporte</div>
+    </div>
+    <div class="tli">
+      <div class="tl-dot amber">37</div>
+      <div class="tl-yr">2037</div>
+      <div class="tl-desc">B37 vence<br>Reinvest. IPCA+3,5%</div>
+    </div>
+    <div class="tli">
+      <div class="tl-dot green" id="tl-b-dot">49</div>
+      <div class="tl-yr" id="tl-b-yr">2049</div>
+      <div class="tl-desc" id="tl-b-desc">META — Cen. B<br>Murillo 63 anos</div>
+    </div>
+    <div class="tli">
+      <div class="tl-dot" id="tl-a-dot">51</div>
+      <div class="tl-yr" id="tl-a-yr">2051</div>
+      <div class="tl-desc" id="tl-a-desc">META — Cen. A<br>Murillo 65 anos</div>
+    </div>
+  </div>
+</div>
+
+<!-- TABLE -->
+<div class="card">
+  <div class="card-ttl">Evolução ano a ano — Cenário B (Turbinado)</div>
+  <div class="twrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:center">Ano</th>
+          <th style="text-align:center">Idade</th>
+          <th>B37 Real</th>
+          <th>B55 Real</th>
+          <th>B60 Real</th>
+          <th>B45 Aportes</th>
+          <th>Total Real</th>
+          <th>Total Nominal</th>
+          <th>% Meta</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <strong>Cordier Investimentos · BTG Pactual</strong> · Vila Olímpia, São Paulo ·
+  Projeto 2051 — Planejamento Patrimonial Privado · Uso exclusivo do cliente · 2026
+</footer>
+
+<script>
+const GOAL=20e6,BONUS=1.5e6,B37I=700e3,B55I=185e3,B60I=619e3;
+const B37R=.07,B55R=.0687,B60R=.0684,B37RV=.035;
+const START=2026,AGE0=40;
+const YRS=Array.from({length:26},(_,i)=>2026+i);
+
+const R=v=>'R$ '+Math.round(v).toLocaleString('pt-BR');
+const Rk=v=>'R$ '+(Math.round(v/1e3)).toLocaleString('pt-BR')+'k';
+const P=v=>(v*100).toFixed(1)+'%';
+const N=v=>v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
+
+function calcMin(b45r){
+  const e37=B37I*Math.pow(1+B37R,11)*Math.pow(1+B37RV,15);
+  const e55=B55I*Math.pow(1+B55R,25);
+  const fv=((Math.pow(1+b45r,25)-1)/b45r)*(1+b45r);
+  return(GOAL-e37-e55)/fv;
+}
+
+function sim(contrib,b60,b45r,ipca){
+  let b37=B37I,b55=B55I,b60v=0,b45=0,gy=null;
+  return{rows:YRS.map(yr=>{
+    b37*=(yr<=2036?1+B37R:1+B37RV);b55*=1+B55R;
+    if(b60){b60v=yr==2026?0:yr==2027?B60I*(1+B60R):b60v*(1+B60R);}else b60v=0;
+    b45=yr>=2027?(b45+contrib)*(1+b45r):0;
+    const tot=b37+b55+b60v+b45;
+    const nom=tot*Math.pow(1+ipca,yr-START+1);
+    if(!gy&&tot>=GOAL)gy=yr;
+    return{yr,age:AGE0+(yr-START),b37,b55,b60:b60v,b45,tot,nom,pct:tot/GOAL};
+  }),goalYr:gy};
+}
+
+// Charts
+const sharedOpts={responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},
+    tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+R(c.raw)}}},
+  scales:{x:{grid:{display:false},ticks:{maxTicksLimit:10,font:{size:11}}},
+    y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11},
+      callback:v=>'R$'+(v/1e6).toFixed(0)+'M'}}}};
+
+const stackOpts={...sharedOpts,scales:{
+  x:{...sharedOpts.scales.x,stacked:true},
+  y:{...sharedOpts.scales.y,stacked:true}}};
+
+const ch0=new Chart(document.getElementById('ch0'),{type:'line',
+  data:{labels:YRS.map(String),datasets:[
+    {label:'Cenário A',data:[],borderColor:'#1B3A6B',borderWidth:2.5,fill:false,tension:.3,pointRadius:0},
+    {label:'Cenário B',data:[],borderColor:'#C9A84C',borderWidth:2.5,fill:false,tension:.3,pointRadius:0},
+    {label:'Meta R$20M',data:[],borderColor:'#D32F2F',borderWidth:1.5,
+      borderDash:[6,3],fill:false,pointRadius:0},
+  ]},options:sharedOpts});
+
+const ch1=new Chart(document.getElementById('ch1'),{type:'bar',
+  data:{labels:YRS.map(String),datasets:[
+    {label:'B37 IPCA+7%',data:[],backgroundColor:'#1B3A6B'},
+    {label:'B55 IPCA+6,87%',data:[],backgroundColor:'#2E5192'},
+    {label:'B45 Aportes',data:[],backgroundColor:'#4CAF50'},
+  ]},options:stackOpts});
+
+const ch2=new Chart(document.getElementById('ch2'),{type:'bar',
+  data:{labels:YRS.map(String),datasets:[
+    {label:'B37 IPCA+7%',data:[],backgroundColor:'#1B3A6B'},
+    {label:'B55 IPCA+6,87%',data:[],backgroundColor:'#2E5192'},
+    {label:'B60 IPCA+6,84%',data:[],backgroundColor:'#C9A84C'},
+    {label:'B45 Aportes',data:[],backgroundColor:'#4CAF50'},
+  ]},options:stackOpts});
+
+function upd(){
+  const contrib=+document.getElementById('sl-contrib').value;
+  const ipca=+document.getElementById('sl-ipca').value/100;
+  const b45r=+document.getElementById('sl-b45r').value/100;
+  const minC=calcMin(b45r);
+  const{rows:rA,goalYr:gA}=sim(contrib,false,b45r,ipca);
+  const{rows:rB,goalYr:gB}=sim(contrib,true,b45r,ipca);
+
+  // Slider labels
+  document.getElementById('v-contrib').textContent=R(contrib);
+  document.getElementById('v-ipca').textContent=(+document.getElementById('sl-ipca').value).toFixed(2).replace('.',',')+' %';
+  document.getElementById('v-b45r').textContent=(+document.getElementById('sl-b45r').value).toFixed(2).replace('.',',')+' %';
+
+  // Contrib note
+  const cn=document.getElementById('contrib-note');
+  const d=contrib-minC;
+  if(Math.abs(d)<5000){cn.textContent='✓ Igual ao mínimo calculado ('+R(minC)+')';cn.className='sl-note sl-ok';}
+  else if(d>0){cn.textContent='↑ Acima do mínimo — meta atingida antes do prazo';cn.className='sl-note sl-ok';}
+  else{cn.textContent='↓ Abaixo do mínimo — meta não atingida em 2051';cn.className='sl-note sl-warn';}
+
+  // KPIs
+  const ff=BONUS-minC;
+  document.getElementById('kpi-min').textContent=R(minC);
+  document.getElementById('kpi-min-sub').textContent=(minC/BONUS*100).toFixed(1)+'% do bônus anual';
+  document.getElementById('kpi-ff').textContent='Free float: '+R(ff)+'/ano';
+  document.getElementById('kpi-yr-a').textContent=gA??'>2051';
+  document.getElementById('kpi-yr-a-sub').textContent=gA?`Murillo com ${AGE0+(gA-START)} anos`:'Meta não atingida';
+  document.getElementById('kpi-yr-b').textContent=gB??'>2051';
+  document.getElementById('kpi-yr-b-sub').textContent=gB?(gA?`Murillo com ${AGE0+(gB-START)} anos — ${gA-gB} anos antes`:`Murillo com ${AGE0+(gB-START)} anos`):'Meta não atingida';
+  document.getElementById('kpi-b-tag').textContent=gB&&gA?`${gA-gB} anos antes do prazo`:'Ajuste o aporte';
+
+  // Timeline
+  document.getElementById('tl-a-yr').textContent=gA??'>2051';
+  document.getElementById('tl-b-yr').textContent=gB??'>2051';
+  document.getElementById('tl-a-desc').innerHTML=gA?`META — Cen. A<br>Murillo ${AGE0+(gA-START)} anos`:'Meta não atingida';
+  document.getElementById('tl-b-desc').innerHTML=gB?`META — Cen. B<br>Murillo ${AGE0+(gB-START)} anos`:'Meta não atingida';
+
+  // Charts
+  ch0.data.datasets[0].data=rA.map(r=>r.tot);
+  ch0.data.datasets[1].data=rB.map(r=>r.tot);
+  ch0.data.datasets[2].data=rA.map(()=>GOAL);
+  ch0.update('none');
+  ch1.data.datasets[0].data=rA.map(r=>r.b37);
+  ch1.data.datasets[1].data=rA.map(r=>r.b55);
+  ch1.data.datasets[2].data=rA.map(r=>r.b45);
+  ch1.update('none');
+  ch2.data.datasets[0].data=rB.map(r=>r.b37);
+  ch2.data.datasets[1].data=rB.map(r=>r.b55);
+  ch2.data.datasets[2].data=rB.map(r=>r.b60);
+  ch2.data.datasets[3].data=rB.map(r=>r.b45);
+  ch2.update('none');
+
+  // Table (Scenario B)
+  const tb=document.getElementById('tbody');
+  tb.innerHTML='';
+  rB.forEach(r=>{
+    const tr=document.createElement('tr');
+    if(r.yr===gB)tr.className='hl';
+    else if(r.yr===2037)tr.className='hl2037';
+    const dash=v=>v>0?R(v):'—';
+    tr.innerHTML=`<td>${r.yr}</td><td>${r.age}</td><td>${R(r.b37)}</td><td>${R(r.b55)}</td>`+
+      `<td>${dash(r.b60)}</td><td>${dash(r.b45)}</td>`+
+      `<td><strong>${R(r.tot)}</strong></td><td>${R(r.nom)}</td><td>${P(r.pct)}</td>`;
+    tb.appendChild(tr);
+  });
+}
+
+// Tabs
+const tabs=document.querySelectorAll('.tab');
+const tps=document.querySelectorAll('.tp');
+function setTab(i){
+  tabs.forEach((t,j)=>t.classList.toggle('on',j===i));
+  tps.forEach((t,j)=>t.classList.toggle('on',j===i));
+}
+
+// Sliders
+['sl-contrib','sl-ipca','sl-b45r'].forEach(id=>
+  document.getElementById(id).addEventListener('input',upd));
+
+upd();
+</script>
+</body>
+</html>
