@@ -268,6 +268,7 @@ footer strong{color:var(--gold);}
 <div class="card">
   <div class="card-ttl">
     <div class="card-ttl-left">Simulador — ajuste os parâmetros e veja o impacto em tempo real</div>
+    <button class="btn-reset" onclick="resetTudo()" style="white-space:nowrap">↺ Restaurar premissas originais</button>
   </div>
   <div class="ctrl-grid">
     <div class="slg">
@@ -583,6 +584,14 @@ function editAporte(span, yr, defaultVal){
     if(e.key==='Enter'){input.blur();}
     if(e.key==='Escape'){delete customAportes[yr];upd();}
   });
+}
+
+function resetTudo(){
+  document.getElementById("sl-contrib").value=330401;
+  document.getElementById("sl-ipca").value=6.15;
+  document.getElementById("sl-b45r").value=5;
+  Object.keys(customAportes).forEach(k=>delete customAportes[k]);
+  upd();
 }
 
 function resetAportes(){
