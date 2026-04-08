@@ -16,43 +16,38 @@
   --shadow:0 2px 10px rgba(27,58,107,0.10);}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
   background:var(--bg);color:var(--text);min-height:100vh;}
-
 .hdr{background:var(--navy);padding:1.2rem 2rem;
   display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
 .hdr-title{color:var(--gold);font-size:1.25rem;font-weight:700;letter-spacing:.05em;}
 .hdr-sub{color:rgba(255,255,255,.65);font-size:.8rem;margin-top:2px;}
 .hdr-badge{background:var(--gold);color:var(--navy);font-size:.72rem;
   font-weight:700;padding:5px 14px;border-radius:20px;white-space:nowrap;}
-
 .wrap{max-width:1180px;margin:0 auto;padding:1.25rem 1rem;}
-
 .card{background:var(--white);border-radius:var(--radius);
   box-shadow:var(--shadow);padding:1.25rem 1.5rem;margin-bottom:1rem;}
 .card-ttl{font-size:.7rem;font-weight:700;color:var(--muted);
   text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;
-  display:flex;align-items:center;gap:8px;}
-.card-ttl::before{content:'';width:3px;height:14px;
+  display:flex;align-items:center;justify-content:space-between;}
+.card-ttl-left{display:flex;align-items:center;gap:8px;}
+.card-ttl-left::before{content:'';width:3px;height:14px;
   background:var(--gold);border-radius:2px;flex-shrink:0;}
 
-/* ── COLLAPSIBLE PREMISSAS ── */
+/* PREMISSAS */
 .prm-toggle{width:100%;background:var(--navy);color:var(--white);
   border:none;border-radius:var(--radius);padding:1rem 1.5rem;
   display:flex;align-items:center;justify-content:space-between;
   cursor:pointer;font-size:.9rem;font-weight:600;margin-bottom:1rem;
   box-shadow:var(--shadow);}
-.prm-toggle span{color:var(--gold);}
+.prm-toggle span.lbl{color:var(--gold);}
 .prm-toggle .arr{font-size:1rem;transition:transform .3s;}
 .prm-toggle.open .arr{transform:rotate(180deg);}
 .prm-panel{display:none;margin-bottom:1rem;}
 .prm-panel.open{display:block;}
-
 .prm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;}
-.prm-section{background:var(--white);border-radius:var(--radius);
-  box-shadow:var(--shadow);padding:1.25rem 1.5rem;}
+.prm-section{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.25rem 1.5rem;}
 .prm-section.full{grid-column:1/-1;}
-.prm-sec-ttl{font-size:.68rem;font-weight:700;color:var(--white);
-  text-transform:uppercase;letter-spacing:.08em;background:var(--gold);
-  color:var(--amber);background:var(--gold-bg);border-left:3px solid var(--gold);
+.prm-sec-ttl{font-size:.68rem;font-weight:700;color:var(--amber);
+  background:var(--gold-bg);border-left:3px solid var(--gold);
   padding:5px 10px;border-radius:4px;margin-bottom:.85rem;}
 .prm-row{display:flex;justify-content:space-between;align-items:center;
   padding:6px 0;border-bottom:1px solid var(--border);font-size:.8rem;gap:8px;}
@@ -61,21 +56,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
 .prm-row .val{font-weight:700;color:var(--navy);text-align:right;white-space:nowrap;}
 .prm-row .val.green{color:var(--green);}
 .prm-row .val.gold{color:var(--amber);}
+.prm-row .val.dyn{color:var(--green);}
 .prm-note{font-size:.72rem;color:var(--amber);background:var(--gold-bg);
   border-radius:6px;padding:8px 12px;margin-top:.75rem;line-height:1.5;
   border-left:3px solid var(--gold);}
 .prm-note.blue{color:var(--navy2);background:#EEF2FF;border-left-color:var(--navy2);}
 .prm-note.green{color:var(--green);background:var(--green-bg);border-left-color:var(--green);}
-
 .rf-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:.5rem;}
-.rf-table th{background:var(--navy);color:#fff;padding:7px 10px;
-  text-align:left;font-size:.68rem;font-weight:600;}
+.rf-table th{background:var(--navy);color:#fff;padding:7px 10px;text-align:left;font-size:.68rem;font-weight:600;}
 .rf-table th:not(:first-child){text-align:right;}
 .rf-table td{padding:7px 10px;border-bottom:1px solid var(--border);}
 .rf-table td:not(:first-child){text-align:right;}
 .rf-table tr:last-child td{font-weight:700;background:#F8FAFF;}
 
-/* ── KPI GRID ── */
+/* KPI */
 .kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-bottom:1rem;}
 .kpi{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
   padding:1.2rem 1.25rem;border-top:3px solid var(--navy);}
@@ -90,7 +84,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
   padding:2px 9px;border-radius:10px;margin-top:8px;background:#E8EEF7;color:var(--navy);}
 .kpi-tag.green{background:var(--green-bg);color:var(--green);}
 
-/* ── CONTROLS ── */
+/* CONTROLS */
 .ctrl-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem;}
 .slg label{display:flex;justify-content:space-between;align-items:center;
   font-size:.78rem;font-weight:600;color:var(--navy);margin-bottom:8px;}
@@ -102,7 +96,7 @@ input[type=range]{width:100%;height:5px;accent-color:var(--navy);cursor:pointer;
 .sl-warn{color:var(--red);}
 .sl-info{color:var(--muted);}
 
-/* ── TABS ── */
+/* TABS */
 .tabs{display:flex;gap:2px;border-bottom:2px solid var(--border);margin-bottom:1.25rem;}
 .tab{padding:10px 18px;font-size:.82rem;font-weight:600;color:var(--muted);
   cursor:pointer;background:none;border:none;border-bottom:3px solid transparent;
@@ -111,14 +105,13 @@ input[type=range]{width:100%;height:5px;accent-color:var(--navy);cursor:pointer;
 .tab.on{color:var(--navy);border-bottom-color:var(--gold);}
 .tp{display:none;}
 .tp.on{display:block;}
-
 .leg{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:12px;}
 .leg-i{display:flex;align-items:center;gap:6px;font-size:.76rem;color:var(--muted);}
 .leg-sq{width:14px;height:5px;border-radius:2px;flex-shrink:0;}
 .chw{position:relative;width:100%;}
 
-/* ── TIMELINE ── */
-.tl{display:flex;padding:.75rem 0;overflow-x:auto;gap:0;}
+/* TIMELINE */
+.tl{display:flex;padding:.75rem 0;overflow-x:auto;}
 .tli{flex:1;min-width:110px;text-align:center;position:relative;}
 .tli::before{content:'';position:absolute;top:13px;left:50%;right:-50%;
   height:2px;background:var(--border);z-index:0;}
@@ -132,18 +125,35 @@ input[type=range]{width:100%;height:5px;accent-color:var(--navy);cursor:pointer;
 .tl-yr{font-size:.78rem;font-weight:700;color:var(--navy);}
 .tl-desc{font-size:.68rem;color:var(--muted);margin-top:2px;line-height:1.4;}
 
-/* ── TABLE ── */
+/* TABLE */
 .twrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border);}
 table.dt{width:100%;border-collapse:collapse;font-size:.78rem;}
 table.dt thead tr th{background:var(--navy);color:#fff;padding:9px 12px;
   text-align:right;font-weight:600;font-size:.7rem;white-space:nowrap;}
 table.dt thead tr th:first-child{text-align:center;}
-table.dt tbody tr td{padding:7px 12px;text-align:right;border-bottom:1px solid var(--border);}
+table.dt tbody tr td{padding:6px 12px;text-align:right;border-bottom:1px solid var(--border);}
 table.dt tbody tr td:first-child{text-align:center;font-weight:700;color:var(--navy);}
 table.dt tbody tr:nth-child(even) td{background:#F8FAFF;}
 table.dt tbody tr.hl td{background:var(--green-bg);font-weight:700;color:var(--green);}
 table.dt tbody tr.hl td:first-child{color:var(--green);}
 table.dt tbody tr.hl2037 td{background:var(--gold-bg);}
+
+/* EDITABLE APORTE CELL */
+.aporte-cell{cursor:pointer;border-radius:4px;padding:3px 6px;
+  transition:background .15s;white-space:nowrap;}
+.aporte-cell:hover{background:rgba(201,168,76,0.15);}
+.aporte-cell.custom{color:var(--amber);font-weight:700;background:rgba(201,168,76,0.12);}
+.aporte-cell .edit-hint{font-size:.6rem;color:var(--muted);margin-left:4px;opacity:0;}
+.aporte-cell:hover .edit-hint{opacity:1;}
+.aporte-input{width:110px;border:2px solid var(--gold);border-radius:4px;
+  padding:3px 8px;font-size:.78rem;font-weight:700;color:var(--amber);
+  background:var(--gold-bg);text-align:right;outline:none;}
+
+/* RESET BTN */
+.btn-reset{background:none;border:1.5px solid var(--border);border-radius:6px;
+  padding:4px 12px;font-size:.72rem;color:var(--muted);cursor:pointer;
+  font-weight:600;transition:all .15s;}
+.btn-reset:hover{border-color:var(--gold);color:var(--amber);}
 
 footer{background:var(--navy);color:rgba(255,255,255,.55);
   text-align:center;padding:1rem;font-size:.72rem;margin-top:2rem;}
@@ -168,16 +178,14 @@ footer strong{color:var(--gold);}
 
 <div class="wrap">
 
-<!-- PREMISSAS COLLAPSIBLE -->
+<!-- PREMISSAS -->
 <button class="prm-toggle" onclick="togglePrm(this)">
-  <span>📋 Premissas &amp; Parâmetros do Projeto — clique para expandir</span>
+  <span class="lbl">📋 Premissas &amp; Parâmetros do Projeto — clique para expandir</span>
   <span class="arr">▼</span>
 </button>
-
 <div class="prm-panel" id="prm-panel">
   <div class="prm-grid">
 
-    <!-- Perfil -->
     <div class="prm-section">
       <div class="prm-sec-ttl">👤 Perfil do cliente</div>
       <div class="prm-row"><span class="lbl">Nome</span><span class="val">Murillo Alevato</span></div>
@@ -189,24 +197,22 @@ footer strong{color:var(--gold);}
       <div class="prm-row"><span class="lbl">Patrimônio imobilizado</span><span class="val">R$ 3.000.000</span></div>
       <div class="prm-row"><span class="lbl">Meta patrimonial (valor real)</span><span class="val green">R$ 20.000.000</span></div>
       <div class="prm-row"><span class="lbl">Seguro vida/invalidez (estimativa)</span><span class="val">≈ R$ 35.000/ano</span></div>
-      <div class="prm-note">⚠️ Seguro: estimativa Whole Life (vida + invalidez), homem 40 anos, cobertura R$5M–10M. Referências: Prudential, Icatu, Zurich. Prêmio real varia R$25k–60k/ano conforme produto e saúde. Cotação formal necessária. Não integra o patrimônio projetado — é custo de proteção do projeto.</div>
+      <div class="prm-note">⚠️ Seguro: estimativa Whole Life (vida + invalidez), homem 40 anos, cobertura R$5M–10M. Referências: Prudential, Icatu, Zurich. Prêmio real varia R$25k–60k/ano. Cotação formal necessária. Não integra o patrimônio projetado.</div>
     </div>
 
-    <!-- Taxas NTN-B -->
     <div class="prm-section">
       <div class="prm-sec-ttl">📈 Taxas e vértices NTN-B</div>
       <div class="prm-row"><span class="lbl">B37 — NTN-B 2037 (01/04/2026)</span><span class="val green">IPCA + 7,00%</span></div>
       <div class="prm-row"><span class="lbl">B55 — NTN-B 2055 (Out/2026)</span><span class="val">IPCA + 6,87%</span></div>
       <div class="prm-row"><span class="lbl">B60 — NTN-B 2060 (2027 · Cen. B)</span><span class="val">IPCA + 6,84%</span></div>
-      <div class="prm-row"><span class="lbl">B45 — Aportes futuros (conservador)</span><span class="val">IPCA + 5,00%</span></div>
+      <div class="prm-row"><span class="lbl">B45 — Aportes futuros</span><span class="val dyn" id="prm-b45r">IPCA + 5,00%</span></div>
       <div class="prm-row"><span class="lbl">B37 reinvestimento em 2037</span><span class="val gold">IPCA + 3,50%</span></div>
-      <div class="prm-row"><span class="lbl">IPCA premissa (média 20 anos)</span><span class="val">6,15% a.a.</span></div>
+      <div class="prm-row"><span class="lbl">IPCA premissa (média 20 anos)</span><span class="val dyn" id="prm-ipca">6,15% a.a.</span></div>
       <div class="prm-row"><span class="lbl">Cupons NTN-B (≈6% a.a.)</span><span class="val">Reinvestidos automaticamente</span></div>
-      <div class="prm-note blue">📌 Para o projeto NTN-B, o IPCA é neutro — IPCA+7% entrega 7% real independente da inflação. O IPCA impacta apenas o total nominal em 2051 e o carrego das LCAs em 2026/27.</div>
-      <div class="prm-note" style="margin-top:6px">⚠️ 2037: B37 vence e é reinvestido a IPCA+3,5% — o mínimo histórico das NTN-Bs (2012/13, era de juros reais baixos). Premissa conservadora: mesmo no pior cenário, o projeto fica no trilho.</div>
+      <div class="prm-note blue">📌 IPCA é neutro para o projeto — IPCA+7% entrega 7% real independente da inflação. Impacta apenas o total nominal em 2051 e o carrego das LCAs em 2026/27.</div>
+      <div class="prm-note" style="margin-top:6px">⚠️ 2037: B37 reinveste a IPCA+3,5% — mínimo histórico NTN-B (2012/13). Premissa conservadora: mesmo no pior cenário de taxas, o projeto fica no trilho.</div>
     </div>
 
-    <!-- Selic / carrego -->
     <div class="prm-section">
       <div class="prm-sec-ttl">📊 Curva Selic — Focus</div>
       <div class="prm-row"><span class="lbl">Selic 2026</span><span class="val">12,50% a.a.</span></div>
@@ -214,82 +220,43 @@ footer strong{color:var(--gold);}
       <div class="prm-row"><span class="lbl">Selic 2028</span><span class="val">10,00% a.a.</span></div>
       <div class="prm-row"><span class="lbl">Selic 2029</span><span class="val">9,75% a.a.</span></div>
       <div class="prm-row"><span class="lbl">Selic 2030+</span><span class="val">9,50% a.a.</span></div>
-      <div class="prm-row"><span class="lbl">LCA Original carrego (91,5% × Selic)</span><span class="val">11,44% a.a.</span></div>
-      <div class="prm-row"><span class="lbl">Injeções iniciais NTN-B</span><span class="val green">R$ 885.000</span></div>
-      <div class="prm-row"><span class="lbl">Capital inicial total (Cen. B)</span><span class="val green">R$ 1.504.000</span></div>
+      <div class="prm-row"><span class="lbl">LCA carrego (91,5% × Selic)</span><span class="val">11,44% a.a.</span></div>
+      <div class="prm-row"><span class="lbl">Aporte mínimo calculado</span><span class="val dyn" id="prm-min">R$ 330.401</span></div>
+      <div class="prm-row"><span class="lbl">Free float anual do bônus</span><span class="val dyn" id="prm-ff">R$ 1.169.599</span></div>
     </div>
 
-    <!-- RF Paralela -->
     <div class="prm-section">
       <div class="prm-sec-ttl">🏦 Carteira RF paralela — vencimentos 2027</div>
       <table class="rf-table">
-        <thead>
-          <tr>
-            <th>Título</th>
-            <th>Saldo atual</th>
-            <th>Taxa</th>
-            <th>IR</th>
-            <th>Líquido proj.</th>
-            <th>Vence</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Título</th><th>Saldo atual</th><th>Taxa</th><th>IR</th><th>Líquido proj.</th><th>Vence</th></tr></thead>
         <tbody>
-          <tr>
-            <td>CDB BMG</td>
-            <td>R$ 184.319</td>
-            <td>15,33%</td>
-            <td>15%</td>
-            <td>R$ 208.324</td>
-            <td>abr/27</td>
-          </tr>
-          <tr>
-            <td>LCA Bocom BBM</td>
-            <td>R$ 202.881</td>
-            <td>12,82%</td>
-            <td>Isento</td>
-            <td>R$ 228.892</td>
-            <td>abr/27</td>
-          </tr>
-          <tr>
-            <td>LCA BTG Pactual</td>
-            <td>R$ 190.713</td>
-            <td>12,34%</td>
-            <td>Isento</td>
-            <td>R$ 227.093</td>
-            <td>out/27</td>
-          </tr>
-          <tr>
-            <td><strong>Total</strong></td>
-            <td><strong>R$ 577.913</strong></td>
-            <td>—</td>
-            <td>—</td>
-            <td><strong>R$ 664.309</strong></td>
-            <td>—</td>
-          </tr>
+          <tr><td>CDB BMG</td><td>R$ 184.319</td><td>15,33%</td><td>15%</td><td>R$ 208.324</td><td>abr/27</td></tr>
+          <tr><td>LCA Bocom BBM</td><td>R$ 202.881</td><td>12,82%</td><td>Isento</td><td>R$ 228.892</td><td>abr/27</td></tr>
+          <tr><td>LCA BTG Pactual</td><td>R$ 190.713</td><td>12,34%</td><td>Isento</td><td>R$ 227.093</td><td>out/27</td></tr>
+          <tr><td><strong>Total</strong></td><td><strong>R$ 577.913</strong></td><td>—</td><td>—</td><td><strong>R$ 664.309</strong></td><td>—</td></tr>
         </tbody>
       </table>
-      <div class="prm-note green">✓ Cenário A: RF vence em 2027 → vai ao free float de Murillo.<br>🚀 Cenário B: RF vence em 2027 → reinvestida no B60 (IPCA+6,84%), valor real ≈ R$ 619.000 — turbina o projeto e antecipa a meta.</div>
+      <div class="prm-note green">✓ Cen. A: RF → free float em 2027.<br>🚀 Cen. B: RF → B60 (IPCA+6,84%), valor real ≈ R$ 619k — antecipa a meta.</div>
     </div>
 
-    <!-- Resultados resumo -->
     <div class="prm-section full">
-      <div class="prm-sec-ttl">🎯 Resultados calculados — resumo executivo</div>
+      <div class="prm-sec-ttl">🎯 Resultados calculados — atualizam com os sliders</div>
       <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;">
         <div>
-          <div class="prm-row"><span class="lbl">Aporte mínimo anual</span><span class="val green">R$ 330.401</span></div>
-          <div class="prm-row"><span class="lbl">% do bônus para o projeto</span><span class="val">22,0%</span></div>
+          <div class="prm-row"><span class="lbl">Aporte mínimo anual</span><span class="val dyn" id="prm-res-min">R$ 330.401</span></div>
+          <div class="prm-row"><span class="lbl">% do bônus p/ o projeto</span><span class="val dyn" id="prm-res-pct">22,0%</span></div>
         </div>
         <div>
-          <div class="prm-row"><span class="lbl">Free float anual do bônus</span><span class="val green">R$ 1.169.599</span></div>
-          <div class="prm-row"><span class="lbl">% do bônus como free float</span><span class="val">78,0%</span></div>
+          <div class="prm-row"><span class="lbl">Free float anual</span><span class="val dyn" id="prm-res-ff">R$ 1.169.599</span></div>
+          <div class="prm-row"><span class="lbl">% como free float</span><span class="val dyn" id="prm-res-ffpct">78,0%</span></div>
         </div>
         <div>
-          <div class="prm-row"><span class="lbl">Cenário A — meta no ano</span><span class="val">2051 (65 anos)</span></div>
-          <div class="prm-row"><span class="lbl">Cenário B — meta no ano</span><span class="val green">2049 (63 anos)</span></div>
+          <div class="prm-row"><span class="lbl">Cenário A — meta no ano</span><span class="val dyn" id="prm-res-a">2051 (65 anos)</span></div>
+          <div class="prm-row"><span class="lbl">Cenário B — meta no ano</span><span class="val dyn" id="prm-res-b">2049 (63 anos)</span></div>
         </div>
         <div>
-          <div class="prm-row"><span class="lbl">Antecipação Cen. B</span><span class="val green">2 anos antes</span></div>
-          <div class="prm-row"><span class="lbl">Renda extra pós-meta</span><span class="val green">R$ 3.000.000</span></div>
+          <div class="prm-row"><span class="lbl">Antecipação Cen. B</span><span class="val dyn" id="prm-res-ant">2 anos antes</span></div>
+          <div class="prm-row"><span class="lbl">Renda extra pós-meta</span><span class="val dyn" id="prm-res-extra">R$ 3.000.000</span></div>
         </div>
       </div>
     </div>
@@ -299,10 +266,12 @@ footer strong{color:var(--gold);}
 
 <!-- CONTROLS -->
 <div class="card">
-  <div class="card-ttl">Simulador — ajuste os parâmetros e veja o impacto em tempo real</div>
+  <div class="card-ttl">
+    <div class="card-ttl-left">Simulador — ajuste os parâmetros e veja o impacto em tempo real</div>
+  </div>
   <div class="ctrl-grid">
     <div class="slg">
-      <label>Aporte anual <span id="v-contrib">R$ 330.401</span></label>
+      <label>Aporte anual padrão <span id="v-contrib">R$ 330.401</span></label>
       <input type="range" id="sl-contrib" min="100000" max="700000" step="5000" value="330401">
       <div class="sl-lim"><span>R$ 100k</span><span>R$ 700k</span></div>
       <div id="contrib-note" class="sl-note sl-ok">✓ Igual ao mínimo calculado</div>
@@ -358,7 +327,7 @@ footer strong{color:var(--gold);}
       <span class="leg-i"><span class="leg-sq" style="background:#D32F2F;opacity:.7"></span>Meta R$20M</span>
     </div>
     <div class="chw" style="height:340px">
-      <canvas id="ch0" role="img" aria-label="Evolução patrimonial real Cenário A vs B vs meta R$20M">Gráfico de evolução patrimonial</canvas>
+      <canvas id="ch0" role="img" aria-label="Evolução patrimonial real Cenário A vs B">Evolução patrimonial</canvas>
     </div>
   </div>
   <div class="tp" id="tp1">
@@ -368,7 +337,7 @@ footer strong{color:var(--gold);}
       <span class="leg-i"><span class="leg-sq" style="background:#4CAF50"></span>B45 Aportes</span>
     </div>
     <div class="chw" style="height:340px">
-      <canvas id="ch1" role="img" aria-label="Composição Cenário A por vértice NTN-B">Composição Cenário A</canvas>
+      <canvas id="ch1" role="img" aria-label="Composição Cenário A">Composição Cenário A</canvas>
     </div>
   </div>
   <div class="tp" id="tp2">
@@ -379,62 +348,45 @@ footer strong{color:var(--gold);}
       <span class="leg-i"><span class="leg-sq" style="background:#4CAF50"></span>B45 Aportes</span>
     </div>
     <div class="chw" style="height:340px">
-      <canvas id="ch2" role="img" aria-label="Composição Cenário B por vértice NTN-B">Composição Cenário B</canvas>
+      <canvas id="ch2" role="img" aria-label="Composição Cenário B">Composição Cenário B</canvas>
     </div>
   </div>
 </div>
 
 <!-- TIMELINE -->
 <div class="card">
-  <div class="card-ttl">Linha do tempo — marcos do Projeto 2051</div>
+  <div class="card-ttl"><div class="card-ttl-left">Linha do tempo — marcos do Projeto 2051</div></div>
   <div class="tl">
-    <div class="tli">
-      <div class="tl-dot">Abr</div>
-      <div class="tl-yr">2026</div>
-      <div class="tl-desc">R$ 700k → B37<br>IPCA+7%</div>
-    </div>
-    <div class="tli">
-      <div class="tl-dot gold">Out</div>
-      <div class="tl-yr">2026</div>
-      <div class="tl-desc">LCA → B55<br>R$ 185k</div>
-    </div>
-    <div class="tli">
-      <div class="tl-dot">27</div>
-      <div class="tl-yr">2027</div>
-      <div class="tl-desc">RF → B60 (Cen.B)<br>R$ 619k real<br>+ 1º aporte anual</div>
-    </div>
-    <div class="tli">
-      <div class="tl-dot amber">37</div>
-      <div class="tl-yr">2037</div>
-      <div class="tl-desc">B37 vence<br>Reinvest. IPCA+3,5%</div>
-    </div>
-    <div class="tli">
-      <div class="tl-dot green">49</div>
-      <div class="tl-yr" id="tl-b-yr">2049</div>
-      <div class="tl-desc" id="tl-b-desc">META — Cen. B<br>Murillo 63 anos</div>
-    </div>
-    <div class="tli">
-      <div class="tl-dot">51</div>
-      <div class="tl-yr" id="tl-a-yr">2051</div>
-      <div class="tl-desc" id="tl-a-desc">META — Cen. A<br>Murillo 65 anos</div>
-    </div>
+    <div class="tli"><div class="tl-dot">Abr</div><div class="tl-yr">2026</div><div class="tl-desc">R$ 700k → B37<br>IPCA+7%</div></div>
+    <div class="tli"><div class="tl-dot gold">Out</div><div class="tl-yr">2026</div><div class="tl-desc">LCA → B55<br>R$ 185k</div></div>
+    <div class="tli"><div class="tl-dot">27</div><div class="tl-yr">2027</div><div class="tl-desc">RF → B60 (Cen.B)<br>R$ 619k real + 1º aporte</div></div>
+    <div class="tli"><div class="tl-dot amber">37</div><div class="tl-yr">2037</div><div class="tl-desc">B37 vence<br>Reinvest. IPCA+3,5%</div></div>
+    <div class="tli"><div class="tl-dot green">49</div><div class="tl-yr" id="tl-b-yr">2049</div><div class="tl-desc" id="tl-b-desc">META — Cen. B<br>Murillo 63 anos</div></div>
+    <div class="tli"><div class="tl-dot">51</div><div class="tl-yr" id="tl-a-yr">2051</div><div class="tl-desc" id="tl-a-desc">META — Cen. A<br>Murillo 65 anos</div></div>
   </div>
 </div>
 
 <!-- TABLE -->
 <div class="card">
-  <div class="card-ttl">Evolução ano a ano — Cenário B (Turbinado)</div>
+  <div class="card-ttl">
+    <div class="card-ttl-left">Evolução ano a ano — Cenário B · clique em qualquer aporte para personalizar</div>
+    <button class="btn-reset" onclick="resetAportes()">↺ Resetar aportes</button>
+  </div>
   <div class="twrap">
     <table class="dt">
       <thead><tr>
         <th style="text-align:center">Ano</th>
         <th style="text-align:center">Idade</th>
         <th>B37 Real</th><th>B55 Real</th>
-        <th>B60 Real</th><th>B45 Aportes</th>
-        <th>Total Real</th><th>Total Nominal</th><th>% Meta</th>
+        <th>B60 Real</th><th>Aporte Anual ✎</th>
+        <th>B45 Acumulado</th><th>Total Real</th>
+        <th>Total Nominal</th><th>% Meta</th>
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table>
+  </div>
+  <div class="sl-note sl-info" style="margin-top:8px">
+    ✎ Clique em qualquer valor da coluna <strong>Aporte Anual</strong> para editar aquele ano específico. Valores personalizados aparecem em dourado.
   </div>
 </div>
 
@@ -451,6 +403,9 @@ const B37R=.07,B55R=.0687,B60R=.0684,B37RV=.035;
 const START=2026,AGE0=40;
 const YRS=Array.from({length:26},(_,i)=>2026+i);
 
+// Custom aportes per year: null = use slider default
+const customAportes = {};
+
 const R=v=>'R$ '+Math.round(v).toLocaleString('pt-BR');
 const P=v=>(v*100).toFixed(1)+'%';
 
@@ -461,19 +416,25 @@ function calcMin(b45r){
   return(GOAL-e37-e55)/fv;
 }
 
-function sim(contrib,b60,b45r,ipca){
+function getContrib(yr, defaultC){
+  return customAportes[yr] !== undefined ? customAportes[yr] : defaultC;
+}
+
+function sim(useB60, b45r, ipca, defaultContrib){
   let b37=B37I,b55=B55I,b60v=0,b45=0,gy=null;
   return{rows:YRS.map(yr=>{
-    b37*=(yr<=2036?1+B37R:1+B37RV);b55*=1+B55R;
-    if(b60){b60v=yr==2026?0:yr==2027?B60I*(1+B60R):b60v*(1+B60R);}else b60v=0;
+    b37*=(yr<=2036?1+B37R:1+B37RV); b55*=1+B55R;
+    if(useB60){b60v=yr==2026?0:yr==2027?B60I*(1+B60R):b60v*(1+B60R);}else b60v=0;
+    const contrib = yr>=2027 ? getContrib(yr, defaultContrib) : 0;
     b45=yr>=2027?(b45+contrib)*(1+b45r):0;
     const tot=b37+b55+b60v+b45;
     const nom=tot*Math.pow(1+ipca,yr-START+1);
     if(!gy&&tot>=GOAL)gy=yr;
-    return{yr,age:AGE0+(yr-START),b37,b55,b60:b60v,b45,tot,nom,pct:tot/GOAL};
+    return{yr,age:AGE0+(yr-START),b37,b55,b60:b60v,b45,tot,nom,pct:tot/GOAL,contrib};
   }),goalYr:gy};
 }
 
+// Charts
 const shOpts={responsive:true,maintainAspectRatio:false,
   plugins:{legend:{display:false},
     tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+R(c.raw)}}},
@@ -492,37 +453,41 @@ const ch0=new Chart(document.getElementById('ch0'),{type:'line',
   ]},options:shOpts});
 const ch1=new Chart(document.getElementById('ch1'),{type:'bar',
   data:{labels:YRS.map(String),datasets:[
-    {label:'B37 IPCA+7%',data:[],backgroundColor:'#1B3A6B'},
-    {label:'B55 IPCA+6,87%',data:[],backgroundColor:'#2E5192'},
+    {label:'B37',data:[],backgroundColor:'#1B3A6B'},
+    {label:'B55',data:[],backgroundColor:'#2E5192'},
     {label:'B45 Aportes',data:[],backgroundColor:'#4CAF50'},
   ]},options:stOpts});
 const ch2=new Chart(document.getElementById('ch2'),{type:'bar',
   data:{labels:YRS.map(String),datasets:[
-    {label:'B37 IPCA+7%',data:[],backgroundColor:'#1B3A6B'},
-    {label:'B55 IPCA+6,87%',data:[],backgroundColor:'#2E5192'},
-    {label:'B60 IPCA+6,84%',data:[],backgroundColor:'#C9A84C'},
+    {label:'B37',data:[],backgroundColor:'#1B3A6B'},
+    {label:'B55',data:[],backgroundColor:'#2E5192'},
+    {label:'B60',data:[],backgroundColor:'#C9A84C'},
     {label:'B45 Aportes',data:[],backgroundColor:'#4CAF50'},
   ]},options:stOpts});
 
 function upd(){
-  const contrib=+document.getElementById('sl-contrib').value;
+  const defaultContrib=+document.getElementById('sl-contrib').value;
   const ipca=+document.getElementById('sl-ipca').value/100;
   const b45r=+document.getElementById('sl-b45r').value/100;
   const minC=calcMin(b45r);
-  const{rows:rA,goalYr:gA}=sim(contrib,false,b45r,ipca);
-  const{rows:rB,goalYr:gB}=sim(contrib,true,b45r,ipca);
+  const{rows:rA,goalYr:gA}=sim(false,b45r,ipca,defaultContrib);
+  const{rows:rB,goalYr:gB}=sim(true,b45r,ipca,defaultContrib);
 
-  document.getElementById('v-contrib').textContent=R(contrib);
+  // Slider labels
+  document.getElementById('v-contrib').textContent=R(defaultContrib);
   document.getElementById('v-ipca').textContent=(+document.getElementById('sl-ipca').value).toFixed(2).replace('.',',')+' %';
   document.getElementById('v-b45r').textContent=(+document.getElementById('sl-b45r').value).toFixed(2).replace('.',',')+' %';
 
+  // Contrib note
   const cn=document.getElementById('contrib-note');
-  const d=contrib-minC;
+  const d=defaultContrib-minC;
   if(Math.abs(d)<5000){cn.textContent='✓ Igual ao mínimo calculado ('+R(minC)+')';cn.className='sl-note sl-ok';}
   else if(d>0){cn.textContent='↑ Acima do mínimo — meta atingida antes do prazo';cn.className='sl-note sl-ok';}
   else{cn.textContent='↓ Abaixo do mínimo — meta não atingida em 2051';cn.className='sl-note sl-warn';}
 
   const ff=BONUS-minC;
+
+  // KPIs
   document.getElementById('kpi-min').textContent=R(minC);
   document.getElementById('kpi-min-sub').textContent=(minC/BONUS*100).toFixed(1)+'% do bônus anual';
   document.getElementById('kpi-ff').textContent='Free float: '+R(ff)+'/ano';
@@ -532,11 +497,27 @@ function upd(){
   document.getElementById('kpi-yr-b-sub').textContent=gB?(gA?`Murillo com ${AGE0+(gB-START)} anos — ${gA-gB} anos antes`:`Murillo com ${AGE0+(gB-START)} anos`):'Meta não atingida';
   document.getElementById('kpi-b-tag').textContent=gB&&gA?`${gA-gB} anos antes do prazo`:'Ajuste o aporte';
 
+  // Timeline
   document.getElementById('tl-a-yr').textContent=gA??'>2051';
   document.getElementById('tl-b-yr').textContent=gB??'>2051';
   document.getElementById('tl-a-desc').innerHTML=gA?`META — Cen. A<br>Murillo ${AGE0+(gA-START)} anos`:'Meta não atingida';
   document.getElementById('tl-b-desc').innerHTML=gB?`META — Cen. B<br>Murillo ${AGE0+(gB-START)} anos`:'Meta não atingida';
 
+  // Premissas sync
+  document.getElementById('prm-ipca').textContent=(ipca*100).toFixed(2).replace('.',',')+' % a.a.';
+  document.getElementById('prm-b45r').textContent='IPCA + '+(b45r*100).toFixed(2).replace('.',',')+' %';
+  document.getElementById('prm-min').textContent=R(minC);
+  document.getElementById('prm-ff').textContent=R(ff);
+  document.getElementById('prm-res-min').textContent=R(minC);
+  document.getElementById('prm-res-pct').textContent=(minC/BONUS*100).toFixed(1)+'%';
+  document.getElementById('prm-res-ff').textContent=R(ff);
+  document.getElementById('prm-res-ffpct').textContent=(ff/BONUS*100).toFixed(1)+'%';
+  document.getElementById('prm-res-a').textContent=gA?`${gA} (${AGE0+(gA-START)} anos)`:'>2051';
+  document.getElementById('prm-res-b').textContent=gB?`${gB} (${AGE0+(gB-START)} anos)`:'>2051';
+  document.getElementById('prm-res-ant').textContent=gA&&gB?`${gA-gB} anos antes`:'—';
+  document.getElementById('prm-res-extra').textContent=gA&&gB?R(BONUS*(gA-gB)):'—';
+
+  // Charts
   ch0.data.datasets[0].data=rA.map(r=>r.tot);
   ch0.data.datasets[1].data=rB.map(r=>r.tot);
   ch0.data.datasets[2].data=rA.map(()=>GOAL);
@@ -551,18 +532,62 @@ function upd(){
   ch2.data.datasets[3].data=rB.map(r=>r.b45);
   ch2.update('none');
 
+  // Table (Scenario B)
   const tb=document.getElementById('tbody');
   tb.innerHTML='';
-  rB.forEach(r=>{
+  rB.forEach(row=>{
+    if(row.yr<2027){return;}
     const tr=document.createElement('tr');
-    if(r.yr===gB)tr.className='hl';
-    else if(r.yr===2037)tr.className='hl2037';
+    if(row.yr===gB)tr.className='hl';
+    else if(row.yr===2037)tr.className='hl2037';
+    const isCustom=customAportes[row.yr]!==undefined;
     const dash=v=>v>0?R(v):'—';
-    tr.innerHTML=`<td>${r.yr}</td><td>${r.age}</td><td>${R(r.b37)}</td><td>${R(r.b55)}</td>`+
-      `<td>${dash(r.b60)}</td><td>${dash(r.b45)}</td>`+
-      `<td><strong>${R(r.tot)}</strong></td><td>${R(r.nom)}</td><td>${P(r.pct)}</td>`;
+
+    // Aporte cell (editable)
+    const aCell=document.createElement('td');
+    aCell.innerHTML=`<span class="aporte-cell${isCustom?' custom':''}" 
+      onclick="editAporte(this,${row.yr},${defaultContrib})">${R(row.contrib)}<span class="edit-hint">✎</span></span>`;
+
+    tr.innerHTML=`<td>${row.yr}</td><td>${row.age}</td>
+      <td>${R(row.b37)}</td><td>${R(row.b55)}</td>
+      <td>${dash(row.b60)}</td>`;
+    tr.appendChild(aCell);
+    const rest=document.createElement('td');
+    rest.setAttribute('colspan','1');
+    rest.textContent=''; // placeholder, replaced below
+    tr.insertAdjacentHTML('beforeend',
+      `<td>${dash(row.b45)}</td><td><strong>${R(row.tot)}</strong></td>
+       <td>${R(row.nom)}</td><td>${P(row.pct)}</td>`);
     tb.appendChild(tr);
   });
+}
+
+function editAporte(span, yr, defaultVal){
+  const parent=span.parentElement;
+  const input=document.createElement('input');
+  input.type='number';
+  input.className='aporte-input';
+  input.value=customAportes[yr]!==undefined?customAportes[yr]:defaultVal;
+  input.min=0; input.step=1000;
+  parent.replaceChild(input,span);
+  input.focus(); input.select();
+
+  function save(){
+    const v=parseInt(input.value)||0;
+    if(v===defaultVal){delete customAportes[yr];}
+    else{customAportes[yr]=v;}
+    upd();
+  }
+  input.addEventListener('blur',save);
+  input.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){input.blur();}
+    if(e.key==='Escape'){delete customAportes[yr];upd();}
+  });
+}
+
+function resetAportes(){
+  Object.keys(customAportes).forEach(k=>delete customAportes[k]);
+  upd();
 }
 
 function setTab(i){
