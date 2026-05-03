@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 <meta name="googlebot" content="noindex, nofollow">
-<title>P2051</title>
+<title>Planejamento Patrimonial · M.E.A.N.</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/3.0.1/chartjs-plugin-annotation.min.js"></script>
 <style>
@@ -15,7 +15,8 @@
   --navy:#1B3A6B;--navy2:#2E5192;--gold:#C9A84C;--gold-bg:#FFF8E7;
   --white:#fff;--bg:#F0F4FA;--text:#1A1A1A;--muted:#667;--border:#DDE3F0;
   --green:#1A5E20;--green-bg:#E8F5E9;--green-mid:#A5D6A7;
-  --red:#C62828;--amber:#7B4F00;--radius:10px;
+  --teal:#00838F;--teal-bg:#E0F7FA;
+  --red:#C62828;--amber:#7B4F00;--purple:#6A1B9A;--radius:10px;
   --shadow:0 2px 12px rgba(27,58,107,0.10);}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
   background:var(--bg);color:var(--text);min-height:100vh;}
@@ -25,14 +26,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
 .hdr-sub{color:rgba(255,255,255,.65);font-size:.8rem;margin-top:2px;}
 .hdr-badge{background:var(--gold);color:var(--navy);font-size:.72rem;font-weight:700;
   padding:5px 14px;border-radius:20px;white-space:nowrap;}
+/* TOP NAV */
+.topnav{background:var(--white);border-bottom:1px solid var(--border);
+  padding:0 2rem;display:flex;gap:0;box-shadow:0 1px 4px rgba(0,0,0,.04);
+  position:sticky;top:0;z-index:50;}
+.topnav-tab{padding:14px 22px;font-size:.85rem;font-weight:600;color:var(--muted);
+  cursor:pointer;background:none;border:none;border-bottom:3px solid transparent;
+  transition:all .15s;display:flex;align-items:center;gap:8px;}
+.topnav-tab:hover{color:var(--navy);background:#F8FAFF;}
+.topnav-tab.on{color:var(--navy);border-bottom-color:var(--gold);background:#F8FAFF;}
+.topnav-tab .ico{font-size:1.1rem;}
 .wrap{max-width:1200px;margin:0 auto;padding:1.25rem 1rem;}
+.view{display:none;}
+.view.on{display:block;}
 .card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
   padding:1.25rem 1.5rem;margin-bottom:1rem;}
 .card-ttl{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;
-  letter-spacing:.08em;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;}
+  letter-spacing:.08em;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 .card-ttl-l{display:flex;align-items:center;gap:8px;}
 .card-ttl-l::before{content:'';width:3px;height:14px;background:var(--gold);border-radius:2px;flex-shrink:0;}
-
 /* PREMISSAS */
 .prm-toggle{width:100%;background:var(--navy);color:var(--white);border:none;
   border-radius:var(--radius);padding:1rem 1.5rem;display:flex;align-items:center;
@@ -48,6 +60,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
 .prm-sec.full{grid-column:1/-1;}
 .prm-sec-ttl{font-size:.68rem;font-weight:700;color:var(--amber);background:var(--gold-bg);
   border-left:3px solid var(--gold);padding:5px 10px;border-radius:4px;margin-bottom:.85rem;}
+.prm-sec-ttl.tax{color:var(--purple);background:#F3E5F5;border-left-color:var(--purple);}
 .prm-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;
   border-bottom:1px solid var(--border);font-size:.8rem;gap:8px;}
 .prm-row:last-child{border-bottom:none;}
@@ -56,29 +69,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
 .prm-row .val.g{color:var(--green);}
 .prm-row .val.a{color:var(--amber);}
 .prm-row .val.dyn{color:var(--green);}
+.prm-row .val.r{color:var(--red);}
+.prm-row .val.p{color:var(--purple);}
 .prm-note{font-size:.72rem;color:var(--amber);background:var(--gold-bg);border-radius:6px;
   padding:8px 12px;margin-top:.75rem;line-height:1.5;border-left:3px solid var(--gold);}
 .prm-note.blue{color:var(--navy2);background:#EEF2FF;border-left-color:var(--navy2);}
 .prm-note.green{color:var(--green);background:var(--green-bg);border-left-color:var(--green);}
-
+.prm-note.purple{color:var(--purple);background:#F3E5F5;border-left-color:var(--purple);}
 /* KPIs */
 .kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin-bottom:1rem;}
 .kpi{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
   padding:1.2rem 1.25rem;border-top:3px solid var(--navy);}
 .kpi.gold{border-top-color:var(--gold);}
 .kpi.green{border-top-color:var(--green);}
-.kpi.teal{border-top-color:#00838F;}
+.kpi.teal{border-top-color:var(--teal);}
 .kpi-lbl{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
 .kpi-val{font-size:1.5rem;font-weight:800;color:var(--navy);line-height:1.1;}
 .kpi-val.g{color:var(--amber);}
 .kpi-val.gr{color:var(--green);}
-.kpi-val.tl{color:#00838F;}
+.kpi-val.tl{color:var(--teal);}
 .kpi-sub{font-size:.73rem;color:var(--muted);margin-top:4px;}
 .kpi-tag{display:inline-block;font-size:.66rem;font-weight:600;padding:2px 9px;
   border-radius:10px;margin-top:8px;background:#E8EEF7;color:var(--navy);}
 .kpi-tag.green{background:var(--green-bg);color:var(--green);}
-.kpi-tag.teal{background:#E0F7FA;color:#006064;}
-
+.kpi-tag.teal{background:var(--teal-bg);color:#006064;}
+.kpi-tag.gold{background:var(--gold-bg);color:var(--amber);}
 /* REAL vs NOMINAL */
 .rnbox{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-bottom:1rem;}
 .rn-pill{border-radius:var(--radius);padding:1rem 1.25rem;display:flex;flex-direction:column;gap:6px;}
@@ -94,9 +109,44 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
 .rn-pill.nom .rn-val{color:#0D47A1;}
 .rn-pill.mult .rn-val{color:#6A1B9A;}
 .rn-desc{font-size:.72rem;color:var(--muted);line-height:1.5;}
-
+/* EQUIVALÊNCIA INFLACIONÁRIA */
+.eq-card{background:linear-gradient(135deg,#F8FAFF 0%,#E8EEF7 100%);
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.25rem 1.5rem;margin-bottom:1rem;}
+.eq-intro{font-size:.85rem;color:var(--navy);margin-bottom:1rem;line-height:1.5;}
+.eq-intro strong{color:var(--green);}
+.eq-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;}
+.eq-cell{background:var(--white);border-radius:8px;padding:10px 8px;text-align:center;
+  border:1px solid var(--border);transition:all .2s;}
+.eq-cell.hl{background:var(--green-bg);border-color:var(--green-mid);
+  box-shadow:0 0 0 2px var(--green-mid);}
+.eq-yr{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700;margin-bottom:2px;}
+.eq-val{font-size:.95rem;font-weight:800;color:var(--navy);}
+.eq-cell.hl .eq-val{color:var(--green);}
+.eq-cell.hl .eq-yr{color:var(--green);}
+.eq-mult{font-size:.62rem;color:var(--muted);margin-top:2px;}
+/* PODER DE COMPRA */
+.pc-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:1.25rem 1.5rem;margin-bottom:1rem;}
+.pc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+.pc-item{padding:12px;border-radius:8px;background:#F8FAFF;border:1px solid var(--border);
+  display:flex;flex-direction:column;gap:6px;}
+.pc-icon{font-size:1.5rem;}
+.pc-name{font-size:.78rem;font-weight:700;color:var(--navy);}
+.pc-row{display:flex;justify-content:space-between;font-size:.72rem;padding:3px 0;
+  border-top:1px dashed var(--border);}
+.pc-row .lbl{color:var(--muted);}
+.pc-row .val{font-weight:700;color:var(--navy);}
+.pc-row.hist .val{color:#7B4F00;}
+.pc-row.now .val{color:var(--green);}
+.pc-row.gy .val{color:var(--amber);}
+.pc-row.fim .val{color:var(--teal);}
+.pc-mult{font-size:.66rem;color:var(--muted);font-style:italic;margin-top:3px;text-align:right;}
+.pc-anchor-info{background:#FFF3E0;border:1px solid #FFCC80;border-radius:6px;padding:8px 12px;
+  font-size:.74rem;color:#7B4F00;margin-bottom:12px;line-height:1.5;}
+.pc-anchor-info strong{color:#E65100;}
 /* CONTROLS */
-.ctrl-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem;}
+.ctrl-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem 1.5rem;}
 .slg label{display:flex;justify-content:space-between;align-items:center;
   font-size:.78rem;font-weight:600;color:var(--navy);margin-bottom:8px;}
 .slg label span{font-size:.95rem;font-weight:800;color:var(--gold);}
@@ -106,7 +156,6 @@ input[type=range]{width:100%;height:5px;accent-color:var(--navy);cursor:pointer;
 .sl-ok{color:var(--green);}
 .sl-warn{color:var(--red);}
 .sl-info{color:var(--muted);}
-
 /* BANNER */
 .banner{border-radius:8px;padding:.9rem 1.25rem;margin-bottom:1rem;
   display:flex;align-items:center;gap:14px;transition:all .3s;}
@@ -119,13 +168,18 @@ input[type=range]{width:100%;height:5px;accent-color:var(--navy);cursor:pointer;
 .banner.warn .banner-txt strong{color:#E65100;}
 .banner.miss .banner-txt strong{color:var(--red);}
 .banner-txt span{font-size:.76rem;color:var(--muted);}
-
 /* CHART */
 .chw{position:relative;width:100%;}
 .leg{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:12px;}
 .leg-i{display:flex;align-items:center;gap:6px;font-size:.76rem;color:var(--muted);}
 .leg-sq{width:14px;height:5px;border-radius:2px;flex-shrink:0;}
-
+.dual-panel{display:flex;flex-direction:column;gap:18px;}
+.panel-ttl{font-size:.78rem;font-weight:700;color:var(--navy);
+  display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.panel-ttl .badge{font-size:.6rem;font-weight:600;padding:2px 8px;border-radius:10px;}
+.panel-ttl .badge.real{background:var(--green-bg);color:var(--green);}
+.panel-ttl .badge.nom{background:var(--teal-bg);color:#006064;}
+.panel-sub{font-size:.7rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
 /* TABS */
 .tabs{display:flex;gap:2px;border-bottom:2px solid var(--border);margin-bottom:1.25rem;flex-wrap:wrap;}
 .tab{padding:9px 15px;font-size:.8rem;font-weight:600;color:var(--muted);cursor:pointer;
@@ -134,7 +188,6 @@ input[type=range]{width:100%;height:5px;accent-color:var(--navy);cursor:pointer;
 .tab.on{color:var(--navy);border-bottom-color:var(--gold);}
 .tp{display:none;}
 .tp.on{display:block;}
-
 /* TIMELINE */
 .tl{display:flex;padding:.75rem 0;overflow-x:auto;}
 .tli{flex:1;min-width:100px;text-align:center;position:relative;}
@@ -148,7 +201,6 @@ input[type=range]{width:100%;height:5px;accent-color:var(--navy);cursor:pointer;
 .tl-dot.green{background:var(--green);}
 .tl-yr{font-size:.78rem;font-weight:700;color:var(--navy);}
 .tl-desc{font-size:.65rem;color:var(--muted);margin-top:2px;line-height:1.4;}
-
 /* TABLE */
 .twrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border);}
 table.dt{width:100%;border-collapse:collapse;font-size:.74rem;}
@@ -169,7 +221,6 @@ table.dt tbody tr.hl2037 td:nth-child(2){color:var(--amber);}
 table.dt td.ir-v{color:var(--red);font-size:.72rem;}
 table.dt td.net-v{color:var(--green);font-weight:700;}
 table.dt td.cr{color:var(--navy2);font-weight:700;}
-
 /* EDITABLE */
 .ap-cell{cursor:pointer;border-radius:4px;padding:3px 6px;transition:background .15s;white-space:nowrap;}
 .ap-cell:hover{background:rgba(201,168,76,.15);}
@@ -182,76 +233,256 @@ table.dt td.cr{color:var(--navy2);font-weight:700;}
 .btn-r{background:none;border:1.5px solid var(--border);border-radius:6px;padding:4px 12px;
   font-size:.72rem;color:var(--muted);cursor:pointer;font-weight:600;transition:all .15s;}
 .btn-r:hover{border-color:var(--gold);color:var(--amber);}
+.btn-action{background:var(--navy);color:#fff;border:none;border-radius:6px;padding:10px 18px;
+  font-size:.85rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .15s;}
+.btn-action:hover{background:var(--navy2);}
+.btn-action.gold{background:var(--gold);color:var(--navy);}
+.btn-action.gold:hover{background:#B89640;}
+.btn-action.green{background:var(--green);}
+.btn-action.green:hover{background:#246928;}
 .conv-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;font-size:.72rem;}
 .conv-pill{padding:3px 10px;border-radius:10px;font-weight:600;}
+
+/* TOOLTIPS — info icon next to labels */
+.ti{display:inline-block;width:14px;height:14px;background:#9CA3AF;color:#fff;
+  border-radius:50%;font-size:.62rem;text-align:center;line-height:14px;
+  cursor:help;margin-left:5px;font-weight:700;position:relative;letter-spacing:0;
+  vertical-align:middle;text-transform:none;}
+.ti:hover{background:var(--navy);}
+.ti::before{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);
+  left:50%;transform:translateX(-50%);background:#1B3A6B;color:#fff;
+  padding:9px 12px;border-radius:6px;font-size:.7rem;font-weight:400;
+  width:280px;line-height:1.5;text-align:left;text-transform:none;
+  letter-spacing:0;opacity:0;pointer-events:none;transition:opacity .15s;
+  z-index:1000;white-space:normal;box-shadow:0 4px 14px rgba(0,0,0,.22);}
+.ti::after{content:'';position:absolute;bottom:100%;left:50%;
+  transform:translateX(-50%);border:5px solid transparent;
+  border-top-color:#1B3A6B;opacity:0;transition:opacity .15s;
+  pointer-events:none;margin-bottom:3px;}
+.ti:hover::before,.ti:hover::after{opacity:1;}
+@media print{.ti{display:none !important;}}
+
+/* MEETING NOTES VIEW */
+.mtg-hdr{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+  color:#fff;border-radius:var(--radius);padding:1.5rem 1.75rem;margin-bottom:1rem;
+  box-shadow:var(--shadow);}
+.mtg-hdr h2{font-size:1.1rem;margin-bottom:1rem;color:var(--gold);
+  letter-spacing:.04em;text-transform:uppercase;font-weight:700;}
+.mtg-hdr-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.mtg-hdr-field{display:flex;flex-direction:column;gap:4px;}
+.mtg-hdr-field label{font-size:.65rem;color:rgba(255,255,255,.7);
+  text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
+.mtg-hdr-field input{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);
+  border-radius:6px;padding:8px 12px;color:#fff;font-size:.85rem;outline:none;
+  transition:all .15s;font-family:inherit;}
+.mtg-hdr-field input:focus{background:rgba(255,255,255,.15);border-color:var(--gold);}
+.mtg-hdr-field input::placeholder{color:rgba(255,255,255,.4);}
+
+.mtg-block{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:1.25rem 1.5rem;margin-bottom:1rem;}
+.mtg-block-hdr{display:flex;align-items:center;gap:10px;margin-bottom:1rem;
+  padding-bottom:10px;border-bottom:2px solid var(--border);}
+.mtg-num{background:var(--navy);color:#fff;width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0;}
+.mtg-num.gold{background:var(--gold);color:var(--navy);}
+.mtg-block h3{font-size:.95rem;color:var(--navy);font-weight:700;}
+.mtg-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.mtg-fields.full{grid-template-columns:1fr;}
+.mtg-field{display:flex;flex-direction:column;gap:4px;}
+.mtg-field.span2{grid-column:1/-1;}
+.mtg-field label{font-size:.7rem;color:var(--navy);font-weight:600;
+  text-transform:uppercase;letter-spacing:.04em;}
+.mtg-field input,.mtg-field textarea,.mtg-field select{
+  border:1px solid var(--border);border-radius:6px;padding:8px 12px;
+  font-size:.82rem;background:#FAFBFE;color:var(--text);outline:none;
+  font-family:inherit;transition:all .15s;}
+.mtg-field input:focus,.mtg-field textarea:focus,.mtg-field select:focus{
+  border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(201,168,76,.15);}
+.mtg-field textarea{min-height:60px;resize:vertical;line-height:1.5;}
+
+.mtg-aloc-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.78rem;}
+.mtg-aloc-table th{background:var(--navy);color:#fff;padding:8px 10px;text-align:left;
+  font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+.mtg-aloc-table td{padding:8px 10px;border-bottom:1px solid var(--border);}
+.mtg-aloc-table td:nth-child(3),.mtg-aloc-table td:nth-child(4){text-align:right;font-weight:700;color:var(--navy);}
+.mtg-aloc-table input{border:1px solid var(--border);border-radius:4px;padding:4px 8px;
+  font-size:.78rem;width:100%;text-align:right;background:#FAFBFE;font-family:inherit;}
+.mtg-aloc-table tr.summary td{background:var(--green-bg);font-weight:700;color:var(--green);}
+.mtg-aloc-table tr.summary td:first-child{color:var(--green);}
+
+.mtg-actions{position:sticky;bottom:0;background:var(--white);box-shadow:0 -4px 12px rgba(0,0,0,.08);
+  border-top:2px solid var(--gold);padding:1rem 1.5rem;margin:1rem -1rem -1.25rem;
+  display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap;align-items:center;}
+.mtg-status{font-size:.72rem;color:var(--muted);margin-right:auto;}
+.mtg-status.saved{color:var(--green);}
+
 footer{background:var(--navy);color:rgba(255,255,255,.4);text-align:center;
   padding:1rem;font-size:.68rem;margin-top:2rem;}
 footer strong{color:var(--gold);}
-@media(max-width:750px){
+
+@media(max-width:850px){
   .kpi-grid,.rnbox{grid-template-columns:repeat(2,minmax(0,1fr));}
-  .ctrl-grid,.prm-grid{grid-template-columns:1fr;}
+  .ctrl-grid,.prm-grid,.pc-grid,.mtg-fields,.mtg-hdr-grid{grid-template-columns:1fr;}
+  .eq-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
   .prm-sec.full{grid-column:1;}
-  .hdr{justify-content:center;text-align:center;}
+  .hdr,.topnav{justify-content:center;text-align:center;}
 }
+
+/* ========== PRINT STYLES — somente vista de Reunião ========== */
+@media print{
+  @page{margin:18mm;size:A4;}
+  body{background:#fff;}
+  .hdr,.topnav,.view-sim,.mtg-actions,footer,
+  .prm-toggle,.prm-panel{display:none !important;}
+  .view-mtg{display:block !important;}
+  .wrap{padding:0;max-width:100%;}
+  .mtg-hdr{background:#1B3A6B !important;color:#fff !important;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .mtg-hdr-field input{background:transparent !important;color:#fff !important;border:none !important;padding:0 !important;}
+  .mtg-block{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid;
+    padding:1rem 1.25rem;margin-bottom:.75rem;}
+  .mtg-field input,.mtg-field textarea,.mtg-field select{
+    background:transparent !important;border:none !important;border-bottom:1px solid #999 !important;
+    border-radius:0 !important;padding:4px 0 !important;}
+  .mtg-field textarea{min-height:auto !important;}
+  .mtg-aloc-table input{background:transparent !important;border:none !important;}
+  /* Cabeçalho impresso */
+  .print-only{display:block !important;text-align:center;margin-bottom:1rem;
+    padding-bottom:1rem;border-bottom:2px solid #C9A84C;}
+  .print-only h1{color:#1B3A6B;font-size:1.3rem;letter-spacing:.05em;}
+  .print-only p{color:#667;font-size:.75rem;margin-top:4px;}
+}
+.print-only{display:none;}
 </style>
 </head>
 <body>
+
 <header class="hdr">
   <div>
-    <div class="hdr-title">PROJETO 2051 · M.A.</div>
-    <div class="hdr-sub">Planejamento Patrimonial · Estratégia NTN-B · Meta R$20MM reais</div>
+    <div class="hdr-title">PLANEJAMENTO PATRIMONIAL</div>
+    <div class="hdr-sub">M.E.A.N. · Estratégia NTN-B · Meta em poder de compra de R$20MM</div>
   </div>
   <div class="hdr-badge">Cordier Investimentos · BTG Pactual</div>
 </header>
+
+<nav class="topnav">
+  <button class="topnav-tab on" onclick="showView(0)"><span class="ico">📊</span> Simulador Patrimonial</button>
+  <button class="topnav-tab" onclick="showView(1)"><span class="ico">📝</span> Anotações da Reunião</button>
+</nav>
+
+<!-- ============================ VIEW 0: SIMULADOR ============================ -->
+<div class="view view-sim on" id="view-0">
 <div class="wrap">
 
-<!-- PREMISSAS -->
 <button class="prm-toggle" onclick="togglePrm(this)">
-  <span class="lbl">📋 Premissas &amp; Parâmetros — clique para expandir</span>
+  <span class="lbl">Premissas, Parâmetros e Tributação — clique para expandir</span>
   <span class="arr">▼</span>
 </button>
 <div class="prm-panel" id="prm-panel">
   <div class="prm-grid">
     <div class="prm-sec">
-      <div class="prm-sec-ttl">👤 Perfil</div>
+      <div class="prm-sec-ttl">Perfil</div>
+      <div class="prm-row"><span class="lbl">Identificação</span><span class="val">M.E.A.N.</span></div>
+      <div class="prm-row"><span class="lbl">Domicílio fiscal</span><span class="val">SP</span></div>
+      <div class="prm-row"><span class="lbl">Atividade</span><span class="val">Sócio em escritório de advocacia</span></div>
       <div class="prm-row"><span class="lbl">Idade em 2026</span><span class="val">40 anos</span></div>
       <div class="prm-row"><span class="lbl">Horizonte do projeto</span><span class="val">25 anos (até 2051)</span></div>
       <div class="prm-row"><span class="lbl">Bônus anual (premissa flat)</span><span class="val g">R$ 1.500.000</span></div>
       <div class="prm-row"><span class="lbl">Renda mensal (custo de vida)</span><span class="val">R$ 50.000</span></div>
       <div class="prm-row"><span class="lbl">Patrimônio imobilizado</span><span class="val">R$ 3.000.000</span></div>
       <div class="prm-row"><span class="lbl">Meta patrimonial (valor real 2026)</span><span class="val g">R$ 20MM</span></div>
-      <div class="prm-row"><span class="lbl">Seguro vida/invalidez (estimativa)</span><span class="val">≈ R$ 35.000/ano</span></div>
-      <div class="prm-note">⚠️ Seguro: estimativa Whole Life (vida + invalidez), homem 40 anos, cobertura R$5M–10M. Referências: Prudential, Icatu, Zurich. Prêmio varia R$25k–60k/ano. Cotação formal necessária.</div>
+      <div class="prm-row"><span class="lbl">Seguro vida/invalidez (estimativa)</span><span class="val">R$ 35.000/ano</span></div>
+      <div class="prm-note">Seguro: estimativa Whole Life, homem 40 anos, cobertura R$5M-10M. Cotação formal necessária.</div>
     </div>
+
     <div class="prm-sec">
-      <div class="prm-sec-ttl">📈 Vértices NTN-B &amp; taxas</div>
-      <div class="prm-row"><span class="lbl">B37 — R$700k (abr/2026)</span><span class="val g">IPCA + 7,00%</span></div>
-      <div class="prm-row"><span class="lbl">B55 — R$185k (out/2026)</span><span class="val">IPCA + 6,87%</span></div>
-      <div class="prm-row"><span class="lbl">B60 — R$619k + aportes (2027+)</span><span class="val g">IPCA + 6,84%</span></div>
-      <div class="prm-row"><span class="lbl">B37 reinvestimento 2037</span><span class="val a">IPCA + 3,50% (mín. histórico)</span></div>
-      <div class="prm-row"><span class="lbl">IPCA premissa (média 20 anos)</span><span class="val dyn" id="prm-ipca">6,15% a.a.</span></div>
-      <div class="prm-row"><span class="lbl">Drag IR sobre cupons</span><span class="val a">0,848% a.a. (já descontado)</span></div>
+      <div class="prm-sec-ttl">NTN-B — vértice e taxas (financeiro)</div>
+      <div class="prm-row"><span class="lbl">Vértice escolhido</span><span class="val g">B60 — IPCA + 6,84%</span></div>
+      <div class="prm-row"><span class="lbl">Posição inicial (compromissadas → B60)</span><span class="val">~R$ 1,50MM</span></div>
+      <div class="prm-row"><span class="lbl">Aportes futuros (bônus + maturities)</span><span class="val">conforme cronograma</span></div>
+      <div class="prm-row"><span class="lbl">IPCA premissa</span><span class="val dyn" id="prm-ipca">6,15% a.a.</span></div>
       <div class="prm-row"><span class="lbl">Taxa reinvest. cupons (curva)</span><span class="val dyn" id="prm-reinv">IPCA+6,50% → 5,50%</span></div>
-      <div class="prm-note blue">📌 B60 é o melhor vértice disponível (IPCA+6,84%) e vence em 2060 — além do horizonte do projeto. Todos os aportes futuros entram aqui. Sem risco de reinvestimento antes da meta.</div>
-      <div class="prm-note" style="margin-top:6px">⚠️ 2037: B37 vence → reinvestido no B60 a IPCA+3,5% (premissa conservadora).</div>
+      <div class="prm-row"><span class="lbl">Custódia BTG (mesa secundária)</span><span class="val g">0% a.a. · isento</span></div>
+      <div class="prm-row"><span class="lbl">Custódia Tesouro Direto (B3)</span><span class="val">0,20% a.a. (exceto Selic ≤ R$10k)</span></div>
+
+      <div class="prm-note green" style="margin-top:8px">
+        <strong>💡 Por que NTN-B para este projeto:</strong> título público federal — <strong>risco soberano</strong>, o menor disponível no mercado brasileiro. Indexado ao IPCA, blinda o poder de compra ao longo das décadas e contrata um <strong>retorno real fixo</strong> no momento da compra. Vencimentos longos (até 2060) compatíveis com horizonte de aposentadoria, IR regressivo (15% após 720 dias) e <strong>custódia gratuita no BTG</strong> via mesa de renda fixa. É a única classe brasileira que combina <em>segurança, proteção inflacionária e prazo adequado</em> em um único produto.
+      </div>
+
+      <div class="prm-note blue" style="margin-top:6px">
+        <strong>📊 Por que B60 (e não outros vértices):</strong> vence em 2060, <strong>além do horizonte de 2051</strong> — elimina o risco de reinvestimento antes da meta. Hoje oferece taxa atrativa de IPCA+6,84%. <strong>Mas o vértice ótimo deve ser revisado mensalmente</strong> conforme as taxas a mercado — em algum momento B45 ou outro vértice longo pode oferecer prêmio melhor. Regra de bolso: priorizar o vértice mais longo cuja taxa esteja dentro de 0,15–0,20 p.p. da melhor disponível na curva.
+      </div>
+
+      <div class="prm-note purple" style="margin-top:6px">
+        <strong>🏦 Custódia BTG vs Tesouro Direto:</strong> em ambos os casos o título é do investidor (registrado no SELIC) — mesmo nível de segurança. <strong>No BTG, a compra na mesa de renda fixa (mercado secundário) isenta a custódia da B3</strong> (0,20% a.a.) — economia material em horizonte de 25 anos. Contrapartida: pode haver spread de compra/venda no secundário; vale comparar com o preço do Tesouro Direto antes de fechar. Algumas corretoras também isentam a taxa de administração para Tesouro Direto.
+      </div>
+
+      <div class="prm-note" style="margin-top:6px">
+        <strong>📈 Volatilidade — efeito apenas contábil:</strong> NTN-Bs no mercado secundário sofrem marcação a mercado e <strong>oscilam diariamente</strong> conforme expectativas de juros, inflação e cenário fiscal. Como a estratégia é <strong>hold to maturity</strong>, essa volatilidade é apenas contábil — a taxa contratada (IPCA+6,84%) é exatamente o que se realiza no vencimento. <em>Não interfere no resultado final do projeto.</em>
+      </div>
+
+      <div class="prm-note" style="margin-top:6px">
+        <strong>📅 Cadência dos aportes:</strong> a posição inicial vem da realocação imediata das compromissadas (~R$1,5–1,86MM). Os aportes futuros entram conforme o cronograma de liquidez — bônus anual em abril e vencimentos de CDB/LCA atuais ao longo de 2026–2027. Não há "compras programadas" mensais — o aporte segue a entrada de caixa.
+      </div>
     </div>
+
     <div class="prm-sec">
-      <div class="prm-sec-ttl">📊 Taxa histórica NTN-B (2010–2024)</div>
+      <div class="prm-sec-ttl tax">Premissas tributárias e contábeis</div>
+      <div class="prm-row"><span class="lbl">IR sobre cupom NTN-B</span><span class="val r">15% (alíquota mínima > 720d)</span></div>
+      <div class="prm-row"><span class="lbl">IRRF retido na fonte</span><span class="val r">15% (no pagamento do cupom)</span></div>
+      <div class="prm-row"><span class="lbl">IOF sobre rendimentos</span><span class="val g">0% (zerado após 30 dias)</span></div>
+      <div class="prm-row"><span class="lbl">Custódia BTG (Private)</span><span class="val g">0% sobre títulos públicos</span></div>
+      <div class="prm-row"><span class="lbl">Marcação contábil</span><span class="val">Na curva (hold to maturity)</span></div>
+      <div class="prm-row"><span class="lbl">Come-cotas</span><span class="val g">Não se aplica (ativo, não fundo)</span></div>
+      <div class="prm-row"><span class="lbl">Drag IR efetivo a.a.</span><span class="val a">0,848% (já descontado nas projeções)</span></div>
+      <div class="prm-row"><span class="lbl">PIS/COFINS</span><span class="val g">0% (pessoa física)</span></div>
+      <div class="prm-row"><span class="lbl">IR venda antes do vencimento</span><span class="val r">15% sobre lucro nominal</span></div>
+      <div class="prm-note purple">A NTN-B é tributada por IRRF de 15% sobre cada cupom (já descontada na fonte pelo Tesouro). O drag efetivo de 0,848% a.a. já está embutido em todas as projeções deste modelo.</div>
+    </div>
+
+    <div class="prm-sec">
+      <div class="prm-sec-ttl tax">Sucessão e tributação patrimonial</div>
+      <div class="prm-row"><span class="lbl">ITCMD São Paulo</span><span class="val g">4% (alíquota plana)</span></div>
+      <div class="prm-row"><span class="lbl">ITCMD Rio de Janeiro (referência)</span><span class="val">4% a 8% (progressivo)</span></div>
+      <div class="prm-row"><span class="lbl">Patrimônio financeiro (meta real)</span><span class="val">R$ 20.000.000</span></div>
+      <div class="prm-row"><span class="lbl">Imóveis (estimativa atual)</span><span class="val">R$ 3.000.000</span></div>
+      <div class="prm-row"><span class="lbl"><strong>Patrimônio total p/ ITCMD</strong></span><span class="val p"><strong>R$ 23.000.000</strong></span></div>
+      <div class="prm-row"><span class="lbl">ITCMD estimado (4% SP)</span><span class="val r"><strong>R$ 920.000</strong></span></div>
+      <div class="prm-row"><span class="lbl">Imposto sobre transmissão</span><span class="val r">Recolhido no inventário</span></div>
+      <div class="prm-row"><span class="lbl">Estratégias de mitigação</span><span class="val">Doação em vida · holding · seguro</span></div>
+      <div class="prm-note purple">Cliente domiciliado em SP — alíquota plana de 4%, mais favorável que RJ. <strong>O ITCMD incide sobre o patrimônio total transmitido (financeiro + imóveis)</strong>: R$23MM × 4% = <strong>R$ 920k</strong> sem planejamento. Doação programada com usufruto vitalício, holding patrimonial e seguro de vida com beneficiários nomeados (passa fora do inventário) podem reduzir significativamente esse montante. Imóveis valorizam tipicamente em linha com IPCA — em valor real, o ITCMD se mantém estável; em nominal, dobra a cada ~12 anos com inflação 6%.</div>
+    </div>
+
+    <div class="prm-sec">
+      <div class="prm-sec-ttl">Taxa histórica NTN-B (2010-2024)</div>
       <div class="prm-row"><span class="lbl">Média 15 anos</span><span class="val g">5,39% a.a.</span></div>
-      <div class="prm-row"><span class="lbl">Mínimo absoluto (2020 · pandemia)</span><span class="val a">3,20% a.a.</span></div>
+      <div class="prm-row"><span class="lbl">Mínimo absoluto (2020 pandemia)</span><span class="val a">3,20% a.a.</span></div>
       <div class="prm-row"><span class="lbl">Taxa atual (2025)</span><span class="val g">7,20% a.a.</span></div>
       <div class="prm-row"><span class="lbl">Selic 2026 / 2027 / 2028+</span><span class="val">12,5% / 10,5% / ≤10,0%</span></div>
-      <div class="prm-row"><span class="lbl">Aporte mínimo calculado</span><span class="val dyn" id="prm-min">—</span></div>
-      <div class="prm-row"><span class="lbl">Free float anual</span><span class="val dyn" id="prm-ff">—</span></div>
+      <div class="prm-row"><span class="lbl">IPCA acumulado 2000-2026 (real)</span><span class="val">≈ 280% (fator 3,8x)</span></div>
     </div>
+
     <div class="prm-sec">
-      <div class="prm-sec-ttl">🎯 Resultados — atualizam com os sliders</div>
+      <div class="prm-sec-ttl">Alocação internacional (US Treasury)</div>
+      <div class="prm-row"><span class="lbl">Câmbio de referência (R$/US$)</span><span class="val g">R$ 5,20 (atualizar conforme dia)</span></div>
+      <div class="prm-row"><span class="lbl">Yield US Treasury (10y)</span><span class="val g">4,00% a.a. (USD nominal)</span></div>
+      <div class="prm-row"><span class="lbl">Inflação USD (premissa)</span><span class="val">3,00% a.a.</span></div>
+      <div class="prm-row"><span class="lbl">Real USD</span><span class="val">≈ 1,00% a.a.</span></div>
+      <div class="prm-row"><span class="lbl">Depreciação BRL/USD (PPP)</span><span class="val">IPCA_BR − IPCA_US ≈ 3,15% a.a.</span></div>
+      <div class="prm-row"><span class="lbl">Retorno em BRL nominal</span><span class="val">≈ 7,15% a.a. (4% USD + 3,15% FX)</span></div>
+      <div class="prm-row"><span class="lbl">Retorno em BRL real (no modelo)</span><span class="val g">IPCA + 1,00% a.a.</span></div>
+      <div class="prm-note blue">Internacional é tratada como vértice adicional do plano: posição inicial em USD Treasury crescendo a IPCA+1% real BRL. Soma ao patrimônio total para fins de meta. Útil para diversificação cambial, educação dos filhos no exterior em 10-20 anos e liquidez para viagens. O equivalente em USD na tabela de Alocação usa o câmbio de referência acima.</div>
+    </div>
+
+    <div class="prm-sec">
+      <div class="prm-sec-ttl">Resultados — atualizam com os sliders</div>
       <div class="prm-row"><span class="lbl">Aporte mínimo anual</span><span class="val dyn" id="prm-res-min">—</span></div>
       <div class="prm-row"><span class="lbl">% do bônus para o projeto</span><span class="val dyn" id="prm-res-pct">—</span></div>
       <div class="prm-row"><span class="lbl">Free float anual</span><span class="val dyn" id="prm-res-ff">—</span></div>
       <div class="prm-row"><span class="lbl">Aposentadoria no ano</span><span class="val dyn" id="prm-res-yr">—</span></div>
       <div class="prm-row"><span class="lbl">Idade na aposentadoria</span><span class="val dyn" id="prm-res-age">—</span></div>
-      <div class="prm-row"><span class="lbl">Valor real na meta (poder compra 2026)</span><span class="val g">R$ 20MM</span></div>
+      <div class="prm-row"><span class="lbl">Valor real na meta</span><span class="val g">R$ 20MM</span></div>
+      <div class="prm-row"><span class="lbl">Valor nominal no ano da meta</span><span class="val dyn" id="prm-res-nom-gy">—</span></div>
       <div class="prm-row"><span class="lbl">Valor nominal em 2051</span><span class="val dyn" id="prm-res-nom">—</span></div>
     </div>
   </div>
@@ -262,7 +493,7 @@ footer strong{color:var(--gold);}
   <div class="rn-pill real">
     <span class="rn-lbl">Valor real (poder de compra 2026)</span>
     <span class="rn-val">R$ 20MM</span>
-    <span class="rn-desc">A meta do projeto. O que R$20MM compram hoje — protegido contra inflação pois o NTN-B é indexado ao IPCA.</span>
+    <span class="rn-desc">A meta do projeto. O que R$20MM compram hoje, protegido contra inflação pois o NTN-B é indexado ao IPCA.</span>
   </div>
   <div class="rn-pill nom">
     <span class="rn-lbl">Valor nominal projetado em 2051</span>
@@ -273,6 +504,43 @@ footer strong{color:var(--gold);}
     <span class="rn-lbl">Multiplicador inflacionário 25 anos</span>
     <span class="rn-val" id="rn-mult">—</span>
     <span class="rn-desc">Com IPCA de <span id="rn-ipca-v">6,15%</span> a.a., cada R$1 real de hoje = R$<span id="rn-mult2">—</span> nominais em 2051.</span>
+  </div>
+</div>
+
+<!-- EQUIVALÊNCIA INFLACIONÁRIA -->
+<div class="eq-card">
+  <div class="card-ttl"><div class="card-ttl-l">Equivalência inflacionária — quanto R$20MM reais valem em valor nominal a cada ano</div></div>
+  <div class="eq-intro">
+    <strong>R$20MM em poder de compra de 2026</strong> equivalem aos seguintes valores nominais (na tela do banco) em cada ano futuro.
+    A célula destacada em verde marca o ano em que o patrimônio cruza a meta no cenário atual.
+  </div>
+  <div class="eq-grid" id="eq-grid"></div>
+</div>
+
+<!-- TRAJETÓRIA USD — Treasury a 4% a.a. -->
+<div class="eq-card" id="usd-trajectory-card" style="display:none;background:linear-gradient(135deg,#F3E5F5 0%,#E1BEE7 100%);border-color:#CE93D8">
+  <div class="card-ttl"><div class="card-ttl-l" style="color:#6A1B9A">Trajetória da posição internacional — USD Treasury rendendo 4% a.a.</div></div>
+  <div class="eq-intro" style="color:#4A148C">
+    <strong>Posição em USD ao longo do tempo</strong> compondo a 4,00% a.a. (USD nominal). Ao lado, o equivalente em <strong>BRL real</strong> (poder de compra de hoje) crescendo a IPCA+1% via PPP. Mostra como a alocação contribui para o patrimônio total ao longo do plano.
+  </div>
+  <div class="eq-grid" id="usd-trajectory-grid"></div>
+  <div class="prm-note purple" style="margin-top:12px;background:rgba(255,255,255,0.6);border-color:#9C27B0">
+    Câmbio de referência <strong>R$ 5,20/USD</strong>. Em 25 anos, a posição inicial dobra mais de 2,5× em USD (4% a.a.) e o valor em BRL real cresce ~28% via PPP — soma ao patrimônio total para fins de meta. Ajuste o slider "Alocação internacional" para ver o efeito em tempo real.
+  </div>
+</div>
+
+<!-- PODER DE COMPRA — com âncora histórica em 2000 -->
+<div class="pc-card">
+  <div class="card-ttl"><div class="card-ttl-l">Poder de compra — ancoragem histórica + projeção futura</div></div>
+  <div class="pc-anchor-info">
+    <strong>Por que isso importa:</strong> os valores projetados para 2051 podem parecer altos, mas refletem o mesmo
+    fenômeno que ocorreu de <strong>2000 até hoje</strong>. A coluna "2000" mostra quanto cada item realmente custava
+    há 26 anos — a inflação observada (≈ 280% acumulado) é coerente com a premissa do modelo daqui para frente.
+  </div>
+  <div class="pc-grid" id="pc-grid"></div>
+  <div class="prm-note blue" style="margin-top:12px">
+    Valores de 2000 são aproximações de mercado. A NTN-B compensa exatamente esse efeito: protege o poder de compra do principal e dos cupons.
+    Imóveis em Vila Olímpia subiram acima da inflação (boom imobiliário 2005-2014) — não é projeção: é histórico.
   </div>
 </div>
 
@@ -301,6 +569,31 @@ footer strong{color:var(--gold);}
       <div class="sl-lim"><span>3%</span><span>8%</span></div>
       <div class="sl-note sl-info">Ponto final da curva de convergência IPCA+</div>
     </div>
+    <div class="slg">
+      <label>Alocação internacional (USD Treasury) <span id="v-intl">R$ 0</span></label>
+      <input type="range" id="sl-intl" min="0" max="3000000" step="50000" value="0">
+      <div class="sl-lim"><span>R$ 0</span><span>R$ 3MM</span></div>
+      <div class="sl-note sl-info" id="intl-note">Posição em US Treasury 4% USD ≈ IPCA+1% real BRL (após PPP)</div>
+    </div>
+  </div>
+  <!-- Stress Test — cenários adversos -->
+  <div style="margin-top:18px;padding-top:14px;border-top:1px dashed var(--border)">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <span style="font-size:1.2rem">⚠️</span>
+      <strong style="font-size:.85rem;color:var(--navy)">Stress test — cenários adversos</strong>
+    </div>
+    <ul style="font-size:.7rem;color:var(--muted);line-height:1.55;margin:0 0 12px 20px;padding:0">
+      <li>Cada botão aplica um cenário pessimista para testar a resiliência do plano contra ventos contrários</li>
+      <li>Útil para responder ao cliente: <em>"e se o IPCA disparar / a Selic desabar / a NTN-B colapsar?"</em> com confiança e dados</li>
+      <li>Compare o ano da meta antes e depois — em geral, o plano é robusto mesmo em cenários adversos (apenas se atrasa)</li>
+      <li>"Restaurar premissas originais" (botão dourado acima) volta ao baseline a qualquer momento</li>
+    </ul>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+      <button class="btn-r" onclick="stressTest('ipca')" title="IPCA dispara para 12% — testa resiliência inflacionária">📉 IPCA dispara para 12%</button>
+      <button class="btn-r" onclick="stressTest('selic')" title="Selic cai para 4% — corrói reinvestimento de cupons">💸 Selic cai para 4%</button>
+      <button class="btn-r" onclick="stressTest('crash')" title="Crash NTN-B: taxas longas voltam a 3% — pior cenário para reinvestimento">📊 Crash NTN-B (taxas 3%)</button>
+      <button class="btn-r" onclick="stressTest('total')" title="Combinação dos três cenários adversos — pior caso plausível">🌪️ Cenário pessimista combinado</button>
+    </div>
   </div>
 </div>
 
@@ -325,7 +618,7 @@ footer strong{color:var(--gold);}
     <div class="kpi-lbl">Aposentadoria no ano</div>
     <div class="kpi-val g" id="kpi-yr">—</div>
     <div class="kpi-sub" id="kpi-yr-sub">—</div>
-    <span class="kpi-tag" id="kpi-yr-tag" style="background:var(--gold-bg);color:var(--amber)">Meta R$20MM real</span>
+    <span class="kpi-tag gold">Meta R$20MM real</span>
   </div>
   <div class="kpi green">
     <div class="kpi-lbl">Valor real na meta (poder compra 2026)</div>
@@ -334,50 +627,88 @@ footer strong{color:var(--gold);}
     <span class="kpi-tag green">Protegido contra inflação</span>
   </div>
   <div class="kpi teal">
-    <div class="kpi-lbl">Valor nominal em 2051 (tela do banco)</div>
-    <div class="kpi-val tl" id="kpi-nom">—</div>
-    <div class="kpi-sub" id="kpi-nom-sub">—</div>
-    <span class="kpi-tag teal">Equivalente nominal</span>
+    <div class="kpi-lbl">Valor nominal no ano da meta</div>
+    <div class="kpi-val tl" id="kpi-nom-gy">—</div>
+    <div class="kpi-sub" id="kpi-nom-gy-sub">—</div>
+    <span class="kpi-tag teal">Tela do banco no ano da aposentadoria</span>
   </div>
 </div>
 
 <!-- CHARTS -->
 <div class="card">
   <div class="tabs">
-    <button class="tab on" onclick="setTab(0)">Evolução patrimonial</button>
-    <button class="tab"    onclick="setTab(1)">Composição por vértice</button>
-    <button class="tab"    onclick="setTab(2)">Cupons &amp; Reinvestimento</button>
+    <button class="tab on" onclick="setTab(0)">📈 Evolução · Real x Nominal</button>
+    <button class="tab"    onclick="setTab(1)">🔬 Detalhes Técnicos</button>
   </div>
-
   <div class="tp on" id="tp0">
-    <div class="leg">
-      <span class="leg-i"><span class="leg-sq" style="background:#1B3A6B"></span>Patrimônio real (poder compra 2026)</span>
-      <span class="leg-i"><span class="leg-sq" style="background:#00838F"></span>Patrimônio nominal (R$ correntes)</span>
-      <span class="leg-i"><span class="leg-sq" style="background:#D32F2F;opacity:.8"></span>Meta R$20MM real</span>
-      <span class="leg-i"><span class="leg-sq" style="background:#1A5E20"></span>Aposentadoria (dinâmico)</span>
-    </div>
-    <div class="chw" style="height:400px">
-      <canvas id="ch0" role="img" aria-label="Evolução patrimonial real e nominal com marcador dinâmico do ano da aposentadoria">Evolução patrimonial</canvas>
+    <div class="dual-panel">
+      <div>
+        <div class="panel-ttl">
+          <span class="badge real">Mundo real</span>
+          Patrimônio em poder de compra de 2026
+        </div>
+        <div class="panel-sub">
+          Aqui a meta é uma linha horizontal constante em R$20MM. O patrimônio real cresce até cruzá-la — esse é o ano da aposentadoria.
+        </div>
+        <div class="leg">
+          <span class="leg-i"><span class="leg-sq" style="background:#1B3A6B"></span>Patrimônio real</span>
+          <span class="leg-i"><span class="leg-sq" style="background:#D32F2F;opacity:.8"></span>Meta real R$20MM (constante)</span>
+          <span class="leg-i"><span class="leg-sq" style="background:rgba(26,94,32,0.25)"></span>Zona de meta atingida</span>
+        </div>
+        <div class="chw" style="height:300px">
+          <canvas id="ch0a" role="img" aria-label="Patrimônio em valor real">Patrimônio real</canvas>
+        </div>
+      </div>
+      <div>
+        <div class="panel-ttl">
+          <span class="badge nom">Mundo nominal</span>
+          Patrimônio em R$ correntes (na tela do banco)
+        </div>
+        <div class="panel-sub">
+          Aqui a meta cresce exponencialmente: R$20MM × (1+IPCA)^t. Representa quanto é preciso ter no extrato para manter o poder de compra de R$20MM de hoje.
+        </div>
+        <div class="leg">
+          <span class="leg-i"><span class="leg-sq" style="background:#00838F"></span>Patrimônio nominal</span>
+          <span class="leg-i"><span class="leg-sq" style="background:#D32F2F;opacity:.8"></span>Meta nominal corrigida</span>
+          <span class="leg-i"><span class="leg-sq" style="background:rgba(26,94,32,0.25)"></span>Zona de meta atingida</span>
+        </div>
+        <div class="chw" style="height:300px">
+          <canvas id="ch0b" role="img" aria-label="Patrimônio em valor nominal">Patrimônio nominal</canvas>
+        </div>
+      </div>
     </div>
   </div>
-
   <div class="tp" id="tp1">
-    <div class="leg">
-      <span class="leg-i"><span class="leg-sq" style="background:#1B3A6B"></span>B37 IPCA+7%</span>
-      <span class="leg-i"><span class="leg-sq" style="background:#2E5192"></span>B55 IPCA+6,87%</span>
-      <span class="leg-i"><span class="leg-sq" style="background:#C9A84C"></span>B60 IPCA+6,84% (+ aportes)</span>
+    <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;font-style:italic">
+      Lâminas técnicas para discussão aprofundada — composição patrimonial por vértice NTN-B e dinâmica anual de cupons líquidos de IR.
+    </p>
+
+    <div class="panel-ttl" style="margin-top:6px">
+      <span class="badge real" style="background:#E8EEF7;color:var(--navy)">Composição</span>
+      Patrimônio por componente ao longo do tempo
     </div>
-    <div class="chw" style="height:400px">
+    <div class="panel-sub">NTN-B (vértice único B60) decomposta em posição inicial vs. aportes acumulados, mais Internacional. Em valor real.</div>
+    <div class="leg">
+      <span class="leg-i"><span class="leg-sq" style="background:#1B3A6B"></span>NTN-B inicial (compromissadas → B60)</span>
+      <span class="leg-i"><span class="leg-sq" style="background:#C9A84C"></span>NTN-B aportes acumulados (bônus + maturities → B60)</span>
+      <span class="leg-i"><span class="leg-sq" style="background:#5E35B1"></span>Internacional IPCA+1% (USD Treasury)</span>
+    </div>
+    <div class="chw" style="height:280px;margin-bottom:24px">
       <canvas id="ch1" role="img" aria-label="Composição patrimonial por vértice NTN-B">Composição</canvas>
     </div>
-  </div>
 
-  <div class="tp" id="tp2">
+    <hr style="border:none;border-top:1px dashed var(--border);margin:18px 0">
+
+    <div class="panel-ttl" style="margin-top:6px">
+      <span class="badge real" style="background:#E8EEF7;color:var(--navy)">Cupons</span>
+      Reinvestimento líquido de IR · ano a ano
+    </div>
+    <div class="panel-sub">Cupom bruto, IR retido (15%) e cupom líquido reinvestido na curva de convergência IPCA+.</div>
     <div class="conv-legend">
-      <span class="conv-pill" style="background:#E3F2FD;color:#0D47A1">2026–28: IPCA+6,50%</span>
-      <span class="conv-pill" style="background:#E8F5E9;color:#1B5E20">2029–32: IPCA+6,00%</span>
-      <span class="conv-pill" style="background:#FFF8E7;color:#7B4F00">2033–37: IPCA+5,75%</span>
-      <span class="conv-pill" style="background:#F3E5F5;color:#4A148C">2038–51: IPCA+5,50%</span>
+      <span class="conv-pill" style="background:#E3F2FD;color:#0D47A1">2026-28: IPCA+6,50%</span>
+      <span class="conv-pill" style="background:#E8F5E9;color:#1B5E20">2029-32: IPCA+6,00%</span>
+      <span class="conv-pill" style="background:#FFF8E7;color:#7B4F00">2033-37: IPCA+5,75%</span>
+      <span class="conv-pill" style="background:#F3E5F5;color:#4A148C">2038-51: IPCA+5,50%</span>
       <span class="conv-pill" style="background:#FCE4EC;color:#880E4F">IR 15% sobre cada cupom</span>
     </div>
     <div class="leg">
@@ -385,7 +716,7 @@ footer strong{color:var(--gold);}
       <span class="leg-i"><span class="leg-sq" style="background:rgba(211,47,47,.8)"></span>IR pago</span>
       <span class="leg-i"><span class="leg-sq" style="background:rgba(26,94,32,.8)"></span>Cupom líquido reinvestido</span>
     </div>
-    <div class="chw" style="height:400px">
+    <div class="chw" style="height:280px">
       <canvas id="ch2" role="img" aria-label="Cupons NTN-B e reinvestimento líquido ano a ano">Cupons</canvas>
     </div>
   </div>
@@ -395,10 +726,11 @@ footer strong{color:var(--gold);}
 <div class="card">
   <div class="card-ttl"><div class="card-ttl-l">Linha do tempo — marcos do projeto</div></div>
   <div class="tl">
-    <div class="tli"><div class="tl-dot">Abr</div><div class="tl-yr">2026</div><div class="tl-desc">R$700k → B37<br>IPCA+7%</div></div>
-    <div class="tli"><div class="tl-dot gold">Out</div><div class="tl-yr">2026</div><div class="tl-desc">R$185k → B55<br>IPCA+6,87%</div></div>
-    <div class="tli"><div class="tl-dot">27</div><div class="tl-yr">2027</div><div class="tl-desc">R$619k → B60<br>+ 1º aporte</div></div>
-    <div class="tli"><div class="tl-dot amber">37</div><div class="tl-yr">2037</div><div class="tl-desc">B37 vence<br>→ reinvest. B60<br>IPCA+3,5%</div></div>
+    <div class="tli"><div class="tl-dot">Mai</div><div class="tl-yr">2026</div><div class="tl-desc">Realocação<br>compromissadas<br>→ B60</div></div>
+    <div class="tli"><div class="tl-dot gold">Out</div><div class="tl-yr">2026</div><div class="tl-desc">LCA Original<br>vence · +R$192k<br>→ B60</div></div>
+    <div class="tli"><div class="tl-dot">Abr</div><div class="tl-yr">2027</div><div class="tl-desc">Bônus + CDB<br>+ LCA Bocom<br>→ B60</div></div>
+    <div class="tli"><div class="tl-dot gold">Out</div><div class="tl-yr">2027</div><div class="tl-desc">LCA BTG vence<br>+R$227k<br>→ B60</div></div>
+    <div class="tli"><div class="tl-dot">28+</div><div class="tl-yr">2028+</div><div class="tl-desc">Bônus anual<br>recorrente<br>→ B60</div></div>
     <div class="tli">
       <div class="tl-dot green" id="tl-dot"><span id="tl-dot-txt">49</span></div>
       <div class="tl-yr" id="tl-yr">2049</div>
@@ -419,18 +751,19 @@ footer strong{color:var(--gold);}
       <thead><tr>
         <th style="text-align:center">Ano</th>
         <th style="text-align:center">Idade</th>
-        <th>B37 Real</th>
-        <th>B55 Real</th>
-        <th>B60 Real</th>
+        <th>NTN-B Inicial</th>
+        <th>NTN-B Aportes</th>
+        <th>Internac. Real</th>
         <th>Aporte Anual ✎</th>
         <th>Total Real</th>
         <th>Total Nominal</th>
+        <th>Meta Nominal</th>
         <th>% Meta</th>
       </tr></thead>
       <tbody id="tbody-pat"></tbody>
     </table>
   </div>
-  <div class="sl-note sl-info" style="margin-top:8px">✎ Clique em qualquer <strong>Aporte Anual</strong> para editar aquele ano específico. Valores personalizados aparecem em dourado. Todos os valores reais em poder de compra de Jan/2026.</div>
+  <div class="sl-note sl-info" style="margin-top:8px">✎ Clique em qualquer <strong>Aporte Anual</strong> para editar aquele ano específico. <strong>Meta Nominal</strong> = R$20MM × (1+IPCA)^t.</div>
 </div>
 
 <!-- TABLE CUPONS -->
@@ -452,24 +785,725 @@ footer strong{color:var(--gold);}
       <tbody id="tbody-cup"></tbody>
     </table>
   </div>
-  <div class="prm-note" style="margin-top:8px">Curva de convergência reflete a média histórica das NTN-Bs longas (5,39% a.a. entre 2010–2024), convergindo do patamar atual (7,20%) para a média estrutural. IR de 15% sobre o cupom bruto (alíquota mínima após 720 dias).</div>
+  <div class="prm-note" style="margin-top:8px">IR de 15% sobre o cupom bruto (alíquota mínima após 720 dias). A coluna "% Patrimônio" refere-se ao saldo NTN-B (sem Internacional), pois apenas as NTN-Bs pagam cupons neste modelo.</div>
 </div>
 
 </div>
+</div>
+
+<!-- ============================ VIEW 1: ANOTAÇÕES DA REUNIÃO ============================ -->
+<div class="view view-mtg" id="view-1">
+<div class="wrap">
+
+<div class="print-only">
+  <h1>PLANEJAMENTO PATRIMONIAL · M.E.A.N.</h1>
+  <p>Documento elaborado sob medida · Horizonte 25 anos · Meta em poder de compra de hoje</p>
+  <p style="margin-top:4px">Cordier Investimentos · Parceiro BTG Pactual</p>
+</div>
+
+<!-- BLOCO 1: PERFIL & GOVERNANÇA -->
+<div class="mtg-block">
+  <div class="mtg-block-hdr"><div class="mtg-num">1</div><h3>Perfil & Governança</h3></div>
+  <div class="mtg-fields">
+    <div class="mtg-field">
+      <label>Perfil de risco (suitability) <span class="ti" data-tip="Define a tolerância a oscilações e qual mistura de ativos é adequada. Atende ao requisito regulatório CVM/Anbima e norteia a alocação por classe.">?</span></label>
+      <select id="m-1-perfil">
+        <option value="">— selecionar —</option>
+        <option>Conservador</option>
+        <option>Moderado</option>
+        <option>Arrojado</option>
+        <option>Agressivo</option>
+      </select>
+    </div>
+    <div class="mtg-field">
+      <label>Horizonte de liquidez 12-24m <span class="ti" data-tip="Quanto patrimônio precisa estar disponível em até 24 meses para emergências e oportunidades — sem mexer no longo prazo. Recomendado: 6-12x despesas mensais.">?</span></label>
+      <input type="text" id="m-1-liquidez" placeholder="R$ ou % do patrimônio">
+    </div>
+    <div class="mtg-field">
+      <label>Estado civil / regime de bens <span class="ti" data-tip="Determina se o cônjuge tem meação automática e impacta sucessão. Comunhão parcial protege patrimônio anterior; comunhão universal expõe tudo. Crítico para holding e testamento.">?</span></label>
+      <input type="text" id="m-1-civil" placeholder="Ex.: casado, comunhão parcial">
+    </div>
+    <div class="mtg-field">
+      <label>Dependentes / herdeiros <span class="ti" data-tip="Define necessidade de seguro de vida, planejamento sucessório (ITCMD), educação programada e estrutura de holding familiar.">?</span></label>
+      <input type="text" id="m-1-dependentes" placeholder="Nº filhos, idades, cônjuge">
+    </div>
+    <div class="mtg-field span2">
+      <label>Estrutura patrimonial existente (holding, offshore, etc.) <span class="ti" data-tip="Holdings, offshores e PJ alteram tributação efetiva. Mapear o que já existe é o primeiro passo para identificar bottlenecks tributários e possíveis otimizações.">?</span></label>
+      <textarea id="m-1-estrutura" placeholder="Descrição de holdings, offshores, sociedades..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- BLOCO 2: PATRIMÔNIO ATUAL -->
+<div class="mtg-block">
+  <div class="mtg-block-hdr"><div class="mtg-num">2</div><h3>Patrimônio Atual Completo</h3></div>
+  <div class="mtg-fields">
+    <div class="mtg-field">
+      <label>Imóveis — valor de mercado <span class="ti" data-tip="Base para cálculo de ITCMD futuro e potencial de alavancagem. Imóvel de uso próprio é despesa indireta; investimento gera caixa via aluguel.">?</span></label>
+      <input type="text" id="m-2-imoveis" placeholder="R$">
+    </div>
+    <div class="mtg-field">
+      <label>Imóveis — alugados ou próprios? <span class="ti" data-tip="Aluguéis geram renda mensal mas têm vacância (~5%) e tributação. Próprios não geram caixa mas suportam padrão de vida sem custo de moradia.">?</span></label>
+      <input type="text" id="m-2-imoveis-tipo" placeholder="Aluguel mensal, vacância">
+    </div>
+    <div class="mtg-field">
+      <label>Participações societárias / empresa própria <span class="ti" data-tip="Empresa própria gera pró-labore (alta tributação) e dividendos (isentos até 2026). Avaliar conversão em holding patrimonial e sucessória.">?</span></label>
+      <input type="text" id="m-2-participacao" placeholder="R$ valor + descrição">
+    </div>
+    <div class="mtg-field">
+      <label>Investimentos fora do BTG <span class="ti" data-tip="Mapeamento global da carteira. Permite arbitragem, ajuste de exposição agregada por classe e identificação de produtos com custo elevado em outras instituições.">?</span></label>
+      <input type="text" id="m-2-fora" placeholder="Bancos, corretoras, valores">
+    </div>
+    <div class="mtg-field">
+      <label>Previdência (PGBL/VGBL) <span class="ti" data-tip="PGBL deduz IR até 12% da renda bruta — vantagem se declaração completa. VGBL para complementação ou simplificada. Beneficiários nomeados evitam inventário.">?</span></label>
+      <input type="text" id="m-2-previdencia" placeholder="Tipo, saldo, contribuição">
+    </div>
+    <div class="mtg-field">
+      <label>Cripto / fundos exclusivos / offshore <span class="ti" data-tip="Exigem declaração específica. Offshore tem novas regras de marcação a mercado vigentes desde 2024 — IR de 15% sobre rendimentos anuais.">?</span></label>
+      <input type="text" id="m-2-alts" placeholder="Descrição e valores">
+    </div>
+    <div class="mtg-field span2">
+      <label>Dívidas e financiamentos ativos <span class="ti" data-tip="Dívidas com juro acima da rentabilidade esperada da carteira destroem patrimônio. Quitação agressiva é prioridade — exceto se taxa subsidiada ou cliente PJ.">?</span></label>
+      <textarea id="m-2-dividas" placeholder="Saldo, taxa, prazo restante..."></textarea>
+    </div>
+  </div>
+
+  <!-- Análise de concentração patrimonial -->
+  <div style="margin-top:14px;padding:14px 16px;background:#FAFBFE;border:1px solid var(--border);border-radius:8px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <span style="font-size:1.2rem">⚖️</span>
+      <strong style="font-size:.85rem;color:var(--navy)">Análise de concentração patrimonial</strong>
+    </div>
+    <ul style="font-size:.74rem;color:var(--muted);line-height:1.6;margin:0 0 12px 20px;padding:0">
+      <li><strong>Risco operacional / institucional:</strong> nenhuma instituição deve concentrar mais de <strong>70% do AUM líquido</strong> — diversificar custódia reduz exposição a falência, intervenção do BC ou problemas operacionais</li>
+      <li><strong>Risco de segmento:</strong> máximo 50% em uma única classe (NTN-B, FIIs, ações) — exceto NTN-B em planos focados em aposentadoria, onde pode ser maior por design</li>
+      <li><strong>Risco geográfico:</strong> meta 10-20% em ativos internacionais (USD/EUR) — protege contra eventos sistêmicos do Brasil (Selic disparando, crise fiscal, depreciação cambial)</li>
+      <li><strong>Sócios de escritórios de advocacia / consultoria:</strong> tipicamente têm exposição operacional ao banco principal (conta PJ + custódia + financiamentos) — a diversificação de custódia adicional é prudente</li>
+      <li>O cálculo abaixo soma as posições em cada instituição e gera o gráfico de % consolidado</li>
+    </ul>
+    <div class="mtg-fields">
+      <div class="mtg-field">
+        <label>Total no BTG Pactual <span class="ti" data-tip="Soma de tudo que está no BTG: NTN-B, dividendos, compromissadas, conta corrente. Inclui valores comprometidos com a carteira atual.">?</span></label>
+        <input type="text" id="m-2-conc-btg" placeholder="R$">
+      </div>
+      <div class="mtg-field">
+        <label>Total em outras instituições <span class="ti" data-tip="Soma de tudo fora do BTG: outros bancos, corretoras, offshore, previdência em outras seguradoras.">?</span></label>
+        <input type="text" id="m-2-conc-outras" placeholder="R$">
+      </div>
+    </div>
+    <div id="concentracao-result" style="margin-top:12px"></div>
+  </div>
+</div>
+
+<!-- BLOCO 3: FLUXO DE CAIXA -->
+<div class="mtg-block">
+  <div class="mtg-block-hdr"><div class="mtg-num">3</div><h3>Fluxo de Caixa</h3></div>
+  <div class="mtg-fields">
+    <div class="mtg-field">
+      <label>Renda mensal líquida <span class="ti" data-tip="Base do cálculo da capacidade de aporte e da cobertura mensal pela renda passiva (dividendos). Integrada ao bloco de Alocação Proposta.">?</span></label>
+      <input type="text" id="m-3-renda" placeholder="R$">
+    </div>
+    <div class="mtg-field">
+      <label>Despesas fixas mensais <span class="ti" data-tip="Define o tamanho da reserva de emergência (6-12x este valor) e a meta mínima de renda passiva no longo prazo. Integrada à cobertura passiva.">?</span></label>
+      <input type="text" id="m-3-despesas" placeholder="R$">
+    </div>
+    <div class="mtg-field">
+      <label>Capacidade real de aporte (mensal) <span class="ti" data-tip="Aportes constantes geram previsibilidade. Use para CDB/LCA com vencimentos escalonados (ladder) ou para reserva de oportunidade.">?</span></label>
+      <input type="text" id="m-3-aporte-m" placeholder="R$">
+    </div>
+    <div class="mtg-field">
+      <label>Capacidade real de aporte (anual) <span class="ti" data-tip="Bônus e PLR vão tipicamente para NTN-B (longo prazo) e Dividendos (renda passiva), preservando a constância dos aportes mensais.">?</span></label>
+      <input type="text" id="m-3-aporte-a" placeholder="R$">
+    </div>
+    <div class="mtg-field">
+      <label>Bônus / PLR / dividendos — periodicidade <span class="ti" data-tip="Determina os pulsos anuais de aporte. Concentração em janelas específicas (jan/mar) exige planejamento de janela de alocação.">?</span></label>
+      <input type="text" id="m-3-bonus" placeholder="Ex.: anual em jan, ~R$1,5MM">
+    </div>
+    <div class="mtg-field">
+      <label>Eventos de liquidez esperados <span class="ti" data-tip="Venda de imóvel, herança ou saída de sociedade alteram materialmente o plano. Precisam ser integrados na linha do tempo antes da modelagem.">?</span></label>
+      <input type="text" id="m-3-eventos" placeholder="Venda imóvel, herança, saída sociedade...">
+    </div>
+  </div>
+</div>
+
+<!-- BLOCO 4: PROTEÇÃO & SEGUROS -->
+<div class="mtg-block">
+  <div class="mtg-block-hdr"><div class="mtg-num">4</div><h3>Proteção & Seguros</h3></div>
+  <div class="mtg-fields">
+    <div class="mtg-field">
+      <label>Seguro de vida — seguradora e cobertura <span class="ti" data-tip="Cobertura para dependentes em caso de falecimento. Whole Life acumula reserva e garante prêmio fixo; Term Life é só proteção (mais barato). Cotar em 3 seguradoras.">?</span></label>
+      <input type="text" id="m-4-vida" placeholder="Ex.: Prudential, R$5MM, Whole Life">
+    </div>
+    <div class="mtg-field">
+      <label>Seguro de invalidez <span class="ti" data-tip="Renda em caso de incapacidade — crucial para profissões dependentes de capacidade técnica/cognitiva contínua. Geralmente paga até 70% da renda mensal.">?</span></label>
+      <input type="text" id="m-4-invalidez" placeholder="Cobertura e custo anual">
+    </div>
+    <div class="mtg-field">
+      <label>Seguro patrimonial (imóveis) <span class="ti" data-tip="Imóveis sem seguro são exposição catastrófica. Custo é baixo relativamente ao valor segurado (~0,2% a.a.). Cobre incêndio, roubo, danos elétricos.">?</span></label>
+      <input type="text" id="m-4-patrim" placeholder="Imóveis cobertos">
+    </div>
+    <div class="mtg-field">
+      <label>Plano de saúde — cobertura mensal <span class="ti" data-tip="Custo cresce ~12% a.a. (acima do IPCA). Modelar como linha crescente no fluxo de longo prazo. Considerar plano coletivo via PJ ou holding para reduzir custo.">?</span></label>
+      <input type="text" id="m-4-saude" placeholder="Ex.: Bradesco Top Nacional R$8k/mês">
+    </div>
+    <div class="mtg-field span2">
+      <label>Lacunas identificadas / recomendações <span class="ti" data-tip="Pontos onde a cobertura atual é insuficiente para o tamanho do patrimônio ou necessidade dos dependentes. Vida ideal: 10-20x renda anual.">?</span></label>
+      <textarea id="m-4-gaps" placeholder="Ex.: cobertura de vida insuficiente para dependentes..."></textarea>
+    </div>
+  </div>
+
+  <!-- Beneficiários nomeados -->
+  <div style="margin-top:18px;padding:14px 16px;background:#FFF8E7;border:1px solid var(--gold);border-radius:8px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <span style="font-size:1.2rem">👨‍👩‍👧</span>
+      <strong style="font-size:.85rem;color:var(--amber)">Beneficiários nomeados — sucessão fora do inventário</strong>
+    </div>
+    <ul style="font-size:.74rem;color:#7B4F00;line-height:1.6;margin:0 0 12px 20px;padding:0">
+      <li><strong>Seguro de vida</strong> com beneficiário nomeado: capital pago em ~30 dias diretamente, fora do inventário (em SP é isento de ITCMD; em alguns estados há ITCMD)</li>
+      <li><strong>PGBL/VGBL</strong> com beneficiário nomeado: idem — passa fora do inventário em SP, com liquidez quase imediata</li>
+      <li><strong>Sem beneficiários nomeados:</strong> o capital cai no espólio, fica preso 1-3 anos no inventário e paga ITCMD normalmente — perda de tempo e liquidez para a família</li>
+      <li><strong>Atualizar a cada evento de vida</strong>: casamento, novo filho, divórcio, óbito de beneficiário, mudança patrimonial relevante</li>
+      <li>Vitória rápida em planejamento sucessório — economia direta de ITCMD + agilidade no acesso à liquidez para os dependentes</li>
+    </ul>
+    <div class="mtg-fields">
+      <div class="mtg-field">
+        <label>Beneficiários do seguro de vida <span class="ti" data-tip="Nome dos beneficiários e %. Exemplo: cônjuge 50% + 2 filhos 25% cada. Atualizar na seguradora a cada evento de vida.">?</span></label>
+        <input type="text" id="m-4-benef-vida" placeholder="Ex.: cônjuge 50% + 2 filhos 25% cada">
+      </div>
+      <div class="mtg-field">
+        <label>Beneficiários do PGBL/VGBL <span class="ti" data-tip="Quem está nomeado nos contratos de previdência. Em SP, esses recursos passam fora do inventário se houver beneficiário nomeado.">?</span></label>
+        <input type="text" id="m-4-benef-prev" placeholder="Quem está nomeado nos contratos">
+      </div>
+    </div>
+  </div>
+
+  <!-- Cobertura Atuarial -->
+  <div style="margin-top:14px;padding:14px 16px;background:#F0F4FA;border:1px solid var(--border);border-radius:8px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <span style="font-size:1.2rem">🛡️</span>
+      <strong style="font-size:.85rem;color:var(--navy)">Cobertura atuarial — análise da adequação do seguro de vida</strong>
+    </div>
+    <ul style="font-size:.74rem;color:var(--muted);line-height:1.6;margin:0 0 12px 20px;padding:0">
+      <li><strong>Regra de bolso:</strong> cobertura ideal de seguro de vida = <strong>10× a 20× renda bruta anual</strong> — garante padrão de vida da família por 10-20 anos sem o segurado</li>
+      <li>Multiplicador <strong>10×</strong>: famílias estabelecidas, dependentes próximos da independência, patrimônio acumulado</li>
+      <li>Multiplicador <strong>15×</strong>: padrão recomendado — equilíbrio entre proteção e custo do prêmio</li>
+      <li>Multiplicador <strong>20×</strong>: famílias jovens com filhos pequenos / dependentes longos / sem patrimônio acumulado</li>
+      <li>Ajusta-se conforme o patrimônio: quanto mais ativo financeiro, menos seguro necessário (o patrimônio é a "reserva técnica")</li>
+      <li>Cálculo automático abaixo a partir da Renda Mensal preenchida no Bloco 3</li>
+    </ul>
+    <div class="mtg-fields">
+      <div class="mtg-field">
+        <label>Cobertura atual contratada <span class="ti" data-tip="Soma das coberturas vigentes em todas as apólices de vida. Compare com o recomendado abaixo.">?</span></label>
+        <input type="text" id="m-4-cobertura-atual" placeholder="R$ (ex.: 5.000.000,00)">
+      </div>
+      <div class="mtg-field">
+        <label>Multiplicador de continuidade (anos) <span class="ti" data-tip="Quantos anos de renda da família a cobertura precisa garantir. 15 é o padrão; 20 para famílias jovens; 10 para famílias estabelecidas.">?</span></label>
+        <select id="m-4-mult-anos">
+          <option value="10">10× (família estabelecida)</option>
+          <option value="15" selected>15× (recomendado padrão)</option>
+          <option value="20">20× (família jovem com filhos pequenos)</option>
+        </select>
+      </div>
+    </div>
+    <div id="atuarial-result" style="margin-top:12px;padding:14px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:.78rem;line-height:1.6">
+      <em style="color:var(--muted);font-size:.74rem">Preencha "Renda mensal líquida" no Bloco 3 para análise atuarial.</em>
+    </div>
+  </div>
+</div>
+
+<!-- BLOCO 5: SUCESSÃO -->
+<div class="mtg-block">
+  <div class="mtg-block-hdr"><div class="mtg-num">5</div><h3>Planejamento Sucessório</h3></div>
+  <div class="mtg-fields">
+    <div class="mtg-field">
+      <label>Tem testamento? <span class="ti" data-tip="Sem testamento, sucessão segue regra legal — pode não refletir vontade. Atualizar a cada evento de vida (casamento, filho, divórcio, mudança patrimonial relevante).">?</span></label>
+      <select id="m-5-testamento">
+        <option value="">— selecionar —</option>
+        <option>Sim, atualizado</option>
+        <option>Sim, desatualizado</option>
+        <option>Não</option>
+      </select>
+    </div>
+    <div class="mtg-field">
+      <label>Doação em vida planejada? <span class="ti" data-tip="Adianta sucessão com economia de ITCMD. Doação com usufruto vitalício preserva controle e renda dos bens. Pode ser fracionada para diluir tributação.">?</span></label>
+      <input type="text" id="m-5-doacao" placeholder="Estrutura ou valor">
+    </div>
+    <div class="mtg-field span2">
+      <label>Estimativa ITCMD sem planejamento (SP 4% plano) <span class="ti" data-tip="SP cobra 4% plano sobre transmissão. Sobre R$20MM = R$800k. Doação programada pode reduzir significativamente a base tributável ao longo dos anos.">?</span></label>
+      <input type="text" id="m-5-itcmd" placeholder="Ex.: ~R$800k em 4% sobre R$20MM (SP)">
+    </div>
+    <div class="mtg-field span2">
+      <label>Estratégias de mitigação propostas (holding, seguro, doação) <span class="ti" data-tip="Holding patrimonial, doação programada com usufruto, seguro de vida cobrindo ITCMD, fundos exclusivos. Combinar 2-3 estratégias maximiza a economia.">?</span></label>
+      <textarea id="m-5-mitigacao" placeholder="Plano de blindagem patrimonial e cronograma..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- BLOCO 6: OBJETIVOS DE MÉDIO PRAZO -->
+<div class="mtg-block">
+  <div class="mtg-block-hdr"><div class="mtg-num">6</div><h3>Objetivos de Médio Prazo</h3></div>
+  <div class="mtg-fields">
+    <div class="mtg-field">
+      <label>Educação dos filhos (faculdade, intercâmbio) <span class="ti" data-tip="Universidade no Brasil R$8-15k/mês; intercâmbio EUA US$60-90k/ano. Planejar em USD se for exterior — alocação internacional reduz risco cambial.">?</span></label>
+      <input type="text" id="m-6-educacao" placeholder="Prazo e valor estimado">
+    </div>
+    <div class="mtg-field">
+      <label>Compra ou reforma de imóvel <span class="ti" data-tip="Trade-off entre patrimônio imobilizado (não rende) e líquido (rende). Avaliar custo de oportunidade vs. preferência por padrão de vida.">?</span></label>
+      <input type="text" id="m-6-imovel" placeholder="Tipo, valor, prazo">
+    </div>
+    <div class="mtg-field">
+      <label>Troca de veículo <span class="ti" data-tip="Despesa recorrente subestimada. Carro novo perde ~25% no primeiro ano. Modelar como ciclo de troca (3-5 anos) com valor residual.">?</span></label>
+      <input type="text" id="m-6-veiculo" placeholder="Frequência e valor">
+    </div>
+    <div class="mtg-field">
+      <label>Viagens / estilo de vida <span class="ti" data-tip="Posições internacionais e cartões com isenção de IOF otimizam câmbio e tributação. Especialmente relevante para quem viaja com frequência.">?</span></label>
+      <input type="text" id="m-6-viagens" placeholder="Recorrentes ou pontuais">
+    </div>
+    <div class="mtg-field span2">
+      <label>Outros objetivos (negócio próprio, expansão, etc.) <span class="ti" data-tip="Negócio próprio, expansão profissional, hobbies caros — qualquer evento que demande capital programado precisa ser sinalizado para entrar no plano.">?</span></label>
+      <textarea id="m-6-outros"></textarea>
+    </div>
+  </div>
+
+  <!-- Calculadora de Educação no Exterior -->
+  <div style="margin-top:14px;padding:14px 16px;background:#F3E5F5;border:1px solid #CE93D8;border-radius:8px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <span style="font-size:1.2rem">🎓</span>
+      <strong style="font-size:.85rem;color:#6A1B9A">Calculadora — educação no exterior (USD)</strong>
+    </div>
+    <ul style="font-size:.74rem;color:#4A148C;line-height:1.6;margin:0 0 12px 20px;padding:0">
+      <li><strong>Faculdades top USA</strong> (Harvard, MIT, Stanford, Wharton): US$ 60-90k/ano · graduação 4 anos = US$ 240-360k</li>
+      <li><strong>Faculdades top Europa</strong> (LSE, Oxford, Cambridge, INSEAD): €30-60k/ano · graduação 3-4 anos</li>
+      <li><strong>Faculdades top Canadá / Austrália</strong>: US$ 40-60k/ano</li>
+      <li><strong>Inflação USD educação</strong>: histórico ~5% a.a. (acima da inflação geral ~3% — educação superior é cara para o sistema americano)</li>
+      <li><strong>Conexão com o plano:</strong> a alocação Internacional (USD Treasury) é o veículo natural para acumular esses recursos sem risco cambial</li>
+      <li>Sócios de escritórios brasileiros tipicamente preparam filhos para top schools — relevante incluir no plano desde cedo</li>
+    </ul>
+    <div class="mtg-fields">
+      <div class="mtg-field">
+        <label>Custo anual atual da faculdade alvo (USD) <span class="ti" data-tip="Custo all-in (mensalidade + moradia + alimentação + livros). MIT 2026 ≈ US$80k. Yale ≈ US$85k. LSE ≈ £40k.">?</span></label>
+        <input type="number" id="m-6-edu-cost" placeholder="80000" min="0">
+      </div>
+      <div class="mtg-field">
+        <label>Anos até início (filho mais novo) <span class="ti" data-tip="Quantos anos faltam até o início da graduação. Se filho tem 5 anos hoje, faltam 13 anos para entrar.">?</span></label>
+        <input type="number" id="m-6-edu-years" placeholder="15" min="0" max="25">
+      </div>
+      <div class="mtg-field">
+        <label>Duração da graduação <span class="ti" data-tip="Bacharelado nos EUA: 4 anos. Bacharelado na Europa: 3 anos. Engenharia/Medicina: 5+ anos.">?</span></label>
+        <select id="m-6-edu-duration">
+          <option value="3">3 anos (Europa típico)</option>
+          <option value="4" selected>4 anos (EUA típico)</option>
+          <option value="5">5 anos (Engenharia/Medicina)</option>
+        </select>
+      </div>
+      <div class="mtg-field">
+        <label>Inflação USD educação anual <span class="ti" data-tip="Educação superior nos EUA inflaciona ~5% a.a. (acima da inflação geral). Para top universities, pode chegar a 6-7%.">?</span></label>
+        <select id="m-6-edu-infl">
+          <option value="3">3% a.a. (IPCA USD geral)</option>
+          <option value="4">4% a.a. (educação geral)</option>
+          <option value="5" selected>5% a.a. (top universities)</option>
+        </select>
+      </div>
+    </div>
+    <div id="edu-result" style="margin-top:12px;padding:14px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:.78rem;line-height:1.6">
+      <em style="color:var(--muted);font-size:.74rem">Preencha os campos acima para ver a projeção do custo total da graduação.</em>
+    </div>
+  </div>
+</div>
+
+<!-- BLOCO 7: TRIBUTÁRIO -->
+<div class="mtg-block">
+  <div class="mtg-block-hdr"><div class="mtg-num">7</div><h3>Situação Tributária</h3></div>
+  <div class="mtg-fields">
+    <div class="mtg-field">
+      <label>Tipo de declaração IR <span class="ti" data-tip="Completa permite deduzir PGBL, despesas médicas e educação. Simplificada usa 20% da renda como dedução fixa (limite ~R$16k anuais).">?</span></label>
+      <select id="m-7-decl">
+        <option value="">— selecionar —</option>
+        <option>Simplificada</option>
+        <option>Completa</option>
+      </select>
+    </div>
+    <div class="mtg-field">
+      <label>PGBL para dedução IR (até 12% renda) <span class="ti" data-tip="Deduz até 12% da renda bruta. Vantagem clara se declaração completa e renda acima do limite de isenção. Tributação é diferida para o resgate.">?</span></label>
+      <input type="text" id="m-7-pgbl" placeholder="Já utiliza? Valor anual">
+    </div>
+    <div class="mtg-field">
+      <label>Ganhos de capital relevantes <span class="ti" data-tip="Imóveis, ações fora B3, fundos. Alíquotas progressivas de 15% a 22,5% conforme valor. Programar realizações em anos de menor renda total.">?</span></label>
+      <input type="text" id="m-7-gck" placeholder="Imóveis, ações, eventos">
+    </div>
+    <div class="mtg-field">
+      <label>Come-cotas / fundos <span class="ti" data-tip="Fundos abertos pagam IR semestralmente sobre o ganho — corrói juros compostos ao longo de décadas. NTN-B direta evita esse efeito.">?</span></label>
+      <input type="text" id="m-7-fundos" placeholder="Exposição em fundos abertos">
+    </div>
+    <div class="mtg-field span2">
+      <label>Oportunidades de otimização identificadas <span class="ti" data-tip="Migração de fundos para títulos isentos (LCA/LCI), uso de PGBL, diferimento estruturado de ganhos, holding patrimonial com tributação distinta.">?</span></label>
+      <textarea id="m-7-otim" placeholder="Migração de fundos para títulos isentos, PGBL, etc..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- CARTEIRA ATUAL — expansível -->
+<button class="prm-toggle" onclick="toggleCarteira(this)" style="background:linear-gradient(135deg,#0D47A1 0%,#1976D2 100%)">
+  <span class="lbl" style="color:#FFE082">📊 Carteira Atual — Posições Vigentes · clique para expandir</span>
+  <span class="arr">▼</span>
+</button>
+<div class="prm-panel" id="carteira-panel">
+  <div class="card">
+    <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;line-height:1.5">
+      Posições atuais para consulta antes de decidir a alocação proposta. Os valores projetados nos vencimentos são estimativas usando as taxas contratadas e premissa de CDI <strong id="cdi-prem-display">12,65% a.a.</strong>
+      <strong>CDB</strong> tem IR de 15% sobre o ganho (alíquota mínima após 720 dias); <strong>LCA</strong> e <strong>compromissadas</strong> são isentas para PF.
+      Use esta visão para decidir <strong>quando cada parcela ficará líquida</strong> e quanto realmente precisa de liquidez imediata.
+    </p>
+    <div id="carteira-table"></div>
+    <div class="prm-note blue" style="margin-top:14px">
+      <strong>Realocação prioritária:</strong> as compromissadas estão em produtos com taxa baixa (70-85% CDI) e liquidez D+0 — esse é o saldo imediatamente disponível para redistribuir entre as 5 frentes do plano patrimonial. CDB e LCAs aguardam vencimento para ficarem líquidos sem perda de rentabilidade.
+    </div>
+  </div>
+</div>
+
+<!-- BLOCO 8: ALOCAÇÃO PROPOSTA — auto-populado -->
+<div class="mtg-block">
+  <div class="mtg-block-hdr"><div class="mtg-num gold">8</div><h3>Alocação Patrimonial Proposta</h3></div>
+  <p style="font-size:.78rem;color:var(--muted);margin-bottom:12px">
+    Estrutura em 5 frentes. <strong>NTN-B</strong> mostra o <strong>aporte anual</strong> (alocação base recorrente, vinda do simulador) — o detalhamento (posição inicial, total comprometido e projeção na meta) aparece na coluna Objetivo.
+    As demais linhas são valores atuais. R$ são <strong>auto-formatados ao sair do campo</strong>; %AUM é calculado automaticamente.
+    <strong>Proteção</strong> é despesa recorrente (não soma ao AUM) — registre custo anual e cobertura contratada.
+  </p>
+  <!-- Orçamento da realocação — vem das compromissadas atuais -->
+  <div style="background:linear-gradient(135deg,#FFF8E7 0%,#FFE082 100%);border:1.5px solid var(--gold);border-radius:8px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <span style="font-size:1.6rem">💰</span>
+    <div style="flex:1;min-width:240px">
+      <div style="font-size:.66rem;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">Disponível para realocação na reunião</div>
+      <div style="font-size:1.4rem;font-weight:800;color:var(--amber)" id="budget-realoc">R$ —</div>
+      <div style="font-size:.7rem;color:#7B4F00;margin-top:4px;line-height:1.4">
+        Saldo atual em compromissadas BTG (CRI 80% CDI · Debênture 85% CDI · CRA 70% CDI) — liquidez D+0.
+        Esse é o <strong>orçamento</strong> a ser distribuído entre as 5 frentes abaixo.
+      </div>
+    </div>
+    <div style="text-align:right;font-size:.72rem;color:var(--muted);min-width:160px">
+      <div>CDB e LCAs: <strong id="budget-bloqueado">R$ —</strong></div>
+      <div style="font-size:.66rem">aguardam vencimento</div>
+      <div style="margin-top:4px">Carteira total: <strong id="budget-total">R$ —</strong></div>
+    </div>
+  </div>
+  <!-- Cronograma de Liquidez — quando cada parcela fica disponível -->
+  <div style="margin-bottom:18px;padding:14px 16px;background:#F8FAFF;border:1px solid var(--border);border-radius:8px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <span style="font-size:1.3rem">📅</span>
+      <strong style="font-size:.85rem;color:var(--navy)">Cronograma de Liquidez — quando cada parcela vira caixa</strong>
+    </div>
+    <p style="font-size:.72rem;color:var(--muted);margin-bottom:14px;line-height:1.5">
+      Mostra <strong>quanto está disponível amanhã</strong> (compromissadas) e quanto entra no caixa em cada vencimento futuro de CDB/LCAs. Ajuda a decidir o ritmo da realocação ao longo do plano sem quebrar produtos antes do tempo.
+    </p>
+    <div id="cronograma-liquidez"></div>
+  </div>
+  <div class="twrap">
+    <table class="mtg-aloc-table">
+      <thead>
+        <tr>
+          <th style="width:18%">Bloco</th>
+          <th style="width:24%">Objetivo / Produto típico</th>
+          <th style="width:18%">Valor (R$)</th>
+          <th style="width:10%">% AUM</th>
+          <th style="width:18%">Cobertura / Equiv. USD</th>
+          <th style="width:12%">Prazo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Reserva de liquidez</strong> <span class="ti" data-tip="Disponibilidade imediata para emergências e oportunidades. Recomendado 6-12x despesas mensais. Produtos com liquidez D+0/D+1 sem perda de rentabilidade.">?</span></td>
+          <td>Emergência + curto prazo · CDB diário, LCI/LCA curto</td>
+          <td><input type="text" id="m-aloc-liq-v" placeholder="R$"></td>
+          <td><input type="text" id="m-aloc-liq-p" readonly style="background:#F8FAFF"></td>
+          <td style="color:#999;text-align:center">—</td>
+          <td><input type="text" id="m-aloc-liq-pz" value="0-12 meses"></td>
+        </tr>
+        <tr>
+          <td><strong>Metas médio prazo</strong> <span class="ti" data-tip="Trocar carro, reformar imóvel, viagem grande, evento familiar. Prazo conhecido permite produtos com vencimento casado e taxa pré-fixada superior.">?</span></td>
+          <td>2-7 anos · CDB, Debêntures, FII</td>
+          <td><input type="text" id="m-aloc-mid-v" placeholder="R$"></td>
+          <td><input type="text" id="m-aloc-mid-p" readonly style="background:#F8FAFF"></td>
+          <td style="color:#999;text-align:center">—</td>
+          <td><input type="text" id="m-aloc-mid-pz" value="2-7 anos"></td>
+        </tr>
+        <tr>
+          <td><strong>Aposentadoria (NTN-B)</strong> <span class="ti" data-tip="Acumulação protegida da inflação. NTN-B paga IPCA + cupom real, mantém poder de compra de longo prazo. Núcleo do plano de independência financeira.">?</span></td>
+          <td id="m-aloc-apos-obj">Longo prazo · NTN-B B37/B55/B60 · posição inicial</td>
+          <td><input type="text" id="m-aloc-apos-v" readonly style="background:#FFF8E7"></td>
+          <td><input type="text" id="m-aloc-apos-p" readonly style="background:#F8FAFF"></td>
+          <td style="color:#999;text-align:center">—</td>
+          <td><input type="text" id="m-aloc-apos-pz" readonly style="background:#FFF8E7"></td>
+        </tr>
+        <tr>
+          <td><strong>Dividendos (renda passiva)</strong> <span class="ti" data-tip="Renda passiva mensal sem volatilidade da bolsa. DY ~11% a.a. líquido de IR. Fundos cetipados negociados em mesa. Preserva o principal mês a mês.">?</span></td>
+          <td>Renda mensal · DY 11% a.a. líq. IR · Fundos cetipados</td>
+          <td><input type="text" id="m-aloc-div-v" placeholder="R$"></td>
+          <td><input type="text" id="m-aloc-div-p" readonly style="background:#F8FAFF"></td>
+          <td style="color:#999;text-align:center">—</td>
+          <td><input type="text" id="m-aloc-div-pz" value="Permanente · liquidez mesa"></td>
+        </tr>
+        <tr>
+          <td><strong>Internacional (USD/EUR)</strong> <span class="ti" data-tip="Diversificação cambial e geográfica. Aproveita momento de dólar baixo, prepara educação dos filhos no exterior em 10-20 anos e gera liquidez para viagens. Hedge contra risco Brasil. Ajuste o valor via slider 'Alocação internacional' no simulador.">?</span></td>
+          <td>Diversificação cambial · Educação no exterior · Viagens</td>
+          <td><input type="text" id="m-aloc-intl-v" readonly style="background:#FFF8E7" placeholder="ajustar via slider"></td>
+          <td><input type="text" id="m-aloc-intl-p" readonly style="background:#F8FAFF"></td>
+          <td style="text-align:center;font-size:.78rem;color:#5E35B1;font-weight:700" id="m-aloc-intl-usd">—</td>
+          <td><input type="text" id="m-aloc-intl-pz" value="Permanente · escalável"></td>
+        </tr>
+        <tr>
+          <td><strong>Proteção e Sucessão</strong><br><span style="font-size:.66rem;color:var(--muted);font-weight:400">(custo anual)</span> <span class="ti" data-tip="Despesa recorrente (não AUM). Seguros, holdings e testamentos protegem patrimônio de riscos catastróficos. Vida ideal: 10-20x renda anual.">?</span></td>
+          <td>Permanente · Seguros, Holding, Testamento</td>
+          <td><input type="text" id="m-aloc-prot-v" placeholder="Prêmio anual"></td>
+          <td style="color:#999;text-align:center;font-size:.7rem">despesa</td>
+          <td><input type="text" id="m-aloc-prot-cob" placeholder="Ex.: R$5MM vida"></td>
+          <td><input type="text" id="m-aloc-prot-pz" value="Permanente"></td>
+        </tr>
+        <tr class="summary">
+          <td><strong>TOTAL AUM</strong></td>
+          <td style="font-size:.7rem;color:var(--green)">Liquidez + Médio prazo + NTN-B + Dividendos + Internacional</td>
+          <td><input type="text" id="m-aloc-total-v" readonly style="background:#E8F5E9;color:var(--green);font-weight:800"></td>
+          <td>100%</td>
+          <td colspan="2" style="font-size:.7rem;color:var(--muted);text-align:left;padding-left:14px">Proteção é despesa recorrente — não entra no AUM</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Renda Mensal estimada da posição em Dividendos + integração com salário -->
+  <div id="div-monthly-card" style="margin-top:14px;padding:16px 20px;background:linear-gradient(135deg,#E8F5E9 0%,#C8E6C9 100%);border:1px solid #A5D6A7;border-radius:10px;">
+    <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap">
+      <div style="font-size:1.6rem">💰</div>
+      <div style="flex:1;min-width:240px">
+        <div style="font-size:.66rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Renda passiva — bloco Dividendos</div>
+        <div style="font-size:1.4rem;font-weight:800;color:var(--green)" id="div-monthly-val">R$ 0/mês</div>
+      </div>
+      <div style="text-align:right;font-size:.72rem;color:var(--muted);min-width:140px">
+        <div>Renda anual: <strong style="color:var(--green)" id="div-annual-val">R$ 0</strong></div>
+        <div>= <strong id="div-annual-pct">11%</strong> da posição (DY)</div>
+      </div>
+    </div>
+    <!-- Integração com salário/despesas do Bloco 3 -->
+    <div id="div-integration" style="margin-top:14px;padding:12px 14px;background:rgba(255,255,255,0.65);border-radius:8px;border:1px dashed #66BB6A;font-size:.78rem;color:var(--navy);line-height:1.7">
+      <em>Preencha "Renda mensal líquida" e "Despesas fixas mensais" no Bloco 3 para ver a integração com o salário e a cobertura mensal das despesas.</em>
+    </div>
+    <div style="font-size:.72rem;color:#2E5192;margin-top:10px;line-height:1.5">
+      <strong>Premissa:</strong> DY 11% a.a. líquido de IR · Fundos cetipados (sem volatilidade da bolsa) · Liquidez condicionada à negociação com mesa de operações.<br>
+      <strong>Lógica:</strong> a renda passiva cobre custo de vida sem desfalque do principal — preserva a reserva de emergência mês a mês.
+    </div>
+  </div>
+
+  <div class="mtg-fields full" style="margin-top:14px">
+    <div class="mtg-field">
+      <label>Decisões e ajustes acordados na reunião</label>
+      <textarea id="m-aloc-obs" placeholder="Ex.: aumentar bloco de aposentadoria de R$Xk para R$Yk; revisar liquidez em 6 meses..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- BLOCO 9: RESUMO DO MODELO NTN-B -->
+<div class="mtg-block">
+  <div class="mtg-block-hdr"><div class="mtg-num gold">9</div><h3>Modelo NTN-B — números atuais do simulador</h3></div>
+  <p style="font-size:.78rem;color:var(--muted);margin-bottom:10px">Auto-puxado da configuração ativa do simulador no momento da exportação.</p>
+  <div class="mtg-fields">
+    <div class="mtg-field">
+      <label>Aporte anual</label>
+      <input type="text" id="m-mod-aporte" readonly style="background:#FFF8E7">
+    </div>
+    <div class="mtg-field">
+      <label>Aporte mínimo calculado</label>
+      <input type="text" id="m-mod-min" readonly style="background:#FFF8E7">
+    </div>
+    <div class="mtg-field">
+      <label>Free float anual</label>
+      <input type="text" id="m-mod-ff" readonly style="background:#FFF8E7">
+    </div>
+    <div class="mtg-field">
+      <label>Ano da aposentadoria · idade</label>
+      <input type="text" id="m-mod-ano" readonly style="background:#FFF8E7">
+    </div>
+    <div class="mtg-field">
+      <label>Saldo nominal no ano da meta</label>
+      <input type="text" id="m-mod-nom-gy" readonly style="background:#FFF8E7">
+    </div>
+    <div class="mtg-field">
+      <label>Saldo nominal em 2051</label>
+      <input type="text" id="m-mod-nom-fim" readonly style="background:#FFF8E7">
+    </div>
+    <div class="mtg-field">
+      <label>IPCA premissa</label>
+      <input type="text" id="m-mod-ipca" readonly style="background:#FFF8E7">
+    </div>
+    <div class="mtg-field">
+      <label>Taxa reinvestimento base</label>
+      <input type="text" id="m-mod-reinv" readonly style="background:#FFF8E7">
+    </div>
+  </div>
+
+  <!-- CENÁRIO ALTERNATIVO — não afeta o simulador da página 1 -->
+  <div style="margin-top:18px;padding:16px 20px;background:linear-gradient(135deg,#FFF8E7 0%,#FFECB3 100%);border:1.5px solid var(--gold);border-radius:10px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <span style="font-size:1.4rem">🔮</span>
+      <strong style="font-size:.95rem;color:var(--amber)">Cenário alternativo · simulação isolada</strong>
+    </div>
+    <p style="font-size:.74rem;color:#7B4F00;margin-bottom:14px;line-height:1.5">
+      Teste aqui um aporte anual diferente em NTN-B e veja o impacto no ano da aposentadoria.
+      <strong>Esta simulação é local — não altera os números da página Simulador.</strong>
+    </p>
+    <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:14px;align-items:end">
+      <div>
+        <label style="font-size:.7rem;font-weight:600;color:var(--amber);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px">Aporte anual alternativo</label>
+        <input type="number" id="wi-aporte" placeholder="Ex.: 500000" style="width:100%;border:1.5px solid var(--gold);border-radius:6px;padding:8px 12px;font-size:.85rem;font-weight:600;color:var(--navy);background:#fff;outline:none" oninput="calcWhatIf()">
+        <div style="font-size:.66rem;color:var(--muted);margin-top:3px">em R$ (líquido de IR — mesma base do simulador)</div>
+      </div>
+      <div style="background:#fff;border-radius:6px;padding:8px 12px;border:1px solid var(--border)">
+        <div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700">Ano da meta</div>
+        <div style="font-size:1.05rem;font-weight:800;color:var(--green)" id="wi-yr">—</div>
+        <div style="font-size:.66rem;color:var(--muted)" id="wi-age">—</div>
+      </div>
+      <div style="background:#fff;border-radius:6px;padding:8px 12px;border:1px solid var(--border)">
+        <div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700">vs. Cenário atual</div>
+        <div style="font-size:1.05rem;font-weight:800" id="wi-delta">—</div>
+        <div style="font-size:.66rem;color:var(--muted)" id="wi-delta-sub">—</div>
+      </div>
+      <div style="background:#fff;border-radius:6px;padding:8px 12px;border:1px solid var(--border)">
+        <div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700">Saldo nominal na meta</div>
+        <div style="font-size:1.05rem;font-weight:800;color:var(--teal)" id="wi-nom">—</div>
+        <div style="font-size:.66rem;color:var(--muted)" id="wi-nom-sub">—</div>
+      </div>
+    </div>
+    <!-- Atalhos rápidos -->
+    <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:.7rem;color:#7B4F00;font-weight:600;margin-right:4px">Atalhos:</span>
+      <button class="btn-r" style="padding:3px 10px;font-size:.7rem" onclick="setWhatIf(500000)">R$ 500k</button>
+      <button class="btn-r" style="padding:3px 10px;font-size:.7rem" onclick="setWhatIf(750000)">R$ 750k</button>
+      <button class="btn-r" style="padding:3px 10px;font-size:.7rem" onclick="setWhatIf(1000000)">R$ 1MM</button>
+      <button class="btn-r" style="padding:3px 10px;font-size:.7rem" onclick="setWhatIf(1500000)">R$ 1,5MM (todo o bônus)</button>
+    </div>
+    <!-- Aplicar cenário ao simulador da página 1 -->
+    <div style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--gold);display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between">
+      <span style="font-size:.74rem;color:#7B4F00;flex:1;min-width:240px">
+        <strong>Gostou do cenário?</strong> Aplique-o ao simulador como nova premissa do plano.
+      </span>
+      <button id="btn-aplicar" class="btn-action gold" onclick="aplicarCenario()" style="white-space:nowrap">
+        ✓ Escolher este cenário · aplicar ao Simulador
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- BLOCO 10: PRÓXIMOS PASSOS -->
+<div class="mtg-block">
+  <div class="mtg-block-hdr"><div class="mtg-num">10</div><h3>Próximos Passos</h3></div>
+
+  <!-- Cronograma operacional 12 meses -->
+  <div style="margin-bottom:18px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <span style="font-size:1.2rem">📋</span>
+      <strong style="font-size:.85rem;color:var(--navy)">Cronograma operacional · próximos 12 meses</strong>
+    </div>
+    <ul style="font-size:.74rem;color:var(--muted);line-height:1.6;margin:0 0 12px 20px;padding:0">
+      <li>Estrutura mensal de execução do plano de mai/2026 a abr/2027 — pré-populada com as ações lógicas baseadas na carteira e cronograma de liquidez</li>
+      <li><strong>Responsáveis:</strong> A = assessor (Edson) · C = cliente · 3p = terceiros (advogado, contador, seguradora)</li>
+      <li><strong>Status:</strong> ⏳ pendente · 🔄 em andamento · ✓ concluído · ⛔ bloqueado</li>
+      <li>Permite acompanhamento entre reuniões e gera documento executivo no PDF da reunião</li>
+      <li>Edite cada linha conforme a discussão — datas e responsáveis flexíveis</li>
+    </ul>
+    <div class="twrap">
+      <table class="dt" style="font-size:.74rem">
+        <thead><tr>
+          <th style="text-align:left;width:90px">Mês</th>
+          <th style="text-align:left">Ação principal</th>
+          <th style="width:80px">Resp.</th>
+          <th style="width:130px">Status</th>
+        </tr></thead>
+        <tbody id="crono-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mtg-fields full">
+    <div class="mtg-field">
+      <label>Documentos a serem enviados pelo cliente <span class="ti" data-tip="Lista de documentos que o cliente precisa enviar para execução do plano: extratos, IR, certidões, comprovantes.">?</span></label>
+      <textarea id="m-10-docs" placeholder="Extrato BTG, IR ano-base, certidões, etc."></textarea>
+    </div>
+    <div class="mtg-field">
+      <label>Próxima reunião agendada <span class="ti" data-tip="Data sugerida para a próxima revisão. Recomendado: trimestral nos primeiros 12 meses, depois semestral.">?</span></label>
+      <input type="text" id="m-10-prox" placeholder="Data e tema">
+    </div>
+  </div>
+</div>
+
+<!-- BLOCO 11: OBSERVAÇÕES -->
+<div class="mtg-block">
+  <div class="mtg-block-hdr"><div class="mtg-num">11</div><h3>Observações Livres</h3></div>
+  <div class="mtg-fields full">
+    <div class="mtg-field">
+      <label>Notas relacionais, contexto, perfil de comunicação do cliente</label>
+      <textarea id="m-11-obs" style="min-height:120px" placeholder="Tom da conversa, sensibilidades, eventos pessoais relevantes..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- AÇÕES -->
+<div class="mtg-actions">
+  <span class="mtg-status" id="m-status">Anotações salvas automaticamente neste navegador</span>
+  <button class="btn-r" onclick="limparAnotacoes()">↺ Limpar tudo</button>
+  <button class="btn-action gold" onclick="exportarPDF()">📄 Exportar PDF da Reunião</button>
+</div>
+
+</div>
+</div>
+
 <footer>
   <strong>Cordier Investimentos · BTG Pactual</strong> · Documento de uso interno · Não compartilhar · 2026
 </footer>
 
 <script>
-const GOAL=20e6,BONUS=1.5e6,B37I=700e3,B55I=185e3,B60I=619e3;
-const B37R=.07,B55R=.0687,B60R=.0684,B37RV=.035;
+const GOAL=20e6,BONUS=1.5e6;
+// MODELO SIMPLIFICADO: vértice único B60 (IPCA+6,84%)
+// - "B37" representa a POSIÇÃO INICIAL NTN-B (compromissadas realocadas hoje)
+// - "B55" = 0 (não usado neste plano)
+// - "B60" representa os APORTES ACUMULADOS (bônus + vencimentos de CDB/LCAs)
+// Cliente não tem NTN-B atual — o saldo inicial vem do redirecionamento das compromissadas BTG.
+const B37I=1504e3; // posição inicial NTN-B (~R$1,5MM de compromissadas direcionadas a B60)
+const B55I=0;
+const B60I=0;
+const B37R=.0684,B55R=.0684,B60R=.0684,B37RV=.0684; // tudo IPCA+6,84% (taxa B60 atual)
 const START=2026,END=2051,AGE0=40;
 const YRS=Array.from({length:END-START+1},(_,i)=>START+i);
 const COUP=0.06,IR_R=0.15,DRAG=COUP*IR_R/(1+0.0615);
-
+const INTL_REAL_BRL=0.01; // US Treasury 4% USD ≈ IPCA+1% real BRL (após PPP)
+const USD_BRL=5.20; // Câmbio de referência R$/US$ — atualizar conforme premissa do dia
 const customAportes={};
+
+// ===== CARTEIRA ATUAL DO CLIENTE (snapshot 03/05/2026) =====
+const HOJE=new Date('2026-05-03');
+const CDI_PREMISSA=0.1265; // ~Selic 12,5%
+const CARTEIRA=[
+  {tipo:'CDB',produto:'CDB',banco:'Banco BMG S.A.',vencimento:'2027-04-09',taxa:'15,33% a.a.',taxaNum:0.1533,taxaTipo:'aa',saldoLiq:181359.85,saldoBruto:185890.72,isencaoIR:false,qtd:160},
+  {tipo:'LCA',produto:'LCA',banco:'Banco Original S/A',vencimento:'2026-10-09',taxa:'91,50% CDI',taxaNum:0.915,taxaTipo:'cdi',saldoLiq:182715.84,saldoBruto:182715.84,isencaoIR:true,qtd:160},
+  {tipo:'LCA',produto:'LCA',banco:'Banco Bocom BBM',vencimento:'2027-04-09',taxa:'12,82% a.a.',taxaNum:0.1282,taxaTipo:'aa',saldoLiq:204343.60,saldoBruto:204343.60,isencaoIR:true,qtd:180},
+  {tipo:'LCA',produto:'LCA',banco:'Banco BTG Pactual',vencimento:'2027-10-11',taxa:'12,34% a.a.',taxaNum:0.1234,taxaTipo:'aa',saldoLiq:192039.13,saldoBruto:192039.13,isencaoIR:true,qtd:340},
+  {tipo:'COMPROMISSADA',produto:'Compromissada',banco:'Banco BTG Pactual',lastro:'CRI',vencimento:null,taxa:'80% CDI',taxaNum:0.80,taxaTipo:'cdi',saldoLiq:1051462.51,saldoBruto:1051462.51,isencaoIR:true},
+  {tipo:'COMPROMISSADA',produto:'Compromissada',banco:'Banco BTG Pactual',lastro:'Debênture',vencimento:null,taxa:'85% CDI',taxaNum:0.85,taxaTipo:'cdi',saldoLiq:502719.02,saldoBruto:503499.96,isencaoIR:true},
+  {tipo:'COMPROMISSADA',produto:'Compromissada',banco:'Banco BTG Pactual',lastro:'CRA',vencimento:null,taxa:'70% CDI',taxaNum:0.70,taxaTipo:'cdi',saldoLiq:301255.92,saldoBruto:301255.92,isencaoIR:true},
+];
+
+// Itens de poder de compra com âncora histórica em 2000
+const POD={
+  cafe:    {icon:'☕',  name:'Cafézinho na padaria',                v2000:1,       v2026:10},
+  civic:   {icon:'🚗',  name:'Honda Civic novo',                    v2000:45000,   v2026:200000},
+  escola:  {icon:'🎓',  name:'Mensalidade escola particular SP',    v2000:1200,    v2026:5000},
+  imovel:  {icon:'🏢',  name:'Apartamento 100m² Vila Olímpia',      v2000:300000,  v2026:2500000},
+  gasolina:{icon:'⛽',  name:'Tanque de gasolina (50L)',            v2000:50,      v2026:325},
+  jantar:  {icon:'🍽️', name:'Jantar para 2 em restaurante bom',   v2000:80,      v2026:400}
+};
+
 const R=v=>'R$ '+Math.round(v).toLocaleString('pt-BR');
-const Rm=v=>'R$ '+(v/1e6).toFixed(1).replace('.',',')+'MM';
+const Rm=v=>{
+  if(v>=1e6)return'R$ '+(v/1e6).toFixed(2).replace('.',',')+'MM';
+  if(v>=1e3)return'R$ '+(v/1e3).toFixed(0)+'k';
+  return'R$ '+Math.round(v).toLocaleString('pt-BR');
+};
 const P=v=>(v*100).toFixed(1)+'%';
 
 function convRate(yr,base){
@@ -478,82 +1512,120 @@ function convRate(yr,base){
   if(yr<=2037)return Math.max(0.0575,base+0.0025);
   return base;
 }
-
-function calcMin(base){
+function calcMin(base,intlInit){
+  intlInit=intlInit||0;
   const b60net=B60R-DRAG;
   const e37=B37I*(1+B37R-DRAG)**11*(1+B37RV-DRAG)**15;
   const e55=B55I*(1+B55R-DRAG)**25;
+  const eIntl=intlInit*Math.pow(1+INTL_REAL_BRL,25); // Intl cresce 25 anos
   const fv=(((1+b60net)**25-1)/b60net)*(1+b60net);
-  return(GOAL-e37-e55)/fv;
+  const ntnbGoal=Math.max(0,GOAL-e37-e55-eIntl);
+  return ntnbGoal/fv;
 }
-
 function getC(yr,def){return customAportes[yr]!==undefined?customAportes[yr]:def;}
 
-function sim(base,ipca,defC){
-  let b37=B37I,b55=B55I,b60=0,cupAccum=0,gy=null;
+function sim(base,ipca,defC,intlInit){
+  let b37=B37I,b55=B55I,b60=0,cupAccum=0;
+  let intl=intlInit||0;
   return YRS.map(yr=>{
     const cr=convRate(yr,base); const crNet=cr-DRAG;
     b37*=(yr<=2036?1+B37R-DRAG:1+B37RV-DRAG);
     b55*=(1+B55R-DRAG);
     const contrib=yr>=2027?getC(yr,defC):0;
     b60=yr==2026?0:yr==2027?(B60I+contrib)*(1+crNet):b60*(1+crNet)+contrib*(1+crNet);
+    if(yr>START)intl*=(1+INTL_REAL_BRL); // Internacional cresce IPCA+1% real BRL
     const ntnbTotal=b37+b55+(yr>2026?b60:0);
     const cupBruto=ntnbTotal*COUP;
     const irPaid=cupBruto*IR_R;
     const cupNet=cupBruto-irPaid;
     cupAccum=(cupAccum+cupNet)*(1+crNet);
-    const tot=b37+b55+(yr>2026?b60:0);
-    const nom=tot*Math.pow(1+ipca,yr-START+1);
-    if(!gy&&tot>=GOAL)gy=yr;
-    return{yr,age:AGE0+(yr-START),b37,b55,b60:yr>2026?b60:0,
-      tot,nom,pct:tot/GOAL,contrib,cupBruto,irPaid,cupNet,cupAccum,cr};
+    const tot=ntnbTotal+intl; // TOTAL REAL = NTN-B + Internacional
+    const factor=Math.pow(1+ipca,yr-START+1);
+    const nom=tot*factor;
+    const metaNom=GOAL*factor;
+    return{yr,age:AGE0+(yr-START),b37,b55,b60:yr>2026?b60:0,intl,ntnbTot:ntnbTotal,
+      tot,nom,metaNom,pct:tot/GOAL,contrib,cupBruto,irPaid,cupNet,cupAccum,cr,factor};
   });
 }
 
-// Charts setup
+// ===== CHARTS =====
 const baseOpts={responsive:true,maintainAspectRatio:false,
-  plugins:{legend:{display:false},
-    tooltip:{callbacks:{
-      title:items=>`${items[0].label}`,
-      label:c=>{
-        if(c.datasetIndex===0)return` Real: ${R(c.raw)}`;
-        if(c.datasetIndex===1)return` Nominal: ${R(c.raw)}`;
-        return` ${c.dataset.label}: ${R(c.raw)}`;
-      }
-    }}
-  },
+  interaction:{mode:'index',intersect:false},
+  plugins:{legend:{display:false}},
   scales:{
     x:{grid:{display:false},ticks:{maxTicksLimit:10,font:{size:10}}},
-    y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:10},callback:v=>'R$'+(v/1e6).toFixed(0)+'MM'}}
+    y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:10}}}
   }
 };
 
-const ch0=new Chart(document.getElementById('ch0'),{
+const ch0a=new Chart(document.getElementById('ch0a'),{
   type:'line',
   data:{labels:YRS.map(String),datasets:[
-    {label:'Real',data:[],borderColor:'#1B3A6B',borderWidth:2.5,fill:false,tension:.35,pointRadius:0,pointHoverRadius:5},
-    {label:'Nominal',data:[],borderColor:'#00838F',borderWidth:1.8,fill:false,tension:.35,pointRadius:0,pointHoverRadius:5,borderDash:[4,3]},
-    {label:'Meta R$20MM',data:[],borderColor:'#D32F2F',borderWidth:1.5,borderDash:[7,4],fill:false,pointRadius:0},
+    {label:'Patrimônio real',data:[],borderColor:'#1B3A6B',borderWidth:2.5,fill:false,tension:.35,pointRadius:0,pointHoverRadius:6,backgroundColor:'rgba(27,58,107,.08)'},
+    {label:'Meta R$20MM',data:[],borderColor:'#D32F2F',borderWidth:1.5,borderDash:[7,4],fill:false,pointRadius:0,pointHoverRadius:0}
   ]},
   options:{
     ...baseOpts,
     plugins:{
       ...baseOpts.plugins,
+      tooltip:{callbacks:{
+        title:items=>{const r=window.simRows?.[items[0].dataIndex];return r?`${r.yr} · ${r.age} anos`:items[0].label;},
+        label:c=>{
+          if(c.datasetIndex===0)return` Patrimônio real: ${Rm(c.raw)}`;
+          if(c.datasetIndex===1)return` Meta real: R$ 20MM`;
+          return'';
+        },
+        afterBody:items=>{
+          const r=window.simRows?.[items[0].dataIndex];
+          if(!r)return'';
+          return[`% da meta: ${P(r.pct)}`,`Equivalente nominal: ${Rm(r.nom)}`];
+        }
+      }},
       annotation:{annotations:{}}
-    }
+    },
+    scales:{...baseOpts.scales,y:{...baseOpts.scales.y,ticks:{...baseOpts.scales.y.ticks,callback:v=>'R$'+(v/1e6).toFixed(0)+'MM'}}}
+  }
+});
+
+const ch0b=new Chart(document.getElementById('ch0b'),{
+  type:'line',
+  data:{labels:YRS.map(String),datasets:[
+    {label:'Patrimônio nominal',data:[],borderColor:'#00838F',borderWidth:2.5,fill:false,tension:.35,pointRadius:0,pointHoverRadius:6,backgroundColor:'rgba(0,131,143,.08)'},
+    {label:'Meta nominal corrigida',data:[],borderColor:'#D32F2F',borderWidth:1.8,borderDash:[7,4],fill:false,pointRadius:0,pointHoverRadius:0}
+  ]},
+  options:{
+    ...baseOpts,
+    plugins:{
+      ...baseOpts.plugins,
+      tooltip:{callbacks:{
+        title:items=>{const r=window.simRows?.[items[0].dataIndex];return r?`${r.yr} · ${r.age} anos`:items[0].label;},
+        label:c=>{
+          if(c.datasetIndex===0)return` Patrimônio nominal: ${Rm(c.raw)}`;
+          if(c.datasetIndex===1)return` Meta nominal: ${Rm(c.raw)}`;
+          return'';
+        },
+        afterBody:items=>{
+          const r=window.simRows?.[items[0].dataIndex];
+          if(!r)return'';
+          return[`Multiplicador inflação: ×${r.factor.toFixed(2)}`,`Equivalente real: ${Rm(r.tot)}`];
+        }
+      }},
+      annotation:{annotations:{}}
+    },
+    scales:{...baseOpts.scales,y:{...baseOpts.scales.y,ticks:{...baseOpts.scales.y.ticks,callback:v=>'R$'+(v/1e6).toFixed(0)+'MM'}}}
   }
 });
 
 const stOpts={...baseOpts,scales:{
   x:{...baseOpts.scales.x,stacked:true},
-  y:{...baseOpts.scales.y,stacked:true}
+  y:{...baseOpts.scales.y,stacked:true,ticks:{...baseOpts.scales.y.ticks,callback:v=>'R$'+(v/1e6).toFixed(0)+'MM'}}
 }};
 const ch1=new Chart(document.getElementById('ch1'),{type:'bar',
   data:{labels:YRS.map(String),datasets:[
-    {label:'B37 IPCA+7%',data:[],backgroundColor:'#1B3A6B'},
-    {label:'B55 IPCA+6,87%',data:[],backgroundColor:'#2E5192'},
-    {label:'B60 IPCA+6,84%',data:[],backgroundColor:'#C9A84C'},
-  ]},options:stOpts});
+    {label:'NTN-B inicial (compromissadas)',data:[],backgroundColor:'#1B3A6B'},
+    {label:'NTN-B aportes (bônus + maturities)',data:[],backgroundColor:'#C9A84C'},
+    {label:'Internacional IPCA+1%',data:[],backgroundColor:'#5E35B1'},
+  ]},options:{...stOpts,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${Rm(c.raw)}`}}}}});
 
 const cupOpts={...baseOpts,scales:{
   x:{...baseOpts.scales.x},
@@ -564,23 +1636,108 @@ const ch2=new Chart(document.getElementById('ch2'),{type:'bar',
     {label:'Cupom bruto',data:[],backgroundColor:'rgba(27,58,107,.7)'},
     {label:'IR pago',data:[],backgroundColor:'rgba(211,47,47,.8)'},
     {label:'Cupom líquido',data:[],backgroundColor:'rgba(26,94,32,.8)'},
-  ]},options:cupOpts});
+  ]},options:{...cupOpts,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${R(c.raw)}`}}}}});
+
+function renderUsdTrajectory(intlBRL){
+  const card=document.getElementById('usd-trajectory-card');
+  const grid=document.getElementById('usd-trajectory-grid');
+  if(!card||!grid)return;
+  if(!intlBRL||intlBRL<=0){card.style.display='none';return;}
+  card.style.display='';
+  const initialUSD=intlBRL/USD_BRL;
+  const yrs=[2026,2030,2035,2040,2045,2050,2051];
+  let html='';
+  yrs.forEach(yr=>{
+    const t=yr-2026;
+    const usdValue=initialUSD*Math.pow(1.04,t);
+    const brlReal=intlBRL*Math.pow(1+INTL_REAL_BRL,t);
+    html+=`<div class="eq-cell" style="border-color:#CE93D8">
+      <div class="eq-yr" style="color:#6A1B9A">${yr}${t===0?' · hoje':''}</div>
+      <div class="eq-val" style="color:#6A1B9A;font-size:.9rem">USD ${Math.round(usdValue).toLocaleString('en-US')}</div>
+      <div class="eq-mult" style="margin-top:3px">≈ ${Rm(brlReal)} real</div>
+    </div>`;
+  });
+  grid.innerHTML=html;
+}
+function renderEquiv(ipca,gy){
+  const yrs=[2030,2035,2040,2045,2050,2051];
+  const grid=document.getElementById('eq-grid');
+  grid.innerHTML='';
+  yrs.forEach(yr=>{
+    const factor=Math.pow(1+ipca,yr-START+1);
+    const val=GOAL*factor;
+    const isHl=gy&&yr===gy;
+    const cell=document.createElement('div');
+    cell.className='eq-cell'+(isHl?' hl':'');
+    cell.innerHTML=`<div class="eq-yr">${yr}${isHl?' · meta':''}</div><div class="eq-val">${Rm(val)}</div><div class="eq-mult">×${factor.toFixed(2)}</div>`;
+    grid.appendChild(cell);
+  });
+  if(gy && !yrs.includes(gy)){
+    const factor=Math.pow(1+ipca,gy-START+1);
+    const val=GOAL*factor;
+    const cell=document.createElement('div');
+    cell.className='eq-cell hl';
+    cell.innerHTML=`<div class="eq-yr">${gy} · meta</div><div class="eq-val">${Rm(val)}</div><div class="eq-mult">×${factor.toFixed(2)}</div>`;
+    grid.appendChild(cell);
+  }
+}
+
+function renderPoderCompra(ipca,gy){
+  const fim=2051;
+  const fGy=gy?Math.pow(1+ipca,gy-START+1):null;
+  const fFim=Math.pow(1+ipca,fim-START+1);
+  const grid=document.getElementById('pc-grid');
+  grid.innerHTML='';
+  Object.values(POD).forEach(it=>{
+    const histMult=(it.v2026/it.v2000).toFixed(1);
+    const div=document.createElement('div');
+    div.className='pc-item';
+    div.innerHTML=`
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="pc-icon">${it.icon}</span>
+        <span class="pc-name">${it.name}</span>
+      </div>
+      <div class="pc-row hist"><span class="lbl">Em 2000 (26 anos atrás)</span><span class="val">${R(it.v2000)}</span></div>
+      <div class="pc-row now"><span class="lbl">Hoje (2026)</span><span class="val">${R(it.v2026)}</span></div>
+      ${gy?`<div class="pc-row gy"><span class="lbl">Em ${gy} (aposentadoria)</span><span class="val">${R(it.v2026*fGy)}</span></div>`:''}
+      <div class="pc-row fim"><span class="lbl">Em ${fim} (fim projeto)</span><span class="val">${R(it.v2026*fFim)}</span></div>
+      <div class="pc-mult">2000→2026 real: ×${histMult} | 2026→2051 projetado: ×${fFim.toFixed(1)}</div>
+    `;
+    grid.appendChild(div);
+  });
+}
 
 function upd(){
   const defC=+document.getElementById('sl-contrib').value;
   const ipca=+document.getElementById('sl-ipca').value/100;
   const base=+document.getElementById('sl-b45r').value/100;
-  const minC=calcMin(base);
-  const rows=sim(base,ipca,defC);
-  const gy=rows.find(r=>r.tot>=GOAL)?.yr||null;
+  const intl=+document.getElementById('sl-intl').value;
+  const minC=calcMin(base,intl);
+  const rows=sim(base,ipca,defC,intl);
+  window.simRows=rows;
+  const goalRow=rows.find(r=>r.tot>=GOAL);
+  const gy=goalRow?goalRow.yr:null;
   const ff=BONUS-minC;
   const mult=Math.pow(1+ipca,25);
-  const nomFinal=rows[rows.length-1].nom;
+  const lastRow=rows[rows.length-1];
+  const nomFinal=lastRow.nom;
+  const nomGy=goalRow?goalRow.nom:null;
 
-  // Slider labels
   document.getElementById('v-contrib').textContent=R(defC);
   document.getElementById('v-ipca').textContent=(+document.getElementById('sl-ipca').value).toFixed(2).replace('.',',')+' %';
   document.getElementById('v-b45r').textContent=(+document.getElementById('sl-b45r').value).toFixed(2).replace('.',',')+' %';
+  document.getElementById('v-intl').textContent=intl>0?Rm(intl):'R$ 0';
+  // Atualiza nota do Intl com poder no longo prazo
+  const intlNote=document.getElementById('intl-note');
+  if(intlNote){
+    if(intl>0){
+      const intlFV=intl*Math.pow(1+INTL_REAL_BRL,25);
+      const pctMeta=(intlFV/GOAL*100).toFixed(1);
+      intlNote.textContent=`US Treasury 4% USD ≈ IPCA+1% real BRL · em 2051 = ${Rm(intlFV)} (${pctMeta}% da meta)`;
+    } else {
+      intlNote.textContent='US Treasury 4% USD ≈ IPCA+1% real BRL (após PPP)';
+    }
+  }
 
   const cn=document.getElementById('contrib-note');
   const d=defC-minC;
@@ -588,34 +1745,29 @@ function upd(){
   else if(d>0){cn.textContent='↑ Acima do mínimo — aposentadoria antecipada';cn.className='sl-note sl-ok';}
   else{cn.textContent='↓ Abaixo do mínimo — meta não atingida em 2051';cn.className='sl-note sl-warn';}
 
-  // KPIs
   document.getElementById('kpi-min').textContent=R(minC);
   document.getElementById('kpi-min-sub').textContent=(minC/BONUS*100).toFixed(1)+'% do bônus anual';
   document.getElementById('kpi-ff').textContent='Free float: '+R(ff)+'/ano';
   document.getElementById('kpi-yr').textContent=gy??'>2051';
   document.getElementById('kpi-yr-sub').textContent=gy?`Aposentadoria com ${AGE0+(gy-START)} anos`:'Meta não atingida em 2051';
-  const nomAtGoal=gy?rows.find(r=>r.yr===gy).nom:null;
-  document.getElementById('kpi-nom').textContent=Rm(nomFinal);
-  document.getElementById('kpi-nom-sub').textContent=`IPCA ${(ipca*100).toFixed(2).replace('.',',')}% × 25 anos = ×${mult.toFixed(1)}`;
+  document.getElementById('kpi-nom-gy').textContent=nomGy?Rm(nomGy):'—';
+  document.getElementById('kpi-nom-gy-sub').textContent=nomGy?`Em ${gy}, R$20MM real = ${Rm(nomGy)} nominal`:'—';
 
-  // Real vs Nominal pills
   document.getElementById('rn-nom').textContent=Rm(nomFinal);
   document.getElementById('rn-mult').textContent='×'+mult.toFixed(2);
   document.getElementById('rn-ipca-v').textContent=(ipca*100).toFixed(2).replace('.',',')+' %';
   document.getElementById('rn-mult2').textContent=mult.toFixed(2);
 
-  // Banner
   const bn=document.getElementById('banner');
   const bi=document.getElementById('banner-icon');
   const bt=document.getElementById('banner-title');
   const bs=document.getElementById('banner-sub');
   if(gy){
     const age=AGE0+(gy-START);
-    const nr=rows.find(r=>r.yr===gy);
     bn.className='banner on';
     bi.textContent='🏆';
-    bt.textContent=`Aposentadoria com ${age} anos — meta R$20MM real atingida em ${gy}`;
-    bs.textContent=`Aporte: ${R(defC)}/ano (${(defC/BONUS*100).toFixed(1)}% do bônus) · Free float: ${R(ff)}/ano · Valor nominal em ${gy}: ${Rm(nr.nom)}`;
+    bt.textContent=`Aposentadoria com ${age} anos em ${gy} — meta R$20MM real atingida`;
+    bs.textContent=`Aporte: ${R(defC)}/ano (${(defC/BONUS*100).toFixed(1)}% do bônus) · Free float: ${R(ff)}/ano · Saldo nominal em ${gy}: ${Rm(nomGy)}`;
   } else {
     bn.className='banner miss';
     bi.textContent='⚠️';
@@ -623,92 +1775,142 @@ function upd(){
     bs.textContent=`Aporte mínimo necessário: ${R(minC)}/ano · Atual: ${R(defC)}/ano · Diferença: ${R(minC-defC)}/ano`;
   }
 
-  // Premissas sync
   document.getElementById('prm-ipca').textContent=(ipca*100).toFixed(2).replace('.',',')+' % a.a.';
   document.getElementById('prm-reinv').textContent=`IPCA+6,50% → IPCA+${(base*100).toFixed(2)}%`;
-  document.getElementById('prm-min').textContent=R(minC);
-  document.getElementById('prm-ff').textContent=R(ff);
   document.getElementById('prm-res-min').textContent=R(minC);
   document.getElementById('prm-res-pct').textContent=(minC/BONUS*100).toFixed(1)+'%';
   document.getElementById('prm-res-ff').textContent=R(ff);
   document.getElementById('prm-res-yr').textContent=gy??'>2051';
   document.getElementById('prm-res-age').textContent=gy?`${AGE0+(gy-START)} anos`:'—';
+  document.getElementById('prm-res-nom-gy').textContent=nomGy?Rm(nomGy):'—';
   document.getElementById('prm-res-nom').textContent=Rm(nomFinal);
 
-  // Timeline
   if(gy){
     const age=AGE0+(gy-START);
     document.getElementById('tl-dot-txt').textContent=String(gy).slice(2);
     document.getElementById('tl-yr').textContent=gy;
-    document.getElementById('tl-age').textContent=`${age} anos`;
     document.getElementById('tl-dot').style.background='#1A5E20';
     document.getElementById('tl-desc').innerHTML=`Aposentadoria<br><span id="tl-age">${age} anos</span>`;
+  } else {
+    document.getElementById('tl-dot-txt').textContent='?';
+    document.getElementById('tl-yr').textContent='>2051';
+    document.getElementById('tl-dot').style.background='#999';
+    document.getElementById('tl-desc').innerHTML=`Meta não<br>atingida`;
   }
 
-  // Chart 0 — evolução + annotation
-  ch0.data.datasets[0].data=rows.map(r=>r.tot);
-  ch0.data.datasets[1].data=rows.map(r=>r.nom);
-  ch0.data.datasets[2].data=rows.map(()=>GOAL);
+  ch0a.data.datasets[0].data=rows.map(r=>r.tot);
+  ch0a.data.datasets[1].data=rows.map(()=>GOAL);
+  const annoA={};
+  if(gy){
+    const age=AGE0+(gy-START);
+    annoA.gyZone={
+      type:'box',xMin:String(gy),xMax:'2051',
+      borderWidth:0,backgroundColor:'rgba(26,94,32,0.10)',
+      drawTime:'beforeDatasetsDraw'
+    };
+    annoA.gyLine={
+      type:'line',scaleID:'x',value:String(gy),
+      borderColor:'#1A5E20',borderWidth:2,borderDash:[6,3],
+      label:{display:true,
+        content:[`Meta atingida · ${gy} · ${age} anos`,`R$20MM em poder de compra`],
+        backgroundColor:'rgba(26,94,32,0.92)',color:'#fff',
+        font:{size:11,weight:'bold'},padding:{x:10,y:6},
+        borderRadius:6,position:'start',yAdjust:-8}
+    };
+    annoA.gyPoint={type:'point',xValue:String(gy),yValue:GOAL,backgroundColor:'#1A5E20',borderColor:'#fff',borderWidth:2,radius:7};
+  }
+  ch0a.options.plugins.annotation.annotations=annoA;
+  ch0a.update('none');
 
-  // Annotation: vertical line at goal year + label
-  const annotations={
-    metaLine:{
-      type:'line',
-      scaleID:'x',
-      value:gy?String(gy):'2051',
-      borderColor:'#1A5E20',
-      borderWidth:2,
-      borderDash:[6,3],
-      display:!!gy,
-      label:{
-        display:!!gy,
-        content:gy?[`Aposentadoria ${AGE0+(gy-START)} anos`,`Real: R$20MM · Nominal: ${Rm(gy?rows.find(r=>r.yr===gy).nom:0)}`]:'',
-        backgroundColor:'rgba(26,94,32,0.88)',
-        color:'#fff',
-        font:{size:11,weight:'bold'},
-        padding:{x:10,y:6},
-        borderRadius:6,
-        position:'start',
-        yAdjust:-10
-      }
-    },
-    nomLine:{
-      type:'line',
-      scaleID:'x',
-      value:'2051',
-      borderColor:'rgba(0,131,143,0.4)',
-      borderWidth:1.5,
-      borderDash:[4,4],
-      display:true,
-      label:{
-        display:true,
-        content:[`Nominal 2051`,Rm(nomFinal)],
-        backgroundColor:'rgba(0,131,143,0.85)',
-        color:'#fff',
-        font:{size:10,weight:'bold'},
-        padding:{x:8,y:5},
-        borderRadius:6,
-        position:'end',
-        yAdjust:10
-      }
-    }
+  ch0b.data.datasets[0].data=rows.map(r=>r.nom);
+  ch0b.data.datasets[1].data=rows.map(r=>r.metaNom);
+  const annoB={};
+  if(gy){
+    const age=AGE0+(gy-START);
+    annoB.gyZone={
+      type:'box',xMin:String(gy),xMax:'2051',
+      borderWidth:0,backgroundColor:'rgba(26,94,32,0.10)',
+      drawTime:'beforeDatasetsDraw'
+    };
+    annoB.gyLine={
+      type:'line',scaleID:'x',value:String(gy),
+      borderColor:'#1A5E20',borderWidth:2,borderDash:[6,3],
+      label:{display:true,
+        content:[`Meta atingida · ${gy} · ${age} anos`,`Saldo nominal: ${Rm(nomGy)}`,`= R$20MM em poder de compra`],
+        backgroundColor:'rgba(26,94,32,0.92)',color:'#fff',
+        font:{size:11,weight:'bold'},padding:{x:10,y:6},
+        borderRadius:6,position:'start',yAdjust:-8}
+    };
+    annoB.gyPoint={type:'point',xValue:String(gy),yValue:nomGy,backgroundColor:'#1A5E20',borderColor:'#fff',borderWidth:2,radius:7};
+  }
+  annoB.fimLine={
+    type:'line',scaleID:'x',value:'2051',
+    borderColor:'rgba(0,131,143,0.4)',borderWidth:1.5,borderDash:[4,4],
+    label:{display:true,content:[`2051 · saldo final`,Rm(nomFinal)],
+      backgroundColor:'rgba(0,131,143,0.85)',color:'#fff',
+      font:{size:10,weight:'bold'},padding:{x:8,y:5},
+      borderRadius:6,position:'end',yAdjust:10}
   };
-  ch0.options.plugins.annotation.annotations=annotations;
-  ch0.update('none');
+  ch0b.options.plugins.annotation.annotations=annoB;
+  ch0b.update('none');
 
-  // Chart 1 — composição
-  ch1.data.datasets[0].data=rows.map(r=>r.b37);
-  ch1.data.datasets[1].data=rows.map(r=>r.b55);
-  ch1.data.datasets[2].data=rows.map(r=>r.b60);
+  ch1.data.datasets[0].data=rows.map(r=>r.b37);  // posição inicial NTN-B
+  ch1.data.datasets[1].data=rows.map(r=>r.b60);  // aportes acumulados
+  ch1.data.datasets[2].data=rows.map(r=>r.intl); // internacional
   ch1.update('none');
 
-  // Chart 2 — cupons
   ch2.data.datasets[0].data=rows.map(r=>r.cupBruto);
   ch2.data.datasets[1].data=rows.map(r=>r.irPaid);
   ch2.data.datasets[2].data=rows.map(r=>r.cupNet);
   ch2.update('none');
 
-  // Table patrimônio
+  renderEquiv(ipca,gy);
+  renderUsdTrajectory(intl);
+  renderPoderCompra(ipca,gy);
+
+  // Recalcula cenário alternativo se houver valor digitado (sem alterar página 1)
+  if(document.getElementById('wi-aporte')&&document.getElementById('wi-aporte').value){
+    calcWhatIf();
+  }
+
+  // Auto-popula bloco 8 (Aposentadoria + Internacional) e bloco 9 (Resumo modelo) na aba Reunião
+  const aposEl=document.getElementById('m-aloc-apos-v');
+  if(aposEl){
+    // Valor da Aposentadoria (NTN-B) = APORTE ANUAL — a alocação base para NTN-B.
+    // Responde ao slider de aporte e ao cenário alternativo aplicado.
+    // O total comprometido e a projeção real na meta vão na coluna Objetivo.
+    const ntnbInicial=B37I+B55I+B60I;
+    const yearsAporte=(gy||2051)-2026;
+    const ntnbCommitted=ntnbInicial+defC*yearsAporte;
+    const ntnbAtGoal=goalRow?goalRow.ntnbTot:(lastRow?lastRow.ntnbTot:0);
+    aposEl.value=fmtBR(defC)+'/ano';
+    // Coluna Objetivo enriquecida — estrutura do compromisso e projeção
+    const objEl=document.getElementById('m-aloc-apos-obj');
+    if(objEl)objEl.innerHTML=`Longo prazo · NTN-B B60 (IPCA+6,84%) · <strong>aporte anual</strong><br>
+      <span style="font-size:.7rem;color:var(--muted);font-weight:400">
+        Inicial <strong>${fmtBR(ntnbInicial)}</strong> (compromissadas) · ${yearsAporte} anos de aporte (bônus + maturities)
+        · total ${fmtBR(ntnbCommitted)}
+        · projetado ${gy||'2051'}: <strong style="color:var(--green)">${Rm(ntnbAtGoal)}</strong>
+      </span>`;
+    document.getElementById('m-aloc-apos-pz').value=gy?`Até ${gy} (${AGE0+(gy-START)} anos)`:`>2051`;
+    // Internacional — SEMPRE sincronizado com o slider (slider é fonte da verdade)
+    const intlEl=document.getElementById('m-aloc-intl-v');
+    if(intlEl)intlEl.value=intl>0?fmtBR(intl):'';
+    // Bloco 9 — Resumo do Modelo NTN-B
+    document.getElementById('m-mod-aporte').value=fmtBR(defC);
+    document.getElementById('m-mod-min').value=fmtBR(minC);
+    document.getElementById('m-mod-ff').value=fmtBR(ff);
+    document.getElementById('m-mod-ano').value=gy?`${gy} · ${AGE0+(gy-START)} anos`:'>2051';
+    document.getElementById('m-mod-nom-gy').value=nomGy?Rm(nomGy):'—';
+    document.getElementById('m-mod-nom-fim').value=Rm(nomFinal);
+    document.getElementById('m-mod-ipca').value=(ipca*100).toFixed(2).replace('.',',')+'%';
+    document.getElementById('m-mod-reinv').value=`IPCA+6,50% → IPCA+${(base*100).toFixed(2)}%`;
+    // Recalcula AUM com novo valor de NTN-B (agora dinâmico) e dividendos
+    recalcAUM();
+    calcDividendos();
+  }
+
+  // Tabela patrimônio
   const tbP=document.getElementById('tbody-pat'); tbP.innerHTML='';
   rows.forEach(row=>{
     if(row.yr<2027)return;
@@ -718,13 +1920,13 @@ function upd(){
     const isC=customAportes[row.yr]!==undefined;
     const aC=document.createElement('td');
     aC.innerHTML=`<span class="ap-cell${isC?' custom':''}" onclick="editAporte(this,${row.yr},${defC})">${R(row.contrib)}<span class="eh">✎</span></span>`;
-    tr.innerHTML=`<td>${row.yr}</td><td>${row.age}</td><td>${R(row.b37)}</td><td>${R(row.b55)}</td><td>${row.b60>0?R(row.b60):'—'}</td>`;
+    tr.innerHTML=`<td>${row.yr}</td><td>${row.age}</td><td>${R(row.b37)}</td><td>${row.b60>0?R(row.b60):'—'}</td><td>${row.intl>0?R(row.intl):'—'}</td>`;
     tr.appendChild(aC);
-    tr.insertAdjacentHTML('beforeend',`<td><strong>${R(row.tot)}</strong></td><td>${R(row.nom)}</td><td>${P(row.pct)}</td>`);
+    tr.insertAdjacentHTML('beforeend',`<td><strong>${R(row.tot)}</strong></td><td>${R(row.nom)}</td><td>${R(row.metaNom)}</td><td>${P(row.pct)}</td>`);
     tbP.appendChild(tr);
   });
 
-  // Table cupons
+  // Tabela cupons
   const tbC=document.getElementById('tbody-cup'); tbC.innerHTML='';
   let totB=0,totI=0,totN=0;
   rows.forEach(row=>{
@@ -734,23 +1936,22 @@ function upd(){
     if(row.yr===gy)tr.className='hl';
     else if(row.yr===2037)tr.className='hl2037';
     tr.innerHTML=`<td>${row.yr}</td><td>${row.age}</td>
-      <td>${R(row.tot)}</td>
+      <td>${R(row.ntnbTot)}</td>
       <td class="cr">${R(row.cupBruto)}</td>
       <td class="ir-v">(${R(row.irPaid)})</td>
       <td class="net-v">${R(row.cupNet)}</td>
       <td class="cr">IPCA+${(row.cr*100).toFixed(2)}%</td>
       <td><strong>${R(row.cupAccum)}</strong></td>
-      <td>${P(row.cupAccum/row.tot)}</td>`;
+      <td>${P(row.cupAccum/row.ntnbTot)}</td>`;
     tbC.appendChild(tr);
   });
   const tf=document.createElement('tr');
   tf.style.cssText='background:#E8EEF7;font-weight:700;';
-  const lastRow=rows[rows.length-1];
-  tf.innerHTML=`<td colspan="3" style="text-align:left;padding:8px 10px;color:var(--navy)">TOTAIS 2027–2051</td>
+  tf.innerHTML=`<td colspan="3" style="text-align:left;padding:8px 10px;color:var(--navy)">TOTAIS 2027-2051</td>
     <td class="cr">${R(totB)}</td><td class="ir-v">(${R(totI)})</td>
     <td class="net-v">${R(totN)}</td><td>—</td>
     <td><strong>${R(lastRow.cupAccum)}</strong></td>
-    <td>${P(lastRow.cupAccum/lastRow.tot)}</td>`;
+    <td>${P(lastRow.cupAccum/lastRow.ntnbTot)}</td>`;
   tbC.appendChild(tf);
 }
 
@@ -770,15 +1971,755 @@ function resetTudo(){
   document.getElementById('sl-contrib').value=361270;
   document.getElementById('sl-ipca').value=6.15;
   document.getElementById('sl-b45r').value=5.5;
+  document.getElementById('sl-intl').value=0;
   Object.keys(customAportes).forEach(k=>delete customAportes[k]);
   upd();
 }
 function setTab(i){
-  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('on',j===i));
-  document.querySelectorAll('.tp').forEach((t,j)=>t.classList.toggle('on',j===i));
+  document.querySelectorAll('#view-0 .tab').forEach((t,j)=>t.classList.toggle('on',j===i));
+  document.querySelectorAll('#view-0 .tp').forEach((t,j)=>t.classList.toggle('on',j===i));
 }
 function togglePrm(btn){btn.classList.toggle('open');document.getElementById('prm-panel').classList.toggle('open');}
-['sl-contrib','sl-ipca','sl-b45r'].forEach(id=>document.getElementById(id).addEventListener('input',upd));
+function showView(i){
+  document.querySelectorAll('.topnav-tab').forEach((t,j)=>t.classList.toggle('on',j===i));
+  document.querySelectorAll('.view').forEach((v,j)=>v.classList.toggle('on',j===i));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===== ANOTAÇÕES — PERSISTÊNCIA EM localStorage =====
+const STORAGE_KEY='cordier_p2051_meeting';
+const FIELDS=[
+  'm-1-perfil','m-1-liquidez','m-1-civil','m-1-dependentes','m-1-estrutura',
+  'm-2-imoveis','m-2-imoveis-tipo','m-2-participacao','m-2-fora','m-2-previdencia','m-2-alts','m-2-dividas',
+  'm-2-conc-btg','m-2-conc-outras', // concentração patrimonial
+  'm-3-renda','m-3-despesas','m-3-aporte-m','m-3-aporte-a','m-3-bonus','m-3-eventos',
+  'm-4-vida','m-4-invalidez','m-4-patrim','m-4-saude','m-4-gaps',
+  'm-4-benef-vida','m-4-benef-prev', // beneficiários nomeados
+  'm-4-cobertura-atual','m-4-mult-anos', // cobertura atuarial
+  'm-5-testamento','m-5-doacao','m-5-itcmd','m-5-mitigacao',
+  'm-6-educacao','m-6-imovel','m-6-veiculo','m-6-viagens','m-6-outros',
+  'm-6-edu-cost','m-6-edu-years','m-6-edu-duration','m-6-edu-infl', // calc educação
+  'm-7-decl','m-7-pgbl','m-7-gck','m-7-fundos','m-7-otim',
+  'm-aloc-liq-v','m-aloc-liq-pz',
+  'm-aloc-mid-v','m-aloc-mid-pz',
+  'm-aloc-div-v','m-aloc-div-pz',
+  'm-aloc-intl-pz', // m-aloc-intl-v é auto-sincronizado do slider sl-intl (não persiste)
+  'm-aloc-prot-v','m-aloc-prot-cob','m-aloc-prot-pz',
+  'm-aloc-obs',
+  'wi-aporte',
+  'm-10-docs','m-10-prox','m-11-obs',
+  // cronograma 12 meses (gerado dinamicamente)
+  'crono-1-acao','crono-1-resp','crono-1-status',
+  'crono-2-acao','crono-2-resp','crono-2-status',
+  'crono-3-acao','crono-3-resp','crono-3-status',
+  'crono-4-acao','crono-4-resp','crono-4-status',
+  'crono-5-acao','crono-5-resp','crono-5-status',
+  'crono-6-acao','crono-6-resp','crono-6-status',
+  'crono-7-acao','crono-7-resp','crono-7-status',
+  'crono-8-acao','crono-8-resp','crono-8-status',
+  'crono-9-acao','crono-9-resp','crono-9-status',
+  'crono-10-acao','crono-10-resp','crono-10-status',
+  'crono-11-acao','crono-11-resp','crono-11-status',
+  'crono-12-acao','crono-12-resp','crono-12-status'
+];
+function salvarAnotacoes(){
+  const data={};
+  FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)data[id]=el.value;});
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+    const s=document.getElementById('m-status');
+    s.textContent='✓ Anotações salvas '+new Date().toLocaleTimeString('pt-BR');
+    s.className='mtg-status saved';
+  }catch(e){console.warn('localStorage indisponível',e);}
+}
+function carregarAnotacoes(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw)return;
+    const data=JSON.parse(raw);
+    FIELDS.forEach(id=>{const el=document.getElementById(id);if(el&&data[id]!==undefined)el.value=data[id];});
+  }catch(e){console.warn('Erro ao carregar',e);}
+}
+function limparAnotacoes(){
+  if(!confirm('Limpar todas as anotações da reunião E voltar às premissas originais do simulador (aporte 361k, IPCA 6,15%, taxa reinv 5,5%, Intl R$0)?\n\nEssa ação não pode ser desfeita.'))return;
+  try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
+  // Limpa todos os campos da reunião
+  FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  // Reseta sliders do simulador para premissas originais
+  document.getElementById('sl-contrib').value=361270;
+  document.getElementById('sl-ipca').value=6.15;
+  document.getElementById('sl-b45r').value=5.5;
+  document.getElementById('sl-intl').value=0;
+  // Limpa aportes customizados ano-a-ano
+  Object.keys(customAportes).forEach(k=>delete customAportes[k]);
+  // Limpa também o cenário alternativo
+  const wi=document.getElementById('wi-aporte');
+  if(wi)wi.value='';
+  // Recalcula tudo
+  upd();
+  calcDividendos();
+  calcWhatIf();
+  recalcAUM();
+  // Feedback visual
+  const s=document.getElementById('m-status');
+  if(s){s.textContent='✓ Tudo limpo · premissas originais restauradas';s.className='mtg-status saved';}
+}
+function exportarPDF(){
+  // Garante que campos auto-sincronizados estão atualizados
+  upd();
+  // Aciona o diálogo de impressão (usuário escolhe Salvar como PDF)
+  setTimeout(()=>window.print(),100);
+}
+
+// ===== UTILS — formatação e parsing R$ xx.xxx,xx =====
+function parseCurrency(str){
+  if(str==null||str==='')return 0;
+  const s=String(str).replace(/[R$\s]/g,'').trim();
+  if(!s)return 0;
+  // Remove pontos de milhar e troca vírgula decimal por ponto
+  const cleaned=s.replace(/\./g,'').replace(',','.').replace(/[^\d.\-]/g,'');
+  return parseFloat(cleaned)||0;
+}
+function fmtBR(v){
+  if(v==null||isNaN(v))return '';
+  return 'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function formatInputCurrency(el){
+  const v=parseCurrency(el.value);
+  el.value=v>0?fmtBR(v):'';
+}
+
+// ===== AUM AUTO-SUM =====
+const AUM_FIELDS=['m-aloc-liq-v','m-aloc-mid-v','m-aloc-apos-v','m-aloc-div-v','m-aloc-intl-v'];
+function recalcAUM(){
+  let total=0;
+  AUM_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)total+=parseCurrency(el.value);});
+  const totalEl=document.getElementById('m-aloc-total-v');
+  if(totalEl)totalEl.value=total>0?fmtBR(total):'';
+  // Atualiza %AUM de cada bloco
+  AUM_FIELDS.forEach(id=>{
+    const el=document.getElementById(id);
+    const pctEl=document.getElementById(id.replace('-v','-p'));
+    if(!el||!pctEl)return;
+    const v=parseCurrency(el.value);
+    pctEl.value=(total>0&&v>0)?(v/total*100).toFixed(1).replace('.',',')+'%':'';
+  });
+  updateIntlUsd();
+}
+
+// ===== COBERTURA ATUARIAL — Bloco 4 =====
+function calcAtuarial(){
+  const out=document.getElementById('atuarial-result');
+  if(!out)return;
+  const renda=parseCurrency((document.getElementById('m-3-renda')||{}).value);
+  if(renda<=0){
+    out.innerHTML='<em style="color:var(--muted);font-size:.74rem">Preencha "Renda mensal líquida" no Bloco 3 para análise atuarial.</em>';
+    return;
+  }
+  const mult=+(document.getElementById('m-4-mult-anos')||{value:15}).value;
+  const cobAtual=parseCurrency((document.getElementById('m-4-cobertura-atual')||{}).value);
+  const rendaAnual=renda*12;
+  const recomendado=rendaAnual*mult;
+  const min=rendaAnual*10;
+  const max=rendaAnual*20;
+  let html=`<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px">
+    <div><span style="color:var(--muted);font-size:.7rem">Renda anual líquida</span><div style="font-weight:700;color:var(--navy)">${fmtBR(rendaAnual)}</div></div>
+    <div><span style="color:var(--muted);font-size:.7rem">Cobertura recomendada (${mult}×)</span><div style="font-weight:700;color:var(--green);font-size:.95rem">${fmtBR(recomendado)}</div></div>
+    <div><span style="color:var(--muted);font-size:.7rem">Faixa atuarial saudável</span><div style="font-size:.78rem;color:var(--navy)">${fmtBR(min)} a ${fmtBR(max)}</div></div>
+    <div><span style="color:var(--muted);font-size:.7rem">Cobertura atual</span><div style="font-weight:700;color:var(--navy)">${cobAtual>0?fmtBR(cobAtual):'—'}</div></div>
+  </div>`;
+  if(cobAtual>0){
+    const ratio=cobAtual/recomendado;
+    const gap=cobAtual-recomendado;
+    let cor,ico,msg;
+    if(ratio>=0.95){
+      cor='var(--green)';ico='✓';msg=`Cobertura adequada — ${(ratio*100).toFixed(0)}% do recomendado.`;
+    } else if(ratio>=0.65){
+      cor='var(--amber)';ico='⚠️';msg=`Cobertura insuficiente — ${(ratio*100).toFixed(0)}% do recomendado. <strong>Gap: ${fmtBR(Math.abs(gap))}</strong>. Considere aumentar a cobertura ou contratar apólice complementar.`;
+    } else {
+      cor='var(--red)';ico='🚨';msg=`Cobertura criticamente baixa — ${(ratio*100).toFixed(0)}% do recomendado. <strong>Gap: ${fmtBR(Math.abs(gap))}</strong>. Família financeiramente exposta — priorizar aumento de cobertura imediatamente.`;
+    }
+    html+=`<div style="padding:10px 12px;background:rgba(0,0,0,0.03);border-left:3px solid ${cor};border-radius:4px;color:${cor};font-weight:600">${ico} ${msg}</div>`;
+  } else {
+    html+=`<div style="font-size:.72rem;color:var(--muted);font-style:italic">Preencha "Cobertura atual contratada" acima para ver a análise de gap.</div>`;
+  }
+  out.innerHTML=html;
+}
+
+// ===== CALCULADORA EDUCAÇÃO USD — Bloco 6 =====
+function calcEducacao(){
+  const out=document.getElementById('edu-result');
+  if(!out)return;
+  const cost=+(document.getElementById('m-6-edu-cost')||{value:0}).value;
+  const years=+(document.getElementById('m-6-edu-years')||{value:0}).value;
+  const dur=+(document.getElementById('m-6-edu-duration')||{value:4}).value;
+  const infl=+(document.getElementById('m-6-edu-infl')||{value:5}).value/100;
+  if(!cost||!years){
+    out.innerHTML='<em style="color:var(--muted);font-size:.74rem">Preencha custo anual e anos até início para ver a projeção.</em>';
+    return;
+  }
+  const futCostUSD=cost*Math.pow(1+infl,years);
+  const totalUSD=futCostUSD*dur;
+  const totalBRL=totalUSD*USD_BRL;
+  // Necessário aportar hoje em USD Treasury (4% a.a.) para chegar a essa quantia
+  const aporteUnico=totalUSD/Math.pow(1.04,years);
+  const aporteUnicoBRL=aporteUnico*USD_BRL;
+  out.innerHTML=`<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px">
+    <div><span style="color:var(--muted);font-size:.7rem">Custo anual em ${2026+years} (USD)</span><div style="font-weight:700;color:#6A1B9A;font-size:.95rem">USD ${Math.round(futCostUSD).toLocaleString('en-US')}</div></div>
+    <div><span style="color:var(--muted);font-size:.7rem">Custo total da graduação (${dur} anos)</span><div style="font-weight:700;color:#6A1B9A;font-size:1.05rem">USD ${Math.round(totalUSD).toLocaleString('en-US')}</div></div>
+    <div><span style="color:var(--muted);font-size:.7rem">Equivalente em R$ ao câmbio atual</span><div style="font-weight:700;color:var(--navy);font-size:.95rem">${fmtBR(totalBRL)}</div></div>
+    <div><span style="color:var(--muted);font-size:.7rem">Aporte único hoje (USD Treasury 4%)</span><div style="font-weight:700;color:var(--green);font-size:.95rem">USD ${Math.round(aporteUnico).toLocaleString('en-US')} ≈ ${fmtBR(aporteUnicoBRL)}</div></div>
+  </div>
+  <div style="padding:10px 12px;background:rgba(106,27,154,0.08);border-left:3px solid #6A1B9A;border-radius:4px;font-size:.72rem;color:#4A148C;line-height:1.5">
+    <strong>📌 Conexão com o plano:</strong> alocar <strong>${fmtBR(aporteUnicoBRL)}</strong> hoje em USD Treasury (equivalente a USD ${Math.round(aporteUnico).toLocaleString('en-US')}) cobre integralmente a graduação no exterior em ${years} anos, mesmo com inflação USD educacional de ${(infl*100).toFixed(0)}% a.a. Aumente o slider "Alocação internacional" no simulador para visualizar o impacto.
+  </div>`;
+}
+
+// ===== ANÁLISE DE CONCENTRAÇÃO — Bloco 2 =====
+function calcConcentracao(){
+  const out=document.getElementById('concentracao-result');
+  if(!out)return;
+  const btg=parseCurrency((document.getElementById('m-2-conc-btg')||{}).value);
+  const outras=parseCurrency((document.getElementById('m-2-conc-outras')||{}).value);
+  const total=btg+outras;
+  if(total<=0){
+    out.innerHTML='<em style="color:var(--muted);font-size:.74rem">Preencha os valores acima para ver a análise de concentração.</em>';
+    return;
+  }
+  const pBtg=btg/total*100;
+  const pOutras=outras/total*100;
+  let cor,ico,msg;
+  if(pBtg>70){
+    cor='var(--red)';ico='🚨';
+    msg=`<strong>Concentração elevada no BTG (${pBtg.toFixed(1)}%).</strong> Recomenda-se diversificar custódia para reduzir risco operacional. Especialmente para sócios de escritórios — a exposição operacional ao banco principal já é alta via conta PJ.`;
+  } else if(pBtg>50){
+    cor='var(--amber)';ico='⚠️';
+    msg=`<strong>Concentração moderada no BTG (${pBtg.toFixed(1)}%).</strong> Aceitável para clientes com vínculo operacional, mas próximo do limite. Avaliar diversificação adicional de custódia em outras instituições.`;
+  } else {
+    cor='var(--green)';ico='✓';
+    msg=`<strong>Distribuição saudável (BTG ${pBtg.toFixed(1)}%).</strong> Diversificação institucional adequada — exposição operacional bem gerenciada.`;
+  }
+  out.innerHTML=`<div style="margin-bottom:10px">
+    <div style="display:flex;font-size:.72rem;color:var(--muted);margin-bottom:4px;font-weight:600">
+      <span>BTG Pactual: <strong style="color:#0D47A1">${fmtBR(btg)} (${pBtg.toFixed(1)}%)</strong></span>
+      <span style="margin-left:auto">Outras: <strong style="color:var(--green)">${fmtBR(outras)} (${pOutras.toFixed(1)}%)</strong></span>
+    </div>
+    <div style="display:flex;height:24px;border-radius:6px;overflow:hidden;border:1px solid var(--border)">
+      <div style="width:${pBtg}%;background:linear-gradient(90deg,#1B3A6B,#2E5192);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:700">${pBtg>15?pBtg.toFixed(0)+'%':''}</div>
+      <div style="width:${pOutras}%;background:linear-gradient(90deg,#1A5E20,#388E3C);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:700">${pOutras>15?pOutras.toFixed(0)+'%':''}</div>
+    </div>
+    <div style="text-align:right;font-size:.7rem;color:var(--muted);margin-top:4px">Total: <strong style="color:var(--navy)">${fmtBR(total)}</strong></div>
+  </div>
+  <div style="padding:10px 12px;background:rgba(0,0,0,0.03);border-left:3px solid ${cor};border-radius:4px;color:${cor};font-weight:500;font-size:.74rem;line-height:1.5">${ico} ${msg}</div>`;
+}
+
+// ===== STRESS TEST =====
+function stressTest(scenario){
+  const ipca=document.getElementById('sl-ipca');
+  const taxa=document.getElementById('sl-b45r');
+  const intl=document.getElementById('sl-intl');
+  if(scenario==='ipca'){
+    ipca.value=12;
+  } else if(scenario==='selic'){
+    taxa.value=4;
+  } else if(scenario==='crash'){
+    taxa.value=3;
+  } else if(scenario==='total'){
+    ipca.value=9;
+    taxa.value=3.5;
+    if(+intl.value>500000)intl.value=Math.max(0,+intl.value-500000); // reduz intl em cenário stress (capital flight)
+  }
+  upd();
+}
+
+// ===== CRONOGRAMA OPERACIONAL 12 MESES =====
+const CRONO_DEFAULT=[
+  {mes:'Mai/2026',acao:'Realocação compromissadas → NTN-B B60 (R$1,5MM); cotação seguro Whole Life',resp:'A',status:'⏳ pendente'},
+  {mes:'Jun/2026',acao:'Definir alocação internacional · abrir conta global (BTG ou parceiro) · iniciar cotação Whole Life em 3 seguradoras',resp:'A+C',status:'⏳ pendente'},
+  {mes:'Jul/2026',acao:'Estruturação holding patrimonial — consulta jurídica · revisar regime de bens',resp:'3p+C',status:'⏳ pendente'},
+  {mes:'Ago/2026',acao:'Atualizar testamento · nomear beneficiários em PGBL/VGBL e seguros',resp:'3p+C',status:'⏳ pendente'},
+  {mes:'Set/2026',acao:'Revisão trimestral 1 — ajustes e marcação de mercado · comparar B60 a outros vértices',resp:'A+C',status:'⏳ pendente'},
+  {mes:'Out/2026',acao:'LCA Original vence (R$192k líquido) → realocação para B60 ou liquidez',resp:'A',status:'⏳ pendente'},
+  {mes:'Nov/2026',acao:'Cotação plano de saúde família · revisar coberturas vigentes (vida + invalidez + saúde)',resp:'A+C',status:'⏳ pendente'},
+  {mes:'Dez/2026',acao:'Revisão trimestral 2 + planejamento IR ano-base 2026',resp:'A+C+3p',status:'⏳ pendente'},
+  {mes:'Jan/2027',acao:'Declaração IR 2026 · aproveitamento PGBL (até 12% renda)',resp:'C+3p',status:'⏳ pendente'},
+  {mes:'Fev/2027',acao:'Plano de doação programada (ITCMD) · execução de holding se aprovado',resp:'3p+C',status:'⏳ pendente'},
+  {mes:'Mar/2027',acao:'Revisão trimestral 3 · preparação para janela de Abril',resp:'A+C',status:'⏳ pendente'},
+  {mes:'Abr/2027',acao:'Bônus + CDB BMG (R$204k) + LCA Bocom (R$229k) → realocação NTN-B B60 (~R$1,93MM)',resp:'A+C',status:'⏳ pendente'},
+];
+const CRONO_FIELDS=[];
+for(let i=1;i<=12;i++)CRONO_FIELDS.push(`crono-${i}-acao`,`crono-${i}-resp`,`crono-${i}-status`);
+function renderCronograma(){
+  const tb=document.getElementById('crono-tbody');
+  if(!tb)return;
+  let html='';
+  CRONO_DEFAULT.forEach((row,i)=>{
+    const idx=i+1;
+    html+=`<tr>
+      <td style="text-align:left;color:var(--navy);font-weight:700">${row.mes}</td>
+      <td><input type="text" id="crono-${idx}-acao" value="${row.acao.replace(/"/g,'&quot;')}" style="width:100%;border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:.74rem;background:#FAFBFE"></td>
+      <td><input type="text" id="crono-${idx}-resp" value="${row.resp}" style="width:100%;border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:.74rem;background:#FAFBFE;text-align:center"></td>
+      <td><select id="crono-${idx}-status" style="width:100%;border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:.74rem;background:#FAFBFE">
+        <option ${row.status.includes('pendente')?'selected':''}>⏳ pendente</option>
+        <option ${row.status.includes('andamento')?'selected':''}>🔄 em andamento</option>
+        <option ${row.status.includes('concluído')?'selected':''}>✓ concluído</option>
+        <option ${row.status.includes('bloqueado')?'selected':''}>⛔ bloqueado</option>
+      </select></td>
+    </tr>`;
+  });
+  tb.innerHTML=html;
+  // Wire auto-save
+  CRONO_FIELDS.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){
+      el.addEventListener('input',salvarAnotacoes);
+      el.addEventListener('change',salvarAnotacoes);
+    }
+  });
+}
+
+// ===== ITCMD AUTO-CALC — imóveis (Bloco 2) → estimativa (Bloco 5) =====
+const ITCMD_SP=0.04; // 4% plano em São Paulo
+function calcITCMD(){
+  const imoveis=parseCurrency((document.getElementById('m-2-imoveis')||{}).value);
+  const itcmdEl=document.getElementById('m-5-itcmd');
+  if(!itcmdEl)return;
+  if(imoveis>0){
+    const totalEstate=GOAL+imoveis;
+    const itcmd=totalEstate*ITCMD_SP;
+    itcmdEl.value=`${fmtBR(itcmd)} (4% SP s/ patrimônio total ${fmtBR(totalEstate)})`;
+  } else if(!itcmdEl.value||itcmdEl.value.includes('SP s/')){
+    // só sobrescreve se for vazio ou se já tinha sido auto-calculado
+    itcmdEl.value=`${fmtBR(GOAL*ITCMD_SP)} (4% SP s/ R$20MM financeiro · sem imóveis informados)`;
+  }
+}
+
+// ===== Equivalente USD da posição internacional =====
+function updateIntlUsd(){
+  const usdEl=document.getElementById('m-aloc-intl-usd');
+  if(!usdEl)return;
+  const brl=parseCurrency((document.getElementById('m-aloc-intl-v')||{}).value);
+  if(brl>0){
+    const usd=brl/USD_BRL;
+    const usdFmt=Math.round(usd).toLocaleString('en-US');
+    usdEl.innerHTML=`≈ <span style="font-size:.92rem">USD ${usdFmt}</span><div style="font-size:.62rem;color:var(--muted);font-weight:400;margin-top:2px">@ R$ ${USD_BRL.toFixed(2).replace('.',',')}/USD</div>`;
+  } else {
+    usdEl.innerHTML='—';
+  }
+}
+
+// ===== DIVIDENDOS — cálculo de renda mensal + integração com Bloco 3 =====
+const DIV_DY=0.11;
+function calcDividendos(){
+  const v=parseCurrency(document.getElementById('m-aloc-div-v').value);
+  const annual=v*DIV_DY;
+  const monthly=annual/12;
+  document.getElementById('div-monthly-val').textContent=monthly>0?fmtBR(monthly)+'/mês':'R$ 0/mês';
+  document.getElementById('div-annual-val').textContent=annual>0?fmtBR(annual):'R$ 0';
+  document.getElementById('div-annual-pct').textContent='11%';
+
+  // Integração com Bloco 3 — salário e despesas
+  const salario=parseCurrency((document.getElementById('m-3-renda')||{}).value);
+  const despesas=parseCurrency((document.getElementById('m-3-despesas')||{}).value);
+  const intEl=document.getElementById('div-integration');
+  if(!intEl)return;
+  if(monthly<=0){
+    intEl.innerHTML='<em>Insira o valor da posição em Dividendos acima para calcular a renda mensal.</em>';
+    return;
+  }
+  let html='';
+  if(salario>0){
+    const total=salario+monthly;
+    html+=`<div><strong>Renda total mensal:</strong> salário <strong>${fmtBR(salario)}</strong> + dividendos <strong>${fmtBR(monthly)}</strong> = <strong style="color:var(--green);font-size:.95rem">${fmtBR(total)}</strong></div>`;
+  } else {
+    html+='<em>Preencha "Renda mensal líquida" no Bloco 3 para ver a renda total combinada.</em><br>';
+  }
+  if(despesas>0){
+    const dias=Math.min(31,monthly/despesas*30);
+    const cor=dias>=30?'var(--green)':dias>=15?'var(--amber)':'var(--red)';
+    html+=`<div style="margin-top:6px"><strong>Cobertura passiva:</strong> dividendos cobrem <strong style="color:${cor};font-size:.95rem">${dias.toFixed(0)} dia(s)</strong> de despesas mensais (${fmtBR(despesas)})</div>`;
+    if(monthly>=despesas){
+      html+=`<div style="margin-top:4px;color:var(--green);font-weight:600">✓ Renda passiva já cobre 100% do custo de vida — independência financeira mensal alcançada</div>`;
+    }
+  } else if(salario>0){
+    html+='<div style="margin-top:6px;font-style:italic;color:var(--muted)">Adicione "Despesas fixas mensais" no Bloco 3 para ver cobertura passiva em dias do mês.</div>';
+  }
+  intEl.innerHTML=html;
+}
+
+// ===== CENÁRIO ALTERNATIVO NTN-B — isolado, não afeta página 1 =====
+function simWhatIf(base,ipca,aporte,intlInit){
+  let b37=B37I,b55=B55I,b60=0;
+  let intl=intlInit||0;
+  return YRS.map(yr=>{
+    const cr=convRate(yr,base);
+    const crNet=cr-DRAG;
+    b37*=(yr<=2036?1+B37R-DRAG:1+B37RV-DRAG);
+    b55*=(1+B55R-DRAG);
+    const contrib=yr>=2027?aporte:0;
+    b60=yr==2026?0:yr==2027?(B60I+contrib)*(1+crNet):b60*(1+crNet)+contrib*(1+crNet);
+    if(yr>START)intl*=(1+INTL_REAL_BRL);
+    const tot=b37+b55+(yr>2026?b60:0)+intl;
+    const factor=Math.pow(1+ipca,yr-START+1);
+    return{yr,age:AGE0+(yr-START),tot,nom:tot*factor};
+  });
+}
+function setWhatIf(v){
+  document.getElementById('wi-aporte').value=v;
+  calcWhatIf();
+  salvarAnotacoes();
+}
+function aplicarCenario(){
+  const raw=document.getElementById('wi-aporte').value||'';
+  const v=parseFloat(String(raw).replace(/\./g,'').replace(',','.').replace(/[^\d.]/g,''))||0;
+  if(v<=0){alert('Insira um aporte alternativo válido para aplicar.');return;}
+  const slider=document.getElementById('sl-contrib');
+  const max=+slider.max,min=+slider.min;
+  if(v<min||v>max){
+    if(!confirm(`O valor ${fmtBR(v)} está fora do range do slider (R$${(min/1000).toFixed(0)}k a R$${(max/1e6).toFixed(1)}MM). Aplicar mesmo assim? O slider será limitado ao máximo.`))return;
+  }
+  slider.value=Math.max(min,Math.min(max,v));
+  upd();
+  // Visual feedback
+  const btn=document.getElementById('btn-aplicar');
+  if(btn){
+    const orig=btn.innerHTML;
+    btn.innerHTML='✓ Aplicado · veja o Simulador';
+    btn.style.background='var(--green)';
+    btn.style.color='#fff';
+    setTimeout(()=>{btn.innerHTML=orig;btn.style.background='';btn.style.color='';},2200);
+  }
+  // Rolar para topo da Reunião e dar uma sugestão visual
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function calcWhatIf(){
+  const raw=document.getElementById('wi-aporte').value||'';
+  const aporte=parseFloat(String(raw).replace(/\./g,'').replace(',','.').replace(/[^\d.]/g,''))||0;
+  if(!aporte||aporte<=0){
+    ['wi-yr','wi-age','wi-delta','wi-delta-sub','wi-nom','wi-nom-sub'].forEach(id=>document.getElementById(id).textContent='—');
+    return;
+  }
+  // pega IPCA, taxa e Intl do simulador (somente leitura — não altera nada)
+  const ipca=+document.getElementById('sl-ipca').value/100;
+  const base=+document.getElementById('sl-b45r').value/100;
+  const intl=+document.getElementById('sl-intl').value;
+  // cenário atual (do simulador) para comparação
+  const curRows=window.simRows||[];
+  const curGoal=curRows.find(r=>r.tot>=GOAL);
+  const curGy=curGoal?curGoal.yr:null;
+  // cenário alternativo
+  const altRows=simWhatIf(base,ipca,aporte,intl);
+  const altGoal=altRows.find(r=>r.tot>=GOAL);
+  const altGy=altGoal?altGoal.yr:null;
+  if(altGy){
+    const age=AGE0+(altGy-START);
+    document.getElementById('wi-yr').textContent=altGy;
+    document.getElementById('wi-age').textContent=age+' anos';
+    document.getElementById('wi-nom').textContent=Rm(altGoal.nom);
+    document.getElementById('wi-nom-sub').textContent=`em ${altGy} (R$20MM real)`;
+    if(curGy){
+      const diff=curGy-altGy;
+      const dEl=document.getElementById('wi-delta');
+      if(diff>0){
+        dEl.textContent='-'+diff+' anos';
+        dEl.style.color='var(--green)';
+        document.getElementById('wi-delta-sub').textContent=`Antecipa ${diff} ano(s)`;
+      } else if(diff<0){
+        dEl.textContent='+'+(-diff)+' anos';
+        dEl.style.color='var(--red)';
+        document.getElementById('wi-delta-sub').textContent=`Atrasa ${-diff} ano(s)`;
+      } else {
+        dEl.textContent='= ano';
+        dEl.style.color='var(--muted)';
+        document.getElementById('wi-delta-sub').textContent='Mesmo ano';
+      }
+    } else {
+      document.getElementById('wi-delta').textContent='—';
+      document.getElementById('wi-delta-sub').textContent='Cenário atual não atinge meta';
+    }
+  } else {
+    document.getElementById('wi-yr').textContent='>2051';
+    document.getElementById('wi-age').textContent='—';
+    document.getElementById('wi-nom').textContent='—';
+    document.getElementById('wi-nom-sub').textContent='Não atinge meta em 2051';
+    document.getElementById('wi-delta').textContent='—';
+    document.getElementById('wi-delta-sub').textContent='Aporte insuficiente';
+  }
+}
+
+// Auto-save a cada change/input nos campos
+FIELDS.forEach(id=>{
+  document.addEventListener('DOMContentLoaded',()=>{
+    const el=document.getElementById(id);
+    if(el){el.addEventListener('input',salvarAnotacoes);el.addEventListener('change',salvarAnotacoes);}
+  });
+});
+
+// ===== CARTEIRA ATUAL — projeções e renderização =====
+function projetarItem(item,today,cdi){
+  if(!item.vencimento)return null;
+  const venc=new Date(item.vencimento);
+  const days=(venc-today)/86400000;
+  if(days<=0)return{dias:0,anos:0,projBruto:item.saldoBruto,projLiq:item.saldoLiq};
+  const anos=days/365.25;
+  let rate;
+  if(item.taxaTipo==='aa')rate=item.taxaNum;
+  else rate=item.taxaNum*cdi;
+  const projBruto=item.saldoBruto*Math.pow(1+rate,anos);
+  let projLiq;
+  if(item.isencaoIR)projLiq=projBruto;
+  else{
+    // CDB: IR 15% sobre o ganho adicional do hoje até o vencimento
+    const ganho=projBruto-item.saldoBruto;
+    projLiq=item.saldoLiq+ganho*0.85;
+  }
+  return{dias:Math.round(days),anos,projBruto,projLiq};
+}
+function fmtData(iso){
+  if(!iso)return null;
+  const d=new Date(iso);
+  return ('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear();
+}
+function renderCarteira(){
+  const container=document.getElementById('carteira-table');
+  if(!container)return;
+  const cores={CDB:'#2E5192',LCA:'#00838F',COMPROMISSADA:'#7B4F00'};
+  const tipos=['CDB','LCA','COMPROMISSADA'];
+  let html='';
+  let totalLiqGeral=0,totalBrutoGeral=0;
+
+  tipos.forEach(t=>{
+    const items=CARTEIRA.filter(i=>i.tipo===t);
+    if(items.length===0)return;
+    const subtotalBruto=items.reduce((s,i)=>s+i.saldoBruto,0);
+    totalLiqGeral+=items.reduce((s,i)=>s+i.saldoLiq,0);
+    totalBrutoGeral+=subtotalBruto;
+
+    html+=`<div style="margin-bottom:14px">`;
+    html+=`<div style="background:${cores[t]};color:#fff;padding:9px 14px;border-radius:6px 6px 0 0;display:flex;justify-content:space-between;font-size:.82rem;font-weight:700">
+      <span>${t}${t==='COMPROMISSADA'?' · liquidez D+0':''}</span>
+      <span>${fmtBR(subtotalBruto)}</span>
+    </div>`;
+
+    html+=`<div class="twrap" style="border-radius:0 0 6px 6px;border-top:none"><table class="dt"><thead><tr>`;
+    if(t==='COMPROMISSADA'){
+      html+=`<th style="text-align:left">Banco</th><th style="text-align:left">Lastro</th><th>Taxa</th><th>Saldo Líq.</th><th>Saldo Bruto</th><th>Status</th>`;
+    } else {
+      html+=`<th style="text-align:left">Produto / Banco</th><th>Vencimento</th><th>Taxa</th><th>Saldo Líq. Hoje</th><th>Projeção Líq. Vencimento</th><th>Δ Ganho</th>`;
+    }
+    html+=`</tr></thead><tbody>`;
+
+    items.forEach(item=>{
+      if(t==='COMPROMISSADA'){
+        html+=`<tr>
+          <td style="text-align:left;font-size:.74rem">${item.banco}</td>
+          <td style="text-align:left;font-weight:700;color:var(--navy)">${item.lastro}</td>
+          <td>${item.taxa}</td>
+          <td><strong>${fmtBR(item.saldoLiq)}</strong></td>
+          <td>${fmtBR(item.saldoBruto)}</td>
+          <td style="color:var(--green);font-size:.7rem;font-weight:700">✓ Liquidez diária</td>
+        </tr>`;
+      } else {
+        const proj=projetarItem(item,HOJE,CDI_PREMISSA);
+        const delta=proj.projLiq-item.saldoLiq;
+        const isencao=item.isencaoIR?'<span style="color:var(--green);font-size:.6rem;font-weight:700">isenta IR</span>':'<span style="color:var(--red);font-size:.6rem;font-weight:700">IR 15%</span>';
+        html+=`<tr>
+          <td style="text-align:left">
+            <strong>${item.produto}</strong> · <span style="font-size:.72rem;color:var(--muted)">${item.banco}</span>
+            <div style="margin-top:2px">${isencao}</div>
+          </td>
+          <td>${fmtData(item.vencimento)}<div style="font-size:.62rem;color:var(--muted)">em ${proj.dias} dias (${proj.anos.toFixed(2)}a)</div></td>
+          <td>${item.taxa}</td>
+          <td>${fmtBR(item.saldoLiq)}</td>
+          <td style="color:var(--green);font-weight:700">${fmtBR(proj.projLiq)}</td>
+          <td style="color:var(--green);font-size:.74rem">+${fmtBR(delta)}</td>
+        </tr>`;
+      }
+    });
+    html+=`</tbody></table></div></div>`;
+  });
+
+  // Total geral
+  html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:linear-gradient(135deg,#FFF8E7 0%,#FFE082 100%);border:1.5px solid var(--gold);border-radius:8px;margin-top:8px">
+    <div>
+      <div style="font-size:.66rem;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.06em">Total carteira</div>
+      <div style="font-size:.7rem;color:#7B4F00;margin-top:2px">Saldo bruto consolidado de todas as posições</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:1.2rem;font-weight:800;color:var(--amber)">${fmtBR(totalBrutoGeral)}</div>
+      <div style="font-size:.66rem;color:#7B4F00">Líquido: ${fmtBR(totalLiqGeral)}</div>
+    </div>
+  </div>`;
+
+  container.innerHTML=html;
+}
+function toggleCarteira(btn){
+  btn.classList.toggle('open');
+  document.getElementById('carteira-panel').classList.toggle('open');
+}
+function atualizarBudgetRealoc(){
+  const compromissadas=CARTEIRA.filter(i=>i.tipo==='COMPROMISSADA');
+  const compTotal=compromissadas.reduce((s,i)=>s+i.saldoBruto,0);
+  const bloqueado=CARTEIRA.filter(i=>i.tipo!=='COMPROMISSADA').reduce((s,i)=>s+i.saldoBruto,0);
+  const total=CARTEIRA.reduce((s,i)=>s+i.saldoBruto,0);
+  const elBudget=document.getElementById('budget-realoc');
+  const elBloq=document.getElementById('budget-bloqueado');
+  const elTotal=document.getElementById('budget-total');
+  if(elBudget)elBudget.textContent=fmtBR(compTotal);
+  if(elBloq)elBloq.textContent=fmtBR(bloqueado);
+  if(elTotal)elTotal.textContent=fmtBR(total);
+}
+
+// ===== CRONOGRAMA DE LIQUIDEZ — quando cada parcela vira caixa =====
+function renderCronogramaLiquidez(){
+  const container=document.getElementById('cronograma-liquidez');
+  if(!container)return;
+  // Compromissadas (líquido hoje)
+  const compTotal=CARTEIRA.filter(i=>i.tipo==='COMPROMISSADA').reduce((s,i)=>s+i.saldoBruto,0);
+  // Agrupar títulos por data de vencimento
+  const byDate={};
+  CARTEIRA.forEach(item=>{
+    if(!item.vencimento)return;
+    if(!byDate[item.vencimento])byDate[item.vencimento]=[];
+    byDate[item.vencimento].push(item);
+  });
+  const dates=Object.keys(byDate).sort();
+  // Construir milestones
+  const milestones=[{
+    label:'AMANHÃ',
+    dateStr:'04/05/2026',
+    days:1,
+    amount:compTotal,
+    description:'Compromissadas BTG · liquidez D+0',
+    isFirst:true,
+    cumulative:compTotal
+  }];
+  let cumulative=compTotal;
+  dates.forEach(d=>{
+    const items=byDate[d];
+    const totalAtMat=items.reduce((s,i)=>{
+      const proj=projetarItem(i,HOJE,CDI_PREMISSA);
+      return s+(proj?proj.projLiq:i.saldoLiq);
+    },0);
+    cumulative+=totalAtMat;
+    const dateObj=new Date(d);
+    const days=Math.round((dateObj-HOJE)/86400000);
+    const desc=items.map(i=>`${i.produto} ${i.banco}`).join(' + ');
+    const meses=['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
+    milestones.push({
+      label:meses[dateObj.getMonth()]+'/'+dateObj.getFullYear(),
+      dateStr:fmtData(d),
+      days,
+      amount:totalAtMat,
+      description:desc,
+      cumulative
+    });
+  });
+  // Render como cards horizontais
+  let html='<div style="display:flex;gap:10px;overflow-x:auto;padding:4px 0 12px;align-items:stretch">';
+  milestones.forEach((m,i)=>{
+    const isFirst=m.isFirst;
+    const bg=isFirst?'linear-gradient(135deg,#E8F5E9 0%,#C8E6C9 100%)':'linear-gradient(135deg,#FFF8E7 0%,#FFE082 100%)';
+    const border=isFirst?'#A5D6A7':'#FFCC80';
+    const accent=isFirst?'var(--green)':'var(--amber)';
+    html+=`<div style="flex:1 1 200px;min-width:200px;background:${bg};border:1.5px solid ${border};border-radius:10px;padding:12px;display:flex;flex-direction:column">
+      <div style="font-size:.66rem;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:.06em">${m.label}</div>
+      <div style="font-size:.7rem;color:var(--muted);margin-bottom:8px">${m.dateStr}${m.days>1?' · em '+m.days+' dias':''}</div>
+      <div style="font-size:1.2rem;font-weight:800;color:${accent};margin-bottom:4px">${isFirst?'':'+'}${fmtBR(m.amount)}</div>
+      <div style="font-size:.68rem;color:#455A64;line-height:1.4;flex:1">${m.description}</div>
+      ${!isFirst?`<div style="margin-top:8px;padding-top:6px;border-top:1px dashed rgba(0,0,0,.15);font-size:.68rem;color:var(--navy)">Acumulado: <strong>${fmtBR(m.cumulative)}</strong></div>`:''}
+    </div>`;
+    if(i<milestones.length-1){
+      html+='<div style="display:flex;align-items:center;font-size:1.3rem;color:var(--gold);font-weight:800;flex-shrink:0">→</div>';
+    }
+  });
+  html+='</div>';
+  // Resumo final
+  const lastM=milestones[milestones.length-1];
+  html+=`<div style="margin-top:10px;padding:11px 16px;background:var(--navy);color:#fff;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:.82rem;flex-wrap:wrap;gap:8px">
+    <span>Liquidez total acumulada até <strong>${lastM.dateStr}</strong> (${lastM.days} dias):</span>
+    <strong style="color:var(--gold);font-size:1.05rem">${fmtBR(lastM.cumulative)}</strong>
+  </div>`;
+  container.innerHTML=html;
+}
+
+// Init
+['sl-contrib','sl-ipca','sl-b45r','sl-intl'].forEach(id=>document.getElementById(id).addEventListener('input',upd));
+document.addEventListener('DOMContentLoaded',()=>{
+  carregarAnotacoes();
+  upd();
+  // Recalcula widgets que dependem de inputs persistidos
+  calcDividendos();
+  calcWhatIf();
+  recalcAUM();
+  // Renderiza Carteira Atual, Budget de realocação e Cronograma de Liquidez
+  renderCarteira();
+  atualizarBudgetRealoc();
+  renderCronogramaLiquidez();
+  // Cronograma operacional 12 meses (Bloco 10) — gera primeiro ANTES do carregarAnotacoes para que o load preencha
+  renderCronograma();
+  // Reload dos campos do cronograma (já está em FIELDS, mas precisa rodar depois do render)
+  carregarAnotacoes();
+  // ITCMD auto-calc (Bloco 5) — pode estar vazio se imóveis ainda não foi preenchido
+  calcITCMD();
+  // Cobertura atuarial, concentração, educação USD — primeiros cálculos
+  calcAtuarial();
+  calcConcentracao();
+  calcEducacao();
+  // Wire eventos de formatação e recálculo
+  ['m-aloc-liq-v','m-aloc-mid-v','m-aloc-div-v','m-aloc-prot-v','m-aloc-prot-cob'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){
+      el.addEventListener('blur',()=>{formatInputCurrency(el);recalcAUM();calcDividendos();});
+      el.addEventListener('input',()=>{recalcAUM();calcDividendos();});
+    }
+  });
+  // Renda salário/despesas → recalcula integração de dividendos
+  ['m-3-renda','m-3-despesas','m-3-aporte-m','m-3-aporte-a'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){
+      el.addEventListener('blur',()=>{formatInputCurrency(el);calcDividendos();});
+      if(id==='m-3-renda'||id==='m-3-despesas')el.addEventListener('input',calcDividendos);
+    }
+  });
+  // Imóveis (Bloco 2) → ITCMD auto-calc (Bloco 5)
+  const imovEl=document.getElementById('m-2-imoveis');
+  if(imovEl){
+    imovEl.addEventListener('blur',()=>{formatInputCurrency(imovEl);calcITCMD();});
+    imovEl.addEventListener('input',calcITCMD);
+  }
+  // Concentração (Bloco 2)
+  ['m-2-conc-btg','m-2-conc-outras'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){
+      el.addEventListener('blur',()=>{formatInputCurrency(el);calcConcentracao();});
+      el.addEventListener('input',calcConcentracao);
+    }
+  });
+  // Cobertura atuarial (Bloco 4)
+  ['m-4-cobertura-atual'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){
+      el.addEventListener('blur',()=>{formatInputCurrency(el);calcAtuarial();});
+      el.addEventListener('input',calcAtuarial);
+    }
+  });
+  const multEl=document.getElementById('m-4-mult-anos');
+  if(multEl)multEl.addEventListener('change',calcAtuarial);
+  // Renda (Bloco 3) também recalcula atuarial
+  ['m-3-renda'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.addEventListener('input',calcAtuarial);
+  });
+  // Calculadora educação (Bloco 6)
+  ['m-6-edu-cost','m-6-edu-years','m-6-edu-duration','m-6-edu-infl'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){
+      el.addEventListener('input',calcEducacao);
+      el.addEventListener('change',calcEducacao);
+    }
+  });
+});
 upd();
 </script>
 </body>
