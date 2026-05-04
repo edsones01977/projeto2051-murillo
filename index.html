@@ -437,10 +437,11 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
     <div class="prm-sec">
       <div class="prm-sec-ttl">NTN-B — vértice e taxas (financeiro)</div>
       <div class="prm-row"><span class="lbl">Vértice escolhido</span><span class="val g">B60 (IPCA 2060)</span></div>
-      <div class="prm-row"><span class="lbl">Posição inicial (mai/2026)</span><span class="val g">R$ 500.000 · IPCA + 6,84%</span></div>
-      <div class="prm-row"><span class="lbl">Aportes futuros (premissa conservadora)</span><span class="val">IPCA + 4,50% (bônus + maturities)</span></div>
+      <div class="prm-row"><span class="lbl">Posição inicial (mai/2026)</span><span class="val g">R$ 460.000 · IPCA + 6,84% (até 2060)</span></div>
+      <div class="prm-row"><span class="lbl">Aportes futuros (bônus + maturities)</span><span class="val">IPCA + 4,50% (premissa conservadora)</span></div>
+      <div class="prm-row"><span class="lbl">Reinvestimento de cupons</span><span class="val">IPCA + 4,50% (flat conservador)</span></div>
       <div class="prm-row"><span class="lbl">IPCA premissa (Focus 24/04/2026)</span><span class="val dyn" id="prm-ipca">4,86% a.a.</span></div>
-      <div class="prm-row"><span class="lbl">Taxa reinvest. cupons (curva)</span><span class="val dyn" id="prm-reinv">IPCA+6,50% → 5,50%</span></div>
+      <div class="prm-row"><span class="lbl">Taxa reinvest. cupons (slider)</span><span class="val dyn" id="prm-reinv">IPCA+4,50%</span></div>
       <div class="prm-row"><span class="lbl">Custódia BTG (mesa secundária)</span><span class="val g">0% a.a. · isento</span></div>
       <div class="prm-row"><span class="lbl">Custódia Tesouro Direto (B3)</span><span class="val">0,20% a.a. (exceto Selic ≤ R$10k)</span></div>
       <div class="prm-row"><span class="lbl">Economia BTG vs TD em 25 anos</span><span class="val g">≈ R$ 1.000.000 (sobre R$20MM)</span></div>
@@ -462,7 +463,7 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
       </div>
 
       <div class="prm-note" style="margin-top:6px">
-        <strong>📅 Cadência dos aportes:</strong> a posição inicial vem da realocação imediata das compromissadas BTG (R$ 1.856.218,39). Os aportes futuros entram conforme o cronograma de liquidez — bônus anual em abril e vencimentos de CDB/LCA atuais ao longo de 2026–2027. Não há "compras programadas" mensais — o aporte segue a entrada de caixa.
+        <strong>📅 Cadência dos aportes:</strong> em mai/2026, R$ 460.000 das compromissadas vão para B60 a <strong>IPCA+6,84%</strong> (taxa atual travada até 2060). O resto das compromissadas vai para outras frentes (Liquidez, Dividendos, Internacional). A partir de 2027, todos os novos recursos (bônus anual, vencimentos de CDB/LCAs reinvestidos, cupons reinvestidos) entram a <strong>IPCA+4,5% flat</strong> — premissa conservadora pois não sabemos quais taxas estarão disponíveis no futuro.
       </div>
     </div>
 
@@ -518,7 +519,6 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
       <div class="prm-sec-ttl">Resultados — atualizam com os sliders</div>
       <div class="prm-row"><span class="lbl">Aporte mínimo anual</span><span class="val dyn" id="prm-res-min">—</span></div>
       <div class="prm-row"><span class="lbl">% do bônus para o projeto</span><span class="val dyn" id="prm-res-pct">—</span></div>
-      <div class="prm-row"><span class="lbl">Free float anual</span><span class="val dyn" id="prm-res-ff">—</span></div>
       <div class="prm-row"><span class="lbl">Aposentadoria no ano</span><span class="val dyn" id="prm-res-yr">—</span></div>
       <div class="prm-row"><span class="lbl">Idade na aposentadoria</span><span class="val dyn" id="prm-res-age">—</span></div>
       <div class="prm-row"><span class="lbl">Valor real na meta</span><span class="val g">R$ 20MM</span></div>
@@ -587,25 +587,25 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
   </div>
   <div class="ctrl-grid">
     <div class="slg">
-      <label>Aporte anual padrão <span id="v-contrib">—</span></label>
+      <label>Aporte anual padrão <span id="v-contrib">—</span> <button onclick="resetSlider('contrib')" title="Restaurar default R$ 460.000" style="background:transparent;border:1px solid var(--border);border-radius:50%;width:18px;height:18px;font-size:.7rem;cursor:pointer;color:var(--muted);padding:0;line-height:1">↺</button></label>
       <input type="range" id="sl-contrib" min="100000" max="2000000" step="10000" value="460000">
       <div class="sl-lim"><span>R$ 100k</span><span>R$ 2MM</span></div>
       <div id="contrib-note" class="sl-note sl-ok">✓ Igual ao mínimo calculado</div>
     </div>
     <div class="slg">
-      <label>IPCA premissa <span id="v-ipca">4,86%</span></label>
+      <label>IPCA premissa <span id="v-ipca">4,86%</span> <button onclick="resetSlider('ipca')" title="Restaurar Focus 4,86%" style="background:transparent;border:1px solid var(--border);border-radius:50%;width:18px;height:18px;font-size:.7rem;cursor:pointer;color:var(--muted);padding:0;line-height:1">↺</button></label>
       <input type="range" id="sl-ipca" min="3" max="12" step="0.25" value="4.86">
       <div class="sl-lim"><span>3%</span><span>12%</span></div>
       <div class="sl-note sl-info">Focus 24/04/2026 · afeta o valor nominal — o real permanece igual</div>
     </div>
     <div class="slg">
-      <label>Taxa reinvest. base (B60) <span id="v-b45r">5,50%</span></label>
-      <input type="range" id="sl-b45r" min="3" max="8" step="0.25" value="5.5">
+      <label>Taxa reinvest. cupom (flat conservador) <span id="v-b45r">4,50%</span> <button onclick="resetSlider('b45r')" title="Restaurar default 4,50%" style="background:transparent;border:1px solid var(--border);border-radius:50%;width:18px;height:18px;font-size:.7rem;cursor:pointer;color:var(--muted);padding:0;line-height:1">↺</button></label>
+      <input type="range" id="sl-b45r" min="3" max="8" step="0.25" value="4.5">
       <div class="sl-lim"><span>3%</span><span>8%</span></div>
-      <div class="sl-note sl-info">Ponto final da curva de convergência IPCA+</div>
+      <div class="sl-note sl-info">Cupons reinvestidos a IPCA+4,5% flat (premissa conservadora)</div>
     </div>
     <div class="slg">
-      <label>Alocação internacional (USD Treasury) <span id="v-intl">R$ 200.000</span></label>
+      <label>Alocação internacional (USD Treasury) <span id="v-intl">R$ 200.000</span> <button onclick="resetSlider('intl')" title="Restaurar default R$ 200.000" style="background:transparent;border:1px solid var(--border);border-radius:50%;width:18px;height:18px;font-size:.7rem;cursor:pointer;color:var(--muted);padding:0;line-height:1">↺</button></label>
       <input type="range" id="sl-intl" min="0" max="3000000" step="50000" value="200000">
       <div class="sl-lim"><span>R$ 0</span><span>R$ 3MM</span></div>
       <div class="sl-note sl-info" id="intl-note">Posição em US Treasury 4% USD ≈ IPCA+1% real BRL (após PPP)</div>
@@ -647,7 +647,6 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
     <div class="kpi-lbl">Aporte mínimo (líquido IR)</div>
     <div class="kpi-val" id="kpi-min">—</div>
     <div class="kpi-sub" id="kpi-min-sub">—</div>
-    <span class="kpi-tag" id="kpi-ff">—</span>
   </div>
   <div class="kpi gold">
     <div class="kpi-lbl">Aposentadoria no ano</div>
@@ -740,10 +739,7 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
     </div>
     <div class="panel-sub">Cupom bruto, IR retido (15%) e cupom líquido reinvestido na curva de convergência IPCA+.</div>
     <div class="conv-legend">
-      <span class="conv-pill" style="background:#E3F2FD;color:#0D47A1">2026-28: IPCA+6,50%</span>
-      <span class="conv-pill" style="background:#E8F5E9;color:#1B5E20">2029-33: IPCA+6,00%</span>
-      <span class="conv-pill" style="background:#FFF8E7;color:#7B4F00">2034-40: IPCA+5,75%</span>
-      <span class="conv-pill" style="background:#F3E5F5;color:#4A148C">2041-51: IPCA+5,50%</span>
+      <span class="conv-pill" style="background:#E3F2FD;color:#0D47A1">Cupons reinvestidos a <strong>IPCA + 4,5% flat</strong> (conservador, todo o horizonte)</span>
       <span class="conv-pill" style="background:#FCE4EC;color:#880E4F">IR 15% sobre cada cupom</span>
     </div>
     <div class="leg">
@@ -761,7 +757,7 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
 <div class="card">
   <div class="card-ttl"><div class="card-ttl-l">Linha do tempo — marcos do projeto</div></div>
   <div class="tl">
-    <div class="tli"><div class="tl-dot">Mai</div><div class="tl-yr">2026</div><div class="tl-desc">Posição inicial<br>R$500k → B60<br>(IPCA+6,84%)</div></div>
+    <div class="tli"><div class="tl-dot">Mai</div><div class="tl-yr">2026</div><div class="tl-desc">Posição inicial<br>R$460k → B60<br>(IPCA+6,84%)</div></div>
     <div class="tli"><div class="tl-dot gold">Out</div><div class="tl-yr">2026</div><div class="tl-desc">LCA Original<br>vence · +R$192k</div></div>
     <div class="tli"><div class="tl-dot">Abr</div><div class="tl-yr">2027</div><div class="tl-desc">Bônus + CDB<br>+ LCA Bocom<br>(IPCA+4,5%)</div></div>
     <div class="tli"><div class="tl-dot gold">Out</div><div class="tl-yr">2027</div><div class="tl-desc">LCA BTG<br>vence · +R$227k</div></div>
@@ -905,12 +901,14 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
 
   <!-- Análise de concentração patrimonial -->
   <div style="margin-top:14px;padding:14px 16px;background:#FAFBFE;border:1px solid var(--border);border-radius:8px">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-      <span style="font-size:1.2rem">⚖️</span>
-      <strong style="font-size:.85rem;color:var(--navy)">Análise de concentração patrimonial</strong>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:1.2rem">⚖️</span>
+        <strong style="font-size:.85rem;color:var(--navy)">Análise de concentração patrimonial</strong>
+      </div>
+      <button onclick="resetConcentracao()" title="Limpar valores" style="background:transparent;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:.7rem;color:var(--navy);cursor:pointer;font-weight:600">↺ Reset</button>
     </div>
     <ul style="font-size:.74rem;color:var(--muted);line-height:1.6;margin:0 0 12px 20px;padding:0">
-      <li><strong>Risco operacional / institucional:</strong> nenhuma instituição deve concentrar mais de <strong>70% do AUM líquido</strong> — diversificar custódia reduz exposição a falência, intervenção do BC ou problemas operacionais</li>
       <li><strong>Risco de segmento:</strong> máximo 50% em uma única classe (NTN-B, FIIs, ações) — exceto NTN-B em planos focados em aposentadoria, onde pode ser maior por design</li>
       <li><strong>Risco geográfico:</strong> meta <strong>20-30%</strong> em ativos internacionais (USD/EUR) — protege contra eventos sistêmicos do Brasil (Selic disparando, crise fiscal, depreciação cambial)</li>
       <li>O cálculo abaixo soma as posições em cada instituição e gera o gráfico de % consolidado</li>
@@ -1074,9 +1072,12 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
 
   <!-- Calculadora de Educação no Exterior -->
   <div style="margin-top:14px;padding:14px 16px;background:#F3E5F5;border:1px solid #CE93D8;border-radius:8px">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-      <span style="font-size:1.2rem">🎓</span>
-      <strong style="font-size:.85rem;color:#6A1B9A">Calculadora — educação no exterior (USD)</strong>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:1.2rem">🎓</span>
+        <strong style="font-size:.85rem;color:#6A1B9A">Calculadora — educação no exterior (USD)</strong>
+      </div>
+      <button onclick="resetEducacao()" title="Restaurar valores padrão" style="background:transparent;border:1px solid #CE93D8;border-radius:6px;padding:3px 10px;font-size:.7rem;color:#6A1B9A;cursor:pointer;font-weight:600">↺ Reset</button>
     </div>
     <ul style="font-size:.74rem;color:#4A148C;line-height:1.6;margin:0 0 12px 20px;padding:0">
       <li><strong>Faculdades top USA</strong> (Harvard, MIT, Stanford, Wharton): US$ 60-90k/ano · graduação 4 anos = US$ 240-360k</li>
@@ -1327,10 +1328,6 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
       <input type="text" id="m-mod-min" readonly style="background:#FFF8E7">
     </div>
     <div class="mtg-field">
-      <label>Free float anual</label>
-      <input type="text" id="m-mod-ff" readonly style="background:#FFF8E7">
-    </div>
-    <div class="mtg-field">
       <label>Ano da aposentadoria · idade</label>
       <input type="text" id="m-mod-ano" readonly style="background:#FFF8E7">
     </div>
@@ -1478,15 +1475,15 @@ const GOAL=20e6,BONUS=1.5e6;
 // - "B55" = 0 (não usado neste plano)
 // - "B60" representa os APORTES ACUMULADOS (bônus + vencimentos de CDB/LCAs)
 // Cliente não tem NTN-B atual — o saldo inicial vem do redirecionamento das compromissadas BTG.
-// Posição inicial NTN-B = R$500k em B60, alocação imediata em mai/2026 (trava a taxa atual alta).
-// Resto das compromissadas (R$1,36MM) é distribuído entre outras frentes (Liquidez, Dividendos, Internacional, etc.)
-// na decisão da reunião.
-const B37I=500e3;
+// Posição inicial NTN-B = R$460k em B60, alocação imediata em mai/2026 (trava IPCA+6,84% até 2060).
+// Resto das compromissadas vai para outras frentes (Liquidez, Dividendos, Internacional, etc.) na reunião.
+const B37I=460e3;
 const B55I=0;
 const B60I=0;
-// Duas taxas: inicial trava IPCA+6,84% (mercado atual) · aportes futuros assumem IPCA+4,5% conservador.
-// Premissa: não dá para garantir que IPCA+6,84% estará disponível em abr/2027+. Usa 4,5% como prudência.
-const B37R=.0684,B55R=.045,B60R=.045,B37RV=.045;
+// Apenas o R$460k inicial trava IPCA+6,84% (vence 2060, hold to maturity).
+// TUDO que vier depois (aportes futuros, vencimentos de renda fixa reinvestidos, bônus anual,
+// reinvestimento de cupom) cresce a IPCA+4,5% conservador — não sabemos as taxas futuras de mercado.
+const B37R=.0684,B55R=.045,B60R=.045,B37RV=.0684;
 const START=2026,END=2051,AGE0=40;
 const YRS=Array.from({length:END-START+1},(_,i)=>START+i);
 const COUP=0.06,IR_R=0.15,DRAG=COUP*IR_R/(1+0.0615);
@@ -1525,12 +1522,10 @@ const Rm=v=>{
 };
 const P=v=>(v*100).toFixed(1)+'%';
 
-function convRate(yr,base){
-  if(yr<=2028)return Math.max(0.065,base+0.01);
-  if(yr<=2033)return Math.max(0.060,base+0.005);
-  if(yr<=2040)return Math.max(0.0575,base+0.0025);
-  return base;
-}
+// Taxa de reinvestimento dos cupons: flat IPCA+4,5% (conservador) — controlada pelo slider sl-b45r.
+// Não há mais curva de convergência: assumimos que cupons recebidos serão reinvestidos a essa taxa
+// constante durante todo o horizonte. Premissa coerente com B60R = 4,5% para aportes futuros.
+function convRate(yr,base){return base;}
 function calcMin(base,intlInit){
   intlInit=intlInit||0;
   const b60net=B60R-DRAG;
@@ -1772,7 +1767,6 @@ function upd(){
 
   document.getElementById('kpi-min').textContent=R(minC);
   document.getElementById('kpi-min-sub').textContent=(minC/BONUS*100).toFixed(1)+'% do bônus anual';
-  document.getElementById('kpi-ff').textContent='Free float: '+R(ff)+'/ano';
   document.getElementById('kpi-yr').textContent=gy??'>2051';
   document.getElementById('kpi-yr-sub').textContent=gy?`Aposentadoria com ${AGE0+(gy-START)} anos`:'Meta não atingida em 2051';
   document.getElementById('kpi-nom-gy').textContent=nomGy?Rm(nomGy):'—';
@@ -1792,7 +1786,7 @@ function upd(){
     bn.className='banner on';
     bi.textContent='🏆';
     bt.textContent=`Aposentadoria com ${age} anos em ${gy} — meta R$20MM real atingida`;
-    bs.textContent=`Aporte: ${R(defC)}/ano (${(defC/BONUS*100).toFixed(1)}% do bônus) · Free float: ${R(ff)}/ano · Saldo nominal em ${gy}: ${Rm(nomGy)}`;
+    bs.textContent=`Aporte: ${R(defC)}/ano (${(defC/BONUS*100).toFixed(1)}% do bônus) · Saldo nominal em ${gy}: ${Rm(nomGy)}`;
   } else {
     bn.className='banner miss';
     bi.textContent='⚠️';
@@ -1801,10 +1795,9 @@ function upd(){
   }
 
   document.getElementById('prm-ipca').textContent=(ipca*100).toFixed(2).replace('.',',')+' % a.a.';
-  document.getElementById('prm-reinv').textContent=`IPCA+6,50% → IPCA+${(base*100).toFixed(2)}%`;
+  document.getElementById('prm-reinv').textContent=`IPCA+${(base*100).toFixed(2).replace('.',',')}% (flat)`;
   document.getElementById('prm-res-min').textContent=R(minC);
   document.getElementById('prm-res-pct').textContent=(minC/BONUS*100).toFixed(1)+'%';
-  document.getElementById('prm-res-ff').textContent=R(ff);
   document.getElementById('prm-res-yr').textContent=gy??'>2051';
   document.getElementById('prm-res-age').textContent=gy?`${AGE0+(gy-START)} anos`:'—';
   document.getElementById('prm-res-nom-gy').textContent=nomGy?Rm(nomGy):'—';
@@ -1920,12 +1913,11 @@ function upd(){
     // Bloco 9 — Resumo do Modelo NTN-B
     document.getElementById('m-mod-aporte').value=fmtBR(defC);
     document.getElementById('m-mod-min').value=fmtBR(minC);
-    document.getElementById('m-mod-ff').value=fmtBR(ff);
     document.getElementById('m-mod-ano').value=gy?`${gy} · ${AGE0+(gy-START)} anos`:'>2051';
     document.getElementById('m-mod-nom-gy').value=nomGy?Rm(nomGy):'—';
     document.getElementById('m-mod-nom-fim').value=Rm(nomFinal);
     document.getElementById('m-mod-ipca').value=(ipca*100).toFixed(2).replace('.',',')+'%';
-    document.getElementById('m-mod-reinv').value=`IPCA+6,50% → IPCA+${(base*100).toFixed(2)}%`;
+    document.getElementById('m-mod-reinv').value=`IPCA+${(base*100).toFixed(2).replace('.',',')}% (flat conservador)`;
     // Recalcula AUM com novo valor de NTN-B (agora dinâmico) e dividendos
     recalcAUM();
     calcDividendos();
@@ -1995,10 +1987,32 @@ function editAporte(span,yr,def){
   inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();if(e.key==='Escape'){delete customAportes[yr];upd();}});
 }
 function resetAportes(){Object.keys(customAportes).forEach(k=>delete customAportes[k]);upd();}
+// Reset individual de cada slider (botão ↺ ao lado de cada label)
+function resetSlider(which){
+  const defaults={contrib:460000,ipca:4.86,b45r:4.5,intl:200000};
+  const idMap={contrib:'sl-contrib',ipca:'sl-ipca',b45r:'sl-b45r',intl:'sl-intl'};
+  const el=document.getElementById(idMap[which]);
+  if(el&&defaults[which]!==undefined){el.value=defaults[which];upd();}
+}
+// Reset das calculadoras
+function resetEducacao(){
+  document.getElementById('m-6-edu-cost').value='';
+  document.getElementById('m-6-edu-years').value='';
+  document.getElementById('m-6-edu-duration').value='4';
+  document.getElementById('m-6-edu-infl').value='5';
+  if(typeof calcEducacao==='function')calcEducacao();
+  if(typeof salvarAnotacoes==='function')salvarAnotacoes();
+}
+function resetConcentracao(){
+  document.getElementById('m-2-conc-btg').value='';
+  document.getElementById('m-2-conc-outras').value='';
+  if(typeof calcConcentracao==='function')calcConcentracao();
+  if(typeof salvarAnotacoes==='function')salvarAnotacoes();
+}
 function resetTudo(){
   document.getElementById('sl-contrib').value=460000;
   document.getElementById('sl-ipca').value=4.86;
-  document.getElementById('sl-b45r').value=5.5;
+  document.getElementById('sl-b45r').value=4.5;
   document.getElementById('sl-intl').value=200000;
   Object.keys(customAportes).forEach(k=>delete customAportes[k]);
   upd();
@@ -2074,14 +2088,14 @@ function carregarAnotacoes(){
   }catch(e){console.warn('Erro ao carregar',e);}
 }
 function limparAnotacoes(){
-  if(!confirm('Limpar todas as anotações da reunião E voltar às premissas originais (aporte R$460k, IPCA 4,86%, taxa reinv 5,5%, Intl R$200k, cronograma default)?\n\nEssa ação não pode ser desfeita.'))return;
+  if(!confirm('Limpar todas as anotações da reunião E voltar às premissas originais (aporte R$460k, IPCA 4,86%, taxa reinv 4,5%, Intl R$200k, cronograma default)?\n\nEssa ação não pode ser desfeita.'))return;
   try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
   // Limpa todos os campos da reunião
   FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   // Reseta sliders do simulador para premissas originais (Focus 24/04/2026)
   document.getElementById('sl-contrib').value=460000;
   document.getElementById('sl-ipca').value=4.86;
-  document.getElementById('sl-b45r').value=5.5;
+  document.getElementById('sl-b45r').value=4.5;
   document.getElementById('sl-intl').value=200000;
   // Limpa aportes customizados ano-a-ano
   Object.keys(customAportes).forEach(k=>delete customAportes[k]);
@@ -2185,15 +2199,15 @@ function calcConcentracao(){
   const pBtg=btg/total*100;
   const pOutras=outras/total*100;
   let cor,ico,msg;
-  if(pBtg>70){
-    cor='var(--red)';ico='🚨';
-    msg=`<strong>Concentração elevada no BTG (${pBtg.toFixed(1)}%).</strong> Recomenda-se diversificar custódia para reduzir risco operacional. Especialmente para sócios de escritórios — a exposição operacional ao banco principal já é alta via conta PJ.`;
-  } else if(pBtg>50){
-    cor='var(--amber)';ico='⚠️';
-    msg=`<strong>Concentração moderada no BTG (${pBtg.toFixed(1)}%).</strong> Aceitável para clientes com vínculo operacional, mas próximo do limite. Avaliar diversificação adicional de custódia em outras instituições.`;
-  } else {
+  if(pBtg>=80){
     cor='var(--green)';ico='✓';
-    msg=`<strong>Distribuição saudável (BTG ${pBtg.toFixed(1)}%).</strong> Diversificação institucional adequada — exposição operacional bem gerenciada.`;
+    msg=`<strong>Concentração no BTG (${pBtg.toFixed(1)}%).</strong> Estratégia de centralização — facilita gestão consolidada, atendimento dedicado e escala de produtos.`;
+  } else if(pBtg>=50){
+    cor='var(--green)';ico='✓';
+    msg=`<strong>Distribuição equilibrada (BTG ${pBtg.toFixed(1)}%).</strong> Mistura de centralização e diversificação institucional.`;
+  } else {
+    cor='var(--amber)';ico='⚠️';
+    msg=`<strong>Concentração baixa no BTG (${pBtg.toFixed(1)}%).</strong> Patrimônio fragmentado entre várias instituições — pode dificultar gestão consolidada e perder vantagens de escala.`;
   }
   out.innerHTML=`<div style="margin-bottom:10px">
     <div style="display:flex;font-size:.72rem;color:var(--muted);margin-bottom:4px;font-weight:600">
@@ -2215,7 +2229,7 @@ function stressTest(scenario){
   // Reset baseline (Focus 24/04/2026)
   document.getElementById('sl-contrib').value=460000;
   document.getElementById('sl-ipca').value=4.86;
-  document.getElementById('sl-b45r').value=5.5;
+  document.getElementById('sl-b45r').value=4.5;
   // sl-intl é preservado entre cenários (decisão estrutural do cliente)
   let msgEdu=null;
   if(scenario==='ipca'){
@@ -2276,7 +2290,7 @@ function mostrarStressMsg(msg){
 
 // ===== CRONOGRAMA OPERACIONAL 12 MESES =====
 const CRONO_DEFAULT=[
-  {mes:'Mai/2026',acao:'Posição inicial NTN-B B60 (R$500k) · resto compromissadas distribuído nas demais frentes · cotação seguro Whole Life',resp:'A',status:'⏳ pendente'},
+  {mes:'Mai/2026',acao:'Posição inicial NTN-B B60 (R$460k a IPCA+6,84%) · resto das compromissadas distribuído entre Liquidez/Dividendos/Internacional · cotação seguro Whole Life',resp:'A',status:'⏳ pendente'},
   {mes:'Jun/2026',acao:'Abrir conta global (BTG ou parceiro) · alocar Internacional (R$200k) · seguir cotação Whole Life',resp:'A+C',status:'⏳ pendente'},
   {mes:'Jul/2026',acao:'Estruturação holding patrimonial — consulta jurídica · revisar regime de bens',resp:'3p+C',status:'⏳ pendente'},
   {mes:'Ago/2026',acao:'Atualizar testamento · nomear beneficiários em PGBL/VGBL, seguros e conta internacional (TOD)',resp:'3p+C',status:'⏳ pendente'},
