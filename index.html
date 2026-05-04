@@ -440,7 +440,8 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
       <div class="prm-row"><span class="lbl">Posição inicial (mai/2026)</span><span class="val g">R$ 460.000 · IPCA + 6,84% (até 2060)</span></div>
       <div class="prm-row"><span class="lbl">Aportes futuros (bônus + maturities)</span><span class="val">IPCA + 4,50% (premissa conservadora)</span></div>
       <div class="prm-row"><span class="lbl">Reinvestimento de cupons</span><span class="val">IPCA + 4,50% (flat conservador)</span></div>
-      <div class="prm-row"><span class="lbl">IPCA premissa (Focus 24/04/2026)</span><span class="val dyn" id="prm-ipca">4,86% a.a.</span></div>
+      <div class="prm-row"><span class="lbl">IPCA Focus 2027/28/29</span><span class="val">4,00% / 3,61% / 3,50%</span></div>
+      <div class="prm-row"><span class="lbl">IPCA pós-Focus (2030+, slider)</span><span class="val dyn" id="prm-ipca">4,50% a.a.</span></div>
       <div class="prm-row"><span class="lbl">Taxa reinvest. cupons (slider)</span><span class="val dyn" id="prm-reinv">IPCA+4,50%</span></div>
       <div class="prm-row"><span class="lbl">Custódia BTG (mesa secundária)</span><span class="val g">0% a.a. · isento</span></div>
       <div class="prm-row"><span class="lbl">Custódia Tesouro Direto (B3)</span><span class="val">0,20% a.a. (exceto Selic ≤ R$10k)</span></div>
@@ -593,10 +594,10 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
       <div id="contrib-note" class="sl-note sl-ok">✓ Igual ao mínimo calculado</div>
     </div>
     <div class="slg">
-      <label>IPCA premissa <span id="v-ipca">4,86%</span> <button onclick="resetSlider('ipca')" title="Restaurar Focus 4,86%" style="background:transparent;border:1px solid var(--border);border-radius:50%;width:18px;height:18px;font-size:.7rem;cursor:pointer;color:var(--muted);padding:0;line-height:1">↺</button></label>
-      <input type="range" id="sl-ipca" min="3" max="12" step="0.25" value="4.86">
+      <label>IPCA pós-Focus (2030+) <span id="v-ipca">4,50%</span> <button onclick="resetSlider('ipca')" title="Restaurar default 4,50%" style="background:transparent;border:1px solid var(--border);border-radius:50%;width:18px;height:18px;font-size:.7rem;cursor:pointer;color:var(--muted);padding:0;line-height:1">↺</button></label>
+      <input type="range" id="sl-ipca" min="3" max="12" step="0.25" value="4.5">
       <div class="sl-lim"><span>3%</span><span>12%</span></div>
-      <div class="sl-note sl-info">Focus 24/04/2026 · afeta o valor nominal — o real permanece igual</div>
+      <div class="sl-note sl-info">Anos 2027-2029 usam Focus (4,00% / 3,61% / 3,50%). Slider controla 2030+</div>
     </div>
     <div class="slg">
       <label>Taxa reinvest. cupom (flat conservador) <span id="v-b45r">4,50%</span> <button onclick="resetSlider('b45r')" title="Restaurar default 4,50%" style="background:transparent;border:1px solid var(--border);border-radius:50%;width:18px;height:18px;font-size:.7rem;cursor:pointer;color:var(--muted);padding:0;line-height:1">↺</button></label>
@@ -1491,6 +1492,22 @@ const INTL_REAL_BRL=0.01; // US Treasury 4% USD ≈ IPCA+1% real BRL (após PPP,
 const USD_BRL=5.25; // Câmbio R$/US$ · Focus 24/04/2026 (mediana de mercado)
 const customAportes={};
 
+// IPCA forward por ano (Focus 24/04/2026) — usado para 2027-2029 (forecast period)
+// Após 2029, usa o valor do slider sl-ipca (default 4,5% como premissa conservadora)
+const FOCUS_IPCA={2027:0.0400,2028:0.0361,2029:0.0350};
+function getIPCA(yr,postFocus){
+  if(yr in FOCUS_IPCA)return FOCUS_IPCA[yr];
+  return postFocus;
+}
+// Fator de inflação acumulada de 2026 (hoje) até o FIM do ano yr.
+// factor(2026) = 1 (sem inflação ainda)
+// factor(yr) = produto de (1+IPCA(t)) para t de 2027 até yr
+function cumInfl(yr,postFocus){
+  let f=1;
+  for(let y=2027;y<=yr;y++)f*=(1+getIPCA(y,postFocus));
+  return f;
+}
+
 // ===== CARTEIRA ATUAL DO CLIENTE (snapshot 04/05/2026) =====
 const HOJE=new Date('2026-05-04');
 const CDI_PREMISSA=0.11; // Média Selic 2026-2027 conforme Focus 24/04/2026 (13% e 11%)
@@ -1554,7 +1571,8 @@ function sim(base,ipca,defC,intlInit){
     const cupNet=cupBruto-irPaid;
     cupAccum=(cupAccum+cupNet)*(1+crNet);
     const tot=ntnbTotal+intl; // TOTAL REAL = NTN-B + Internacional
-    const factor=Math.pow(1+ipca,yr-START+1);
+    // Fator inflacionário acumulado de 2026 até o ano yr (year-by-year via Focus + slider pós-Focus)
+    const factor=cumInfl(yr,ipca);
     const nom=tot*factor;
     const metaNom=GOAL*factor;
     return{yr,age:AGE0+(yr-START),b37,b55,b60:yr>2026?b60:0,intl,ntnbTot:ntnbTotal,
@@ -1684,7 +1702,7 @@ function renderEquiv(ipca,gy){
   const grid=document.getElementById('eq-grid');
   grid.innerHTML='';
   yrs.forEach(yr=>{
-    const factor=Math.pow(1+ipca,yr-START+1);
+    const factor=cumInfl(yr,ipca);
     const val=GOAL*factor;
     const isHl=gy&&yr===gy;
     const cell=document.createElement('div');
@@ -1693,7 +1711,7 @@ function renderEquiv(ipca,gy){
     grid.appendChild(cell);
   });
   if(gy && !yrs.includes(gy)){
-    const factor=Math.pow(1+ipca,gy-START+1);
+    const factor=cumInfl(gy,ipca);
     const val=GOAL*factor;
     const cell=document.createElement('div');
     cell.className='eq-cell hl';
@@ -1704,8 +1722,8 @@ function renderEquiv(ipca,gy){
 
 function renderPoderCompra(ipca,gy){
   const fim=2051;
-  const fGy=gy?Math.pow(1+ipca,gy-START+1):null;
-  const fFim=Math.pow(1+ipca,fim-START+1);
+  const fGy=gy?cumInfl(gy,ipca):null;
+  const fFim=cumInfl(fim,ipca);
   const grid=document.getElementById('pc-grid');
   grid.innerHTML='';
   Object.values(POD).forEach(it=>{
@@ -1738,7 +1756,8 @@ function upd(){
   const goalRow=rows.find(r=>r.tot>=GOAL);
   const gy=goalRow?goalRow.yr:null;
   const ff=BONUS-minC;
-  const mult=Math.pow(1+ipca,25);
+  // Multiplicador inflacionário 25 anos = fator acumulado até 2051 (Focus 2027-2029 + post-Focus slider)
+  const mult=cumInfl(2051,ipca);
   const lastRow=rows[rows.length-1];
   const nomFinal=lastRow.nom;
   const nomGy=goalRow?goalRow.nom:null;
@@ -1989,7 +2008,7 @@ function editAporte(span,yr,def){
 function resetAportes(){Object.keys(customAportes).forEach(k=>delete customAportes[k]);upd();}
 // Reset individual de cada slider (botão ↺ ao lado de cada label)
 function resetSlider(which){
-  const defaults={contrib:460000,ipca:4.86,b45r:4.5,intl:200000};
+  const defaults={contrib:460000,ipca:4.5,b45r:4.5,intl:200000};
   const idMap={contrib:'sl-contrib',ipca:'sl-ipca',b45r:'sl-b45r',intl:'sl-intl'};
   const el=document.getElementById(idMap[which]);
   if(el&&defaults[which]!==undefined){el.value=defaults[which];upd();}
@@ -2011,7 +2030,7 @@ function resetConcentracao(){
 }
 function resetTudo(){
   document.getElementById('sl-contrib').value=460000;
-  document.getElementById('sl-ipca').value=4.86;
+  document.getElementById('sl-ipca').value=4.5;
   document.getElementById('sl-b45r').value=4.5;
   document.getElementById('sl-intl').value=200000;
   Object.keys(customAportes).forEach(k=>delete customAportes[k]);
@@ -2088,13 +2107,13 @@ function carregarAnotacoes(){
   }catch(e){console.warn('Erro ao carregar',e);}
 }
 function limparAnotacoes(){
-  if(!confirm('Limpar todas as anotações da reunião E voltar às premissas originais (aporte R$460k, IPCA 4,86%, taxa reinv 4,5%, Intl R$200k, cronograma default)?\n\nEssa ação não pode ser desfeita.'))return;
+  if(!confirm('Limpar todas as anotações da reunião E voltar às premissas originais (aporte R$460k, IPCA pós-Focus 4,5%, taxa reinv 4,5%, Intl R$200k, cronograma default)?\n\nEssa ação não pode ser desfeita.'))return;
   try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
   // Limpa todos os campos da reunião
   FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   // Reseta sliders do simulador para premissas originais (Focus 24/04/2026)
   document.getElementById('sl-contrib').value=460000;
-  document.getElementById('sl-ipca').value=4.86;
+  document.getElementById('sl-ipca').value=4.5;
   document.getElementById('sl-b45r').value=4.5;
   document.getElementById('sl-intl').value=200000;
   // Limpa aportes customizados ano-a-ano
@@ -2228,7 +2247,7 @@ function calcConcentracao(){
 function stressTest(scenario){
   // Reset baseline (Focus 24/04/2026)
   document.getElementById('sl-contrib').value=460000;
-  document.getElementById('sl-ipca').value=4.86;
+  document.getElementById('sl-ipca').value=4.5;
   document.getElementById('sl-b45r').value=4.5;
   // sl-intl é preservado entre cenários (decisão estrutural do cliente)
   let msgEdu=null;
@@ -2424,7 +2443,7 @@ function simWhatIf(base,ipca,aporte,intlInit){
     b60=yr==2026?0:yr==2027?(B60I+contrib)*(1+crNet):b60*(1+crNet)+contrib*(1+crNet);
     if(yr>START)intl*=(1+INTL_REAL_BRL);
     const tot=b37+b55+(yr>2026?b60:0)+intl;
-    const factor=Math.pow(1+ipca,yr-START+1);
+    const factor=cumInfl(yr,ipca);
     return{yr,age:AGE0+(yr-START),tot,nom:tot*factor};
   });
 }
