@@ -357,6 +357,46 @@ footer strong{color:var(--gold);}
 </head>
 <body>
 
+<!-- ====== PASSWORD GATE ====== -->
+<div id="pwGate" style="position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#1B3A6B 0%,#2E5192 100%);z-index:99999;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+  <div style="background:#fff;padding:42px 48px;border-radius:14px;box-shadow:0 12px 48px rgba(0,0,0,0.35);max-width:420px;width:90%;text-align:center;">
+    <div style="font-size:2.2rem;color:#C9A84C;margin-bottom:10px">🔒</div>
+    <div style="font-size:.7rem;letter-spacing:.12em;color:#C9A84C;font-weight:700;margin-bottom:6px">CORDIER INVESTIMENTOS · BTG PACTUAL</div>
+    <h2 style="color:#1B3A6B;margin-bottom:8px;font-size:1.15rem;letter-spacing:.05em;font-weight:700">PLANEJAMENTO PATRIMONIAL</h2>
+    <p style="color:#667;font-size:.8rem;margin-bottom:24px;line-height:1.5">Documento de uso restrito.<br>Acesso protegido por senha.</p>
+    <input type="password" id="pwInput" placeholder="Senha de acesso"
+      style="width:100%;padding:13px 16px;border:1.5px solid #DDE3F0;border-radius:8px;font-size:.95rem;outline:none;margin-bottom:14px;font-family:inherit;letter-spacing:.04em;text-align:center;"
+      onkeydown="if(event.key==='Enter')checkPassword()">
+    <button onclick="checkPassword()"
+      style="width:100%;padding:13px;background:#C9A84C;color:#1B3A6B;border:none;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;transition:background .15s;"
+      onmouseover="this.style.background='#B89640'" onmouseout="this.style.background='#C9A84C'">
+      Desbloquear
+    </button>
+    <div id="pwError" style="color:#C62828;font-size:.78rem;margin-top:12px;display:none">⚠️ Senha incorreta — tente novamente</div>
+    <div style="color:#999;font-size:.66rem;margin-top:18px;border-top:1px solid #eee;padding-top:12px">Em caso de dúvida sobre o acesso, contate Edson · Cordier</div>
+  </div>
+</div>
+
+<script>
+function checkPassword(){
+  const pw=document.getElementById('pwInput').value;
+  if(pw==='@MA2026'){
+    sessionStorage.setItem('pwAuth_p2051','1');
+    document.getElementById('pwGate').style.display='none';
+  } else {
+    document.getElementById('pwError').style.display='block';
+    document.getElementById('pwInput').value='';
+    document.getElementById('pwInput').focus();
+  }
+}
+// Auto-desbloqueia se já autenticado nesta sessão
+if(sessionStorage.getItem('pwAuth_p2051')==='1'){
+  document.getElementById('pwGate').style.display='none';
+} else {
+  setTimeout(()=>document.getElementById('pwInput').focus(),100);
+}
+</script>
+
 <header class="hdr">
   <div>
     <div class="hdr-title">PLANEJAMENTO PATRIMONIAL</div>
@@ -388,7 +428,6 @@ footer strong{color:var(--gold);}
       <div class="prm-row"><span class="lbl">Idade em 2026</span><span class="val">40 anos</span></div>
       <div class="prm-row"><span class="lbl">Horizonte do projeto</span><span class="val">25 anos (até 2051)</span></div>
       <div class="prm-row"><span class="lbl">Bônus anual (premissa flat)</span><span class="val g">R$ 1.500.000</span></div>
-      <div class="prm-row"><span class="lbl">Renda mensal (custo de vida)</span><span class="val">R$ 50.000</span></div>
       <div class="prm-row"><span class="lbl">Patrimônio imobilizado</span><span class="val">R$ 3.000.000</span></div>
       <div class="prm-row"><span class="lbl">Meta patrimonial (valor real 2026)</span><span class="val g">R$ 20MM</span></div>
       <div class="prm-row"><span class="lbl">Seguro vida/invalidez (estimativa)</span><span class="val">R$ 35.000/ano</span></div>
@@ -397,13 +436,14 @@ footer strong{color:var(--gold);}
 
     <div class="prm-sec">
       <div class="prm-sec-ttl">NTN-B — vértice e taxas (financeiro)</div>
-      <div class="prm-row"><span class="lbl">Vértice escolhido</span><span class="val g">B60 — IPCA + 6,84%</span></div>
-      <div class="prm-row"><span class="lbl">Posição inicial (compromissadas → B60)</span><span class="val">~R$ 1,50MM</span></div>
-      <div class="prm-row"><span class="lbl">Aportes futuros (bônus + maturities)</span><span class="val">conforme cronograma</span></div>
-      <div class="prm-row"><span class="lbl">IPCA premissa</span><span class="val dyn" id="prm-ipca">6,15% a.a.</span></div>
+      <div class="prm-row"><span class="lbl">Vértice escolhido</span><span class="val g">B60 (IPCA 2060)</span></div>
+      <div class="prm-row"><span class="lbl">Posição inicial (mai/2026)</span><span class="val g">R$ 500.000 · IPCA + 6,84%</span></div>
+      <div class="prm-row"><span class="lbl">Aportes futuros (premissa conservadora)</span><span class="val">IPCA + 4,50% (bônus + maturities)</span></div>
+      <div class="prm-row"><span class="lbl">IPCA premissa (Focus 24/04/2026)</span><span class="val dyn" id="prm-ipca">4,86% a.a.</span></div>
       <div class="prm-row"><span class="lbl">Taxa reinvest. cupons (curva)</span><span class="val dyn" id="prm-reinv">IPCA+6,50% → 5,50%</span></div>
       <div class="prm-row"><span class="lbl">Custódia BTG (mesa secundária)</span><span class="val g">0% a.a. · isento</span></div>
       <div class="prm-row"><span class="lbl">Custódia Tesouro Direto (B3)</span><span class="val">0,20% a.a. (exceto Selic ≤ R$10k)</span></div>
+      <div class="prm-row"><span class="lbl">Economia BTG vs TD em 25 anos</span><span class="val g">≈ R$ 1.000.000 (sobre R$20MM)</span></div>
 
       <div class="prm-note green" style="margin-top:8px">
         <strong>💡 Por que NTN-B para este projeto:</strong> título público federal — <strong>risco soberano</strong>, o menor disponível no mercado brasileiro. Indexado ao IPCA, blinda o poder de compra ao longo das décadas e contrata um <strong>retorno real fixo</strong> no momento da compra. Vencimentos longos (até 2060) compatíveis com horizonte de aposentadoria, IR regressivo (15% após 720 dias) e <strong>custódia gratuita no BTG</strong> via mesa de renda fixa. É a única classe brasileira que combina <em>segurança, proteção inflacionária e prazo adequado</em> em um único produto.
@@ -422,7 +462,7 @@ footer strong{color:var(--gold);}
       </div>
 
       <div class="prm-note" style="margin-top:6px">
-        <strong>📅 Cadência dos aportes:</strong> a posição inicial vem da realocação imediata das compromissadas (~R$1,5–1,86MM). Os aportes futuros entram conforme o cronograma de liquidez — bônus anual em abril e vencimentos de CDB/LCA atuais ao longo de 2026–2027. Não há "compras programadas" mensais — o aporte segue a entrada de caixa.
+        <strong>📅 Cadência dos aportes:</strong> a posição inicial vem da realocação imediata das compromissadas BTG (R$ 1.856.218,39). Os aportes futuros entram conforme o cronograma de liquidez — bônus anual em abril e vencimentos de CDB/LCA atuais ao longo de 2026–2027. Não há "compras programadas" mensais — o aporte segue a entrada de caixa.
       </div>
     </div>
 
@@ -458,18 +498,18 @@ footer strong{color:var(--gold);}
       <div class="prm-row"><span class="lbl">Média 15 anos</span><span class="val g">5,39% a.a.</span></div>
       <div class="prm-row"><span class="lbl">Mínimo absoluto (2020 pandemia)</span><span class="val a">3,20% a.a.</span></div>
       <div class="prm-row"><span class="lbl">Taxa atual (2025)</span><span class="val g">7,20% a.a.</span></div>
-      <div class="prm-row"><span class="lbl">Selic 2026 / 2027 / 2028+</span><span class="val">12,5% / 10,5% / ≤10,0%</span></div>
+      <div class="prm-row"><span class="lbl">Selic 2026 / 2027 / 2028 / 2029 (Focus)</span><span class="val">13% / 11% / 10% / 9,75%</span></div>
       <div class="prm-row"><span class="lbl">IPCA acumulado 2000-2026 (real)</span><span class="val">≈ 280% (fator 3,8x)</span></div>
     </div>
 
     <div class="prm-sec">
       <div class="prm-sec-ttl">Alocação internacional (US Treasury)</div>
-      <div class="prm-row"><span class="lbl">Câmbio de referência (R$/US$)</span><span class="val g">R$ 5,20 (atualizar conforme dia)</span></div>
+      <div class="prm-row"><span class="lbl">Câmbio de referência (R$/US$)</span><span class="val g">R$ 5,25 (Focus 24/04/2026)</span></div>
       <div class="prm-row"><span class="lbl">Yield US Treasury (10y)</span><span class="val g">4,00% a.a. (USD nominal)</span></div>
       <div class="prm-row"><span class="lbl">Inflação USD (premissa)</span><span class="val">3,00% a.a.</span></div>
       <div class="prm-row"><span class="lbl">Real USD</span><span class="val">≈ 1,00% a.a.</span></div>
-      <div class="prm-row"><span class="lbl">Depreciação BRL/USD (PPP)</span><span class="val">IPCA_BR − IPCA_US ≈ 3,15% a.a.</span></div>
-      <div class="prm-row"><span class="lbl">Retorno em BRL nominal</span><span class="val">≈ 7,15% a.a. (4% USD + 3,15% FX)</span></div>
+      <div class="prm-row"><span class="lbl">Depreciação BRL/USD (PPP)</span><span class="val">IPCA_BR − IPCA_US ≈ 1,86% a.a.</span></div>
+      <div class="prm-row"><span class="lbl">Retorno em BRL nominal</span><span class="val">≈ 5,86% a.a. (4% USD + 1,86% FX)</span></div>
       <div class="prm-row"><span class="lbl">Retorno em BRL real (no modelo)</span><span class="val g">IPCA + 1,00% a.a.</span></div>
       <div class="prm-note blue">Internacional é tratada como vértice adicional do plano: posição inicial em USD Treasury crescendo a IPCA+1% real BRL. Soma ao patrimônio total para fins de meta. Útil para diversificação cambial, educação dos filhos no exterior em 10-20 anos e liquidez para viagens. O equivalente em USD na tabela de Alocação usa o câmbio de referência acima.</div>
     </div>
@@ -524,19 +564,14 @@ footer strong{color:var(--gold);}
     <strong>Posição em USD ao longo do tempo</strong> compondo a 4,00% a.a. (USD nominal). Ao lado, o equivalente em <strong>BRL real</strong> (poder de compra de hoje) crescendo a IPCA+1% via PPP. Mostra como a alocação contribui para o patrimônio total ao longo do plano.
   </div>
   <div class="eq-grid" id="usd-trajectory-grid"></div>
-  <div class="prm-note purple" style="margin-top:12px;background:rgba(255,255,255,0.6);border-color:#9C27B0">
-    Câmbio de referência <strong>R$ 5,20/USD</strong>. Em 25 anos, a posição inicial dobra mais de 2,5× em USD (4% a.a.) e o valor em BRL real cresce ~28% via PPP — soma ao patrimônio total para fins de meta. Ajuste o slider "Alocação internacional" para ver o efeito em tempo real.
+  <div class="prm-note purple" style="margin-top:12px;background:rgba(255,255,255,0.6);border-color:#9C27B0" id="usd-note-rate">
+    <!-- Conteúdo gerado dinamicamente em renderUsdTrajectory() para usar USD_BRL atual -->
   </div>
 </div>
 
 <!-- PODER DE COMPRA — com âncora histórica em 2000 -->
 <div class="pc-card">
   <div class="card-ttl"><div class="card-ttl-l">Poder de compra — ancoragem histórica + projeção futura</div></div>
-  <div class="pc-anchor-info">
-    <strong>Por que isso importa:</strong> os valores projetados para 2051 podem parecer altos, mas refletem o mesmo
-    fenômeno que ocorreu de <strong>2000 até hoje</strong>. A coluna "2000" mostra quanto cada item realmente custava
-    há 26 anos — a inflação observada (≈ 280% acumulado) é coerente com a premissa do modelo daqui para frente.
-  </div>
   <div class="pc-grid" id="pc-grid"></div>
   <div class="prm-note blue" style="margin-top:12px">
     Valores de 2000 são aproximações de mercado. A NTN-B compensa exatamente esse efeito: protege o poder de compra do principal e dos cupons.
@@ -553,15 +588,15 @@ footer strong{color:var(--gold);}
   <div class="ctrl-grid">
     <div class="slg">
       <label>Aporte anual padrão <span id="v-contrib">—</span></label>
-      <input type="range" id="sl-contrib" min="100000" max="2000000" step="10000" value="361270">
+      <input type="range" id="sl-contrib" min="100000" max="2000000" step="10000" value="460000">
       <div class="sl-lim"><span>R$ 100k</span><span>R$ 2MM</span></div>
       <div id="contrib-note" class="sl-note sl-ok">✓ Igual ao mínimo calculado</div>
     </div>
     <div class="slg">
-      <label>IPCA premissa <span id="v-ipca">6,15%</span></label>
-      <input type="range" id="sl-ipca" min="3" max="12" step="0.25" value="6.15">
+      <label>IPCA premissa <span id="v-ipca">4,86%</span></label>
+      <input type="range" id="sl-ipca" min="3" max="12" step="0.25" value="4.86">
       <div class="sl-lim"><span>3%</span><span>12%</span></div>
-      <div class="sl-note sl-info">Afeta o valor nominal — o real permanece igual</div>
+      <div class="sl-note sl-info">Focus 24/04/2026 · afeta o valor nominal — o real permanece igual</div>
     </div>
     <div class="slg">
       <label>Taxa reinvest. base (B60) <span id="v-b45r">5,50%</span></label>
@@ -570,8 +605,8 @@ footer strong{color:var(--gold);}
       <div class="sl-note sl-info">Ponto final da curva de convergência IPCA+</div>
     </div>
     <div class="slg">
-      <label>Alocação internacional (USD Treasury) <span id="v-intl">R$ 0</span></label>
-      <input type="range" id="sl-intl" min="0" max="3000000" step="50000" value="0">
+      <label>Alocação internacional (USD Treasury) <span id="v-intl">R$ 200.000</span></label>
+      <input type="range" id="sl-intl" min="0" max="3000000" step="50000" value="200000">
       <div class="sl-lim"><span>R$ 0</span><span>R$ 3MM</span></div>
       <div class="sl-note sl-info" id="intl-note">Posição em US Treasury 4% USD ≈ IPCA+1% real BRL (após PPP)</div>
     </div>
@@ -589,10 +624,10 @@ footer strong{color:var(--gold);}
       <li>"Restaurar premissas originais" (botão dourado acima) volta ao baseline a qualquer momento</li>
     </ul>
     <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-      <button class="btn-r" onclick="stressTest('ipca')" title="IPCA dispara para 12% — testa resiliência inflacionária">📉 IPCA dispara para 12%</button>
-      <button class="btn-r" onclick="stressTest('selic')" title="Selic cai para 4% — corrói reinvestimento de cupons">💸 Selic cai para 4%</button>
+      <button class="btn-r" onclick="stressTest('ipca')" title="IPCA dispara para 12% — NTN-B protege a meta real">📉 IPCA dispara para 12%</button>
+      <button class="btn-r" onclick="stressTest('selic_alta')" title="Selic permanece alta (15%+) com inflação persistente — testa cenário de juros sustentados">📈 Selic alta sustentada</button>
       <button class="btn-r" onclick="stressTest('crash')" title="Crash NTN-B: taxas longas voltam a 3% — pior cenário para reinvestimento">📊 Crash NTN-B (taxas 3%)</button>
-      <button class="btn-r" onclick="stressTest('total')" title="Combinação dos três cenários adversos — pior caso plausível">🌪️ Cenário pessimista combinado</button>
+      <button class="btn-r" onclick="stressTest('total')" title="Combinação dos cenários adversos — pior caso plausível">🌪️ Cenário pessimista combinado</button>
     </div>
   </div>
 </div>
@@ -706,9 +741,9 @@ footer strong{color:var(--gold);}
     <div class="panel-sub">Cupom bruto, IR retido (15%) e cupom líquido reinvestido na curva de convergência IPCA+.</div>
     <div class="conv-legend">
       <span class="conv-pill" style="background:#E3F2FD;color:#0D47A1">2026-28: IPCA+6,50%</span>
-      <span class="conv-pill" style="background:#E8F5E9;color:#1B5E20">2029-32: IPCA+6,00%</span>
-      <span class="conv-pill" style="background:#FFF8E7;color:#7B4F00">2033-37: IPCA+5,75%</span>
-      <span class="conv-pill" style="background:#F3E5F5;color:#4A148C">2038-51: IPCA+5,50%</span>
+      <span class="conv-pill" style="background:#E8F5E9;color:#1B5E20">2029-33: IPCA+6,00%</span>
+      <span class="conv-pill" style="background:#FFF8E7;color:#7B4F00">2034-40: IPCA+5,75%</span>
+      <span class="conv-pill" style="background:#F3E5F5;color:#4A148C">2041-51: IPCA+5,50%</span>
       <span class="conv-pill" style="background:#FCE4EC;color:#880E4F">IR 15% sobre cada cupom</span>
     </div>
     <div class="leg">
@@ -726,11 +761,11 @@ footer strong{color:var(--gold);}
 <div class="card">
   <div class="card-ttl"><div class="card-ttl-l">Linha do tempo — marcos do projeto</div></div>
   <div class="tl">
-    <div class="tli"><div class="tl-dot">Mai</div><div class="tl-yr">2026</div><div class="tl-desc">Realocação<br>compromissadas<br>→ B60</div></div>
-    <div class="tli"><div class="tl-dot gold">Out</div><div class="tl-yr">2026</div><div class="tl-desc">LCA Original<br>vence · +R$192k<br>→ B60</div></div>
-    <div class="tli"><div class="tl-dot">Abr</div><div class="tl-yr">2027</div><div class="tl-desc">Bônus + CDB<br>+ LCA Bocom<br>→ B60</div></div>
-    <div class="tli"><div class="tl-dot gold">Out</div><div class="tl-yr">2027</div><div class="tl-desc">LCA BTG vence<br>+R$227k<br>→ B60</div></div>
-    <div class="tli"><div class="tl-dot">28+</div><div class="tl-yr">2028+</div><div class="tl-desc">Bônus anual<br>recorrente<br>→ B60</div></div>
+    <div class="tli"><div class="tl-dot">Mai</div><div class="tl-yr">2026</div><div class="tl-desc">Posição inicial<br>R$500k → B60<br>(IPCA+6,84%)</div></div>
+    <div class="tli"><div class="tl-dot gold">Out</div><div class="tl-yr">2026</div><div class="tl-desc">LCA Original<br>vence · +R$192k</div></div>
+    <div class="tli"><div class="tl-dot">Abr</div><div class="tl-yr">2027</div><div class="tl-desc">Bônus + CDB<br>+ LCA Bocom<br>(IPCA+4,5%)</div></div>
+    <div class="tli"><div class="tl-dot gold">Out</div><div class="tl-yr">2027</div><div class="tl-desc">LCA BTG<br>vence · +R$227k</div></div>
+    <div class="tli"><div class="tl-dot">28+</div><div class="tl-yr">2028+</div><div class="tl-desc">Bônus anual<br>recorrente<br>(IPCA+4,5%)</div></div>
     <div class="tli">
       <div class="tl-dot green" id="tl-dot"><span id="tl-dot-txt">49</span></div>
       <div class="tl-yr" id="tl-yr">2049</div>
@@ -877,8 +912,7 @@ footer strong{color:var(--gold);}
     <ul style="font-size:.74rem;color:var(--muted);line-height:1.6;margin:0 0 12px 20px;padding:0">
       <li><strong>Risco operacional / institucional:</strong> nenhuma instituição deve concentrar mais de <strong>70% do AUM líquido</strong> — diversificar custódia reduz exposição a falência, intervenção do BC ou problemas operacionais</li>
       <li><strong>Risco de segmento:</strong> máximo 50% em uma única classe (NTN-B, FIIs, ações) — exceto NTN-B em planos focados em aposentadoria, onde pode ser maior por design</li>
-      <li><strong>Risco geográfico:</strong> meta 10-20% em ativos internacionais (USD/EUR) — protege contra eventos sistêmicos do Brasil (Selic disparando, crise fiscal, depreciação cambial)</li>
-      <li><strong>Sócios de escritórios de advocacia / consultoria:</strong> tipicamente têm exposição operacional ao banco principal (conta PJ + custódia + financiamentos) — a diversificação de custódia adicional é prudente</li>
+      <li><strong>Risco geográfico:</strong> meta <strong>20-30%</strong> em ativos internacionais (USD/EUR) — protege contra eventos sistêmicos do Brasil (Selic disparando, crise fiscal, depreciação cambial)</li>
       <li>O cálculo abaixo soma as posições em cada instituição e gera o gráfico de % consolidado</li>
     </ul>
     <div class="mtg-fields">
@@ -961,6 +995,7 @@ footer strong{color:var(--gold);}
     <ul style="font-size:.74rem;color:#7B4F00;line-height:1.6;margin:0 0 12px 20px;padding:0">
       <li><strong>Seguro de vida</strong> com beneficiário nomeado: capital pago em ~30 dias diretamente, fora do inventário (em SP é isento de ITCMD; em alguns estados há ITCMD)</li>
       <li><strong>PGBL/VGBL</strong> com beneficiário nomeado: idem — passa fora do inventário em SP, com liquidez quase imediata</li>
+      <li><strong>Conta internacional / TOD:</strong> nas jurisdições EUA/UE, o instrumento <em>Transfer on Death</em> (TOD) ou beneficiário nomeado evita o probate (inventário americano) — relevante para a alocação Internacional</li>
       <li><strong>Sem beneficiários nomeados:</strong> o capital cai no espólio, fica preso 1-3 anos no inventário e paga ITCMD normalmente — perda de tempo e liquidez para a família</li>
       <li><strong>Atualizar a cada evento de vida</strong>: casamento, novo filho, divórcio, óbito de beneficiário, mudança patrimonial relevante</li>
       <li>Vitória rápida em planejamento sucessório — economia direta de ITCMD + agilidade no acesso à liquidez para os dependentes</li>
@@ -974,41 +1009,13 @@ footer strong{color:var(--gold);}
         <label>Beneficiários do PGBL/VGBL <span class="ti" data-tip="Quem está nomeado nos contratos de previdência. Em SP, esses recursos passam fora do inventário se houver beneficiário nomeado.">?</span></label>
         <input type="text" id="m-4-benef-prev" placeholder="Quem está nomeado nos contratos">
       </div>
+      <div class="mtg-field span2">
+        <label>Beneficiários da conta internacional / TOD (Transfer on Death) <span class="ti" data-tip="Em contas globais (US/Europa), o instrumento TOD (Transfer on Death) ou beneficiário nomeado faz a conta passar fora do inventário americano (probate). Crítico para a alocação Internacional.">?</span></label>
+        <input type="text" id="m-4-benef-intl" placeholder="Ex.: cônjuge 100% via TOD na conta global · ou trust estruturado">
+      </div>
     </div>
   </div>
 
-  <!-- Cobertura Atuarial -->
-  <div style="margin-top:14px;padding:14px 16px;background:#F0F4FA;border:1px solid var(--border);border-radius:8px">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-      <span style="font-size:1.2rem">🛡️</span>
-      <strong style="font-size:.85rem;color:var(--navy)">Cobertura atuarial — análise da adequação do seguro de vida</strong>
-    </div>
-    <ul style="font-size:.74rem;color:var(--muted);line-height:1.6;margin:0 0 12px 20px;padding:0">
-      <li><strong>Regra de bolso:</strong> cobertura ideal de seguro de vida = <strong>10× a 20× renda bruta anual</strong> — garante padrão de vida da família por 10-20 anos sem o segurado</li>
-      <li>Multiplicador <strong>10×</strong>: famílias estabelecidas, dependentes próximos da independência, patrimônio acumulado</li>
-      <li>Multiplicador <strong>15×</strong>: padrão recomendado — equilíbrio entre proteção e custo do prêmio</li>
-      <li>Multiplicador <strong>20×</strong>: famílias jovens com filhos pequenos / dependentes longos / sem patrimônio acumulado</li>
-      <li>Ajusta-se conforme o patrimônio: quanto mais ativo financeiro, menos seguro necessário (o patrimônio é a "reserva técnica")</li>
-      <li>Cálculo automático abaixo a partir da Renda Mensal preenchida no Bloco 3</li>
-    </ul>
-    <div class="mtg-fields">
-      <div class="mtg-field">
-        <label>Cobertura atual contratada <span class="ti" data-tip="Soma das coberturas vigentes em todas as apólices de vida. Compare com o recomendado abaixo.">?</span></label>
-        <input type="text" id="m-4-cobertura-atual" placeholder="R$ (ex.: 5.000.000,00)">
-      </div>
-      <div class="mtg-field">
-        <label>Multiplicador de continuidade (anos) <span class="ti" data-tip="Quantos anos de renda da família a cobertura precisa garantir. 15 é o padrão; 20 para famílias jovens; 10 para famílias estabelecidas.">?</span></label>
-        <select id="m-4-mult-anos">
-          <option value="10">10× (família estabelecida)</option>
-          <option value="15" selected>15× (recomendado padrão)</option>
-          <option value="20">20× (família jovem com filhos pequenos)</option>
-        </select>
-      </div>
-    </div>
-    <div id="atuarial-result" style="margin-top:12px;padding:14px;background:#fff;border:1px solid var(--border);border-radius:6px;font-size:.78rem;line-height:1.6">
-      <em style="color:var(--muted);font-size:.74rem">Preencha "Renda mensal líquida" no Bloco 3 para análise atuarial.</em>
-    </div>
-  </div>
 </div>
 
 <!-- BLOCO 5: SUCESSÃO -->
@@ -1201,12 +1208,13 @@ footer strong{color:var(--gold);}
     <table class="mtg-aloc-table">
       <thead>
         <tr>
-          <th style="width:18%">Bloco</th>
-          <th style="width:24%">Objetivo / Produto típico</th>
-          <th style="width:18%">Valor (R$)</th>
-          <th style="width:10%">% AUM</th>
-          <th style="width:18%">Cobertura / Equiv. USD</th>
-          <th style="width:12%">Prazo</th>
+          <th style="width:16%">Bloco</th>
+          <th style="width:22%">Objetivo / Produto típico</th>
+          <th style="width:16%">Valor (R$)</th>
+          <th style="width:9%">% AUM</th>
+          <th style="width:13%">Cobertura</th>
+          <th style="width:13%">Equiv. USD</th>
+          <th style="width:11%">Prazo</th>
         </tr>
       </thead>
       <tbody>
@@ -1216,6 +1224,7 @@ footer strong{color:var(--gold);}
           <td><input type="text" id="m-aloc-liq-v" placeholder="R$"></td>
           <td><input type="text" id="m-aloc-liq-p" readonly style="background:#F8FAFF"></td>
           <td style="color:#999;text-align:center">—</td>
+          <td style="color:#999;text-align:center">—</td>
           <td><input type="text" id="m-aloc-liq-pz" value="0-12 meses"></td>
         </tr>
         <tr>
@@ -1224,13 +1233,15 @@ footer strong{color:var(--gold);}
           <td><input type="text" id="m-aloc-mid-v" placeholder="R$"></td>
           <td><input type="text" id="m-aloc-mid-p" readonly style="background:#F8FAFF"></td>
           <td style="color:#999;text-align:center">—</td>
+          <td style="color:#999;text-align:center">—</td>
           <td><input type="text" id="m-aloc-mid-pz" value="2-7 anos"></td>
         </tr>
         <tr>
           <td><strong>Aposentadoria (NTN-B)</strong> <span class="ti" data-tip="Acumulação protegida da inflação. NTN-B paga IPCA + cupom real, mantém poder de compra de longo prazo. Núcleo do plano de independência financeira.">?</span></td>
-          <td id="m-aloc-apos-obj">Longo prazo · NTN-B B37/B55/B60 · posição inicial</td>
+          <td id="m-aloc-apos-obj">Longo prazo · NTN-B B60 · posição inicial</td>
           <td><input type="text" id="m-aloc-apos-v" readonly style="background:#FFF8E7"></td>
           <td><input type="text" id="m-aloc-apos-p" readonly style="background:#F8FAFF"></td>
+          <td style="color:#999;text-align:center">—</td>
           <td style="color:#999;text-align:center">—</td>
           <td><input type="text" id="m-aloc-apos-pz" readonly style="background:#FFF8E7"></td>
         </tr>
@@ -1240,13 +1251,15 @@ footer strong{color:var(--gold);}
           <td><input type="text" id="m-aloc-div-v" placeholder="R$"></td>
           <td><input type="text" id="m-aloc-div-p" readonly style="background:#F8FAFF"></td>
           <td style="color:#999;text-align:center">—</td>
+          <td style="color:#999;text-align:center">—</td>
           <td><input type="text" id="m-aloc-div-pz" value="Permanente · liquidez mesa"></td>
         </tr>
         <tr>
-          <td><strong>Internacional (USD/EUR)</strong> <span class="ti" data-tip="Diversificação cambial e geográfica. Aproveita momento de dólar baixo, prepara educação dos filhos no exterior em 10-20 anos e gera liquidez para viagens. Hedge contra risco Brasil. Ajuste o valor via slider 'Alocação internacional' no simulador.">?</span></td>
+          <td><strong>Internacional (USD/EUR)</strong> <span class="ti" data-tip="Diversificação cambial e geográfica. Sincronização bidirecional: alterar aqui ou no slider do simulador atualiza ambos os lados.">?</span></td>
           <td>Diversificação cambial · Educação no exterior · Viagens</td>
-          <td><input type="text" id="m-aloc-intl-v" readonly style="background:#FFF8E7" placeholder="ajustar via slider"></td>
+          <td><input type="text" id="m-aloc-intl-v" placeholder="R$ (ou ajuste via slider)"></td>
           <td><input type="text" id="m-aloc-intl-p" readonly style="background:#F8FAFF"></td>
+          <td style="color:#999;text-align:center">—</td>
           <td style="text-align:center;font-size:.78rem;color:#5E35B1;font-weight:700" id="m-aloc-intl-usd">—</td>
           <td><input type="text" id="m-aloc-intl-pz" value="Permanente · escalável"></td>
         </tr>
@@ -1256,6 +1269,7 @@ footer strong{color:var(--gold);}
           <td><input type="text" id="m-aloc-prot-v" placeholder="Prêmio anual"></td>
           <td style="color:#999;text-align:center;font-size:.7rem">despesa</td>
           <td><input type="text" id="m-aloc-prot-cob" placeholder="Ex.: R$5MM vida"></td>
+          <td style="color:#999;text-align:center">—</td>
           <td><input type="text" id="m-aloc-prot-pz" value="Permanente"></td>
         </tr>
         <tr class="summary">
@@ -1263,7 +1277,7 @@ footer strong{color:var(--gold);}
           <td style="font-size:.7rem;color:var(--green)">Liquidez + Médio prazo + NTN-B + Dividendos + Internacional</td>
           <td><input type="text" id="m-aloc-total-v" readonly style="background:#E8F5E9;color:var(--green);font-weight:800"></td>
           <td>100%</td>
-          <td colspan="2" style="font-size:.7rem;color:var(--muted);text-align:left;padding-left:14px">Proteção é despesa recorrente — não entra no AUM</td>
+          <td colspan="3" style="font-size:.7rem;color:var(--muted);text-align:left;padding-left:14px">Proteção é despesa recorrente — não entra no AUM</td>
         </tr>
       </tbody>
     </table>
@@ -1394,18 +1408,18 @@ footer strong{color:var(--gold);}
 <div class="mtg-block">
   <div class="mtg-block-hdr"><div class="mtg-num">10</div><h3>Próximos Passos</h3></div>
 
-  <!-- Cronograma operacional 12 meses -->
+  <!-- Cronograma operacional 18 meses -->
   <div style="margin-bottom:18px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
       <span style="font-size:1.2rem">📋</span>
-      <strong style="font-size:.85rem;color:var(--navy)">Cronograma operacional · próximos 12 meses</strong>
+      <strong style="font-size:.85rem;color:var(--navy)">Cronograma operacional · próximos 18 meses (mai/2026 a out/2027)</strong>
     </div>
     <ul style="font-size:.74rem;color:var(--muted);line-height:1.6;margin:0 0 12px 20px;padding:0">
-      <li>Estrutura mensal de execução do plano de mai/2026 a abr/2027 — pré-populada com as ações lógicas baseadas na carteira e cronograma de liquidez</li>
+      <li>Estrutura mensal de execução do plano cobrindo <strong>todos os vencimentos de CDB/LCAs</strong> — incluindo o último: LCA BTG em out/2027</li>
       <li><strong>Responsáveis:</strong> A = assessor (Edson) · C = cliente · 3p = terceiros (advogado, contador, seguradora)</li>
       <li><strong>Status:</strong> ⏳ pendente · 🔄 em andamento · ✓ concluído · ⛔ bloqueado</li>
       <li>Permite acompanhamento entre reuniões e gera documento executivo no PDF da reunião</li>
-      <li>Edite cada linha conforme a discussão — datas e responsáveis flexíveis</li>
+      <li>Edite cada linha conforme a discussão — datas, ações e responsáveis flexíveis</li>
     </ul>
     <div class="twrap">
       <table class="dt" style="font-size:.74rem">
@@ -1464,20 +1478,25 @@ const GOAL=20e6,BONUS=1.5e6;
 // - "B55" = 0 (não usado neste plano)
 // - "B60" representa os APORTES ACUMULADOS (bônus + vencimentos de CDB/LCAs)
 // Cliente não tem NTN-B atual — o saldo inicial vem do redirecionamento das compromissadas BTG.
-const B37I=1504e3; // posição inicial NTN-B (~R$1,5MM de compromissadas direcionadas a B60)
+// Posição inicial NTN-B = R$500k em B60, alocação imediata em mai/2026 (trava a taxa atual alta).
+// Resto das compromissadas (R$1,36MM) é distribuído entre outras frentes (Liquidez, Dividendos, Internacional, etc.)
+// na decisão da reunião.
+const B37I=500e3;
 const B55I=0;
 const B60I=0;
-const B37R=.0684,B55R=.0684,B60R=.0684,B37RV=.0684; // tudo IPCA+6,84% (taxa B60 atual)
+// Duas taxas: inicial trava IPCA+6,84% (mercado atual) · aportes futuros assumem IPCA+4,5% conservador.
+// Premissa: não dá para garantir que IPCA+6,84% estará disponível em abr/2027+. Usa 4,5% como prudência.
+const B37R=.0684,B55R=.045,B60R=.045,B37RV=.045;
 const START=2026,END=2051,AGE0=40;
 const YRS=Array.from({length:END-START+1},(_,i)=>START+i);
 const COUP=0.06,IR_R=0.15,DRAG=COUP*IR_R/(1+0.0615);
-const INTL_REAL_BRL=0.01; // US Treasury 4% USD ≈ IPCA+1% real BRL (após PPP)
-const USD_BRL=5.20; // Câmbio de referência R$/US$ — atualizar conforme premissa do dia
+const INTL_REAL_BRL=0.01; // US Treasury 4% USD ≈ IPCA+1% real BRL (após PPP, baseado em Focus)
+const USD_BRL=5.25; // Câmbio R$/US$ · Focus 24/04/2026 (mediana de mercado)
 const customAportes={};
 
-// ===== CARTEIRA ATUAL DO CLIENTE (snapshot 03/05/2026) =====
-const HOJE=new Date('2026-05-03');
-const CDI_PREMISSA=0.1265; // ~Selic 12,5%
+// ===== CARTEIRA ATUAL DO CLIENTE (snapshot 04/05/2026) =====
+const HOJE=new Date('2026-05-04');
+const CDI_PREMISSA=0.11; // Média Selic 2026-2027 conforme Focus 24/04/2026 (13% e 11%)
 const CARTEIRA=[
   {tipo:'CDB',produto:'CDB',banco:'Banco BMG S.A.',vencimento:'2027-04-09',taxa:'15,33% a.a.',taxaNum:0.1533,taxaTipo:'aa',saldoLiq:181359.85,saldoBruto:185890.72,isencaoIR:false,qtd:160},
   {tipo:'LCA',produto:'LCA',banco:'Banco Original S/A',vencimento:'2026-10-09',taxa:'91,50% CDI',taxaNum:0.915,taxaTipo:'cdi',saldoLiq:182715.84,saldoBruto:182715.84,isencaoIR:true,qtd:160},
@@ -1508,8 +1527,8 @@ const P=v=>(v*100).toFixed(1)+'%';
 
 function convRate(yr,base){
   if(yr<=2028)return Math.max(0.065,base+0.01);
-  if(yr<=2032)return Math.max(0.060,base+0.005);
-  if(yr<=2037)return Math.max(0.0575,base+0.0025);
+  if(yr<=2033)return Math.max(0.060,base+0.005);
+  if(yr<=2040)return Math.max(0.0575,base+0.0025);
   return base;
 }
 function calcMin(base,intlInit){
@@ -1658,6 +1677,12 @@ function renderUsdTrajectory(intlBRL){
     </div>`;
   });
   grid.innerHTML=html;
+  // Atualiza a nota explicativa com o câmbio dinâmico (constante USD_BRL)
+  const noteEl=document.getElementById('usd-note-rate');
+  if(noteEl){
+    const cambioFmt=USD_BRL.toFixed(2).replace('.',',');
+    noteEl.innerHTML=`Câmbio de referência <strong>R$ ${cambioFmt}/USD</strong> (Focus 24/04/2026). Em 25 anos, a posição inicial dobra mais de 2,5× em USD (4% a.a.) e o valor em BRL real cresce ~28% via PPP — soma ao patrimônio total para fins de meta. Ajuste o slider "Alocação internacional" para ver o efeito em tempo real.`;
+  }
 }
 function renderEquiv(ipca,gy){
   const yrs=[2030,2035,2040,2045,2050,2051];
@@ -1884,18 +1909,14 @@ function upd(){
     const ntnbCommitted=ntnbInicial+defC*yearsAporte;
     const ntnbAtGoal=goalRow?goalRow.ntnbTot:(lastRow?lastRow.ntnbTot:0);
     aposEl.value=fmtBR(defC)+'/ano';
-    // Coluna Objetivo enriquecida — estrutura do compromisso e projeção
+    // Coluna Objetivo — versão enxuta (detalhes ficam no Bloco 9 do modelo)
     const objEl=document.getElementById('m-aloc-apos-obj');
-    if(objEl)objEl.innerHTML=`Longo prazo · NTN-B B60 (IPCA+6,84%) · <strong>aporte anual</strong><br>
-      <span style="font-size:.7rem;color:var(--muted);font-weight:400">
-        Inicial <strong>${fmtBR(ntnbInicial)}</strong> (compromissadas) · ${yearsAporte} anos de aporte (bônus + maturities)
-        · total ${fmtBR(ntnbCommitted)}
-        · projetado ${gy||'2051'}: <strong style="color:var(--green)">${Rm(ntnbAtGoal)}</strong>
-      </span>`;
+    if(objEl)objEl.innerHTML=`Longo prazo · <strong>NTN-B B60 (IPCA+6,84%)</strong> · aporte anual recorrente`;
     document.getElementById('m-aloc-apos-pz').value=gy?`Até ${gy} (${AGE0+(gy-START)} anos)`:`>2051`;
-    // Internacional — SEMPRE sincronizado com o slider (slider é fonte da verdade)
+    // Internacional — sincronização BIDIRECIONAL (slider ↔ campo)
+    // Flag window.__intlTyping evita sobrescrita enquanto usuário digita no campo
     const intlEl=document.getElementById('m-aloc-intl-v');
-    if(intlEl)intlEl.value=intl>0?fmtBR(intl):'';
+    if(intlEl&&!window.__intlTyping)intlEl.value=intl>0?fmtBR(intl):'';
     // Bloco 9 — Resumo do Modelo NTN-B
     document.getElementById('m-mod-aporte').value=fmtBR(defC);
     document.getElementById('m-mod-min').value=fmtBR(minC);
@@ -1912,11 +1933,18 @@ function upd(){
 
   // Tabela patrimônio
   const tbP=document.getElementById('tbody-pat'); tbP.innerHTML='';
+  // Linha 2026 — posição inicial (ANTES de qualquer aporte)
+  const linha2026=document.createElement('tr');
+  linha2026.style.cssText='background:#FFF8E7 !important;font-weight:600';
+  linha2026.innerHTML=`<td style="color:var(--amber)">2026</td><td style="color:var(--amber)">40</td>
+    <td>${R(B37I)}</td><td>—</td><td>${intl>0?R(intl):'—'}</td>
+    <td style="color:var(--amber);font-style:italic">— início —</td>
+    <td><strong>${R(B37I+intl)}</strong></td><td>${R(B37I+intl)}</td><td>${R(GOAL)}</td><td>${P((B37I+intl)/GOAL)}</td>`;
+  tbP.appendChild(linha2026);
   rows.forEach(row=>{
     if(row.yr<2027)return;
     const tr=document.createElement('tr');
     if(row.yr===gy)tr.className='hl';
-    else if(row.yr===2037)tr.className='hl2037';
     const isC=customAportes[row.yr]!==undefined;
     const aC=document.createElement('td');
     aC.innerHTML=`<span class="ap-cell${isC?' custom':''}" onclick="editAporte(this,${row.yr},${defC})">${R(row.contrib)}<span class="eh">✎</span></span>`;
@@ -1968,10 +1996,10 @@ function editAporte(span,yr,def){
 }
 function resetAportes(){Object.keys(customAportes).forEach(k=>delete customAportes[k]);upd();}
 function resetTudo(){
-  document.getElementById('sl-contrib').value=361270;
-  document.getElementById('sl-ipca').value=6.15;
+  document.getElementById('sl-contrib').value=460000;
+  document.getElementById('sl-ipca').value=4.86;
   document.getElementById('sl-b45r').value=5.5;
-  document.getElementById('sl-intl').value=0;
+  document.getElementById('sl-intl').value=200000;
   Object.keys(customAportes).forEach(k=>delete customAportes[k]);
   upd();
 }
@@ -1994,8 +2022,7 @@ const FIELDS=[
   'm-2-conc-btg','m-2-conc-outras', // concentração patrimonial
   'm-3-renda','m-3-despesas','m-3-aporte-m','m-3-aporte-a','m-3-bonus','m-3-eventos',
   'm-4-vida','m-4-invalidez','m-4-patrim','m-4-saude','m-4-gaps',
-  'm-4-benef-vida','m-4-benef-prev', // beneficiários nomeados
-  'm-4-cobertura-atual','m-4-mult-anos', // cobertura atuarial
+  'm-4-benef-vida','m-4-benef-prev','m-4-benef-intl', // beneficiários nomeados (vida + previdência + conta internacional/TOD)
   'm-5-testamento','m-5-doacao','m-5-itcmd','m-5-mitigacao',
   'm-6-educacao','m-6-imovel','m-6-veiculo','m-6-viagens','m-6-outros',
   'm-6-edu-cost','m-6-edu-years','m-6-edu-duration','m-6-edu-infl', // calc educação
@@ -2008,19 +2035,25 @@ const FIELDS=[
   'm-aloc-obs',
   'wi-aporte',
   'm-10-docs','m-10-prox','m-11-obs',
-  // cronograma 12 meses (gerado dinamicamente)
-  'crono-1-acao','crono-1-resp','crono-1-status',
-  'crono-2-acao','crono-2-resp','crono-2-status',
-  'crono-3-acao','crono-3-resp','crono-3-status',
-  'crono-4-acao','crono-4-resp','crono-4-status',
-  'crono-5-acao','crono-5-resp','crono-5-status',
-  'crono-6-acao','crono-6-resp','crono-6-status',
-  'crono-7-acao','crono-7-resp','crono-7-status',
-  'crono-8-acao','crono-8-resp','crono-8-status',
-  'crono-9-acao','crono-9-resp','crono-9-status',
-  'crono-10-acao','crono-10-resp','crono-10-status',
-  'crono-11-acao','crono-11-resp','crono-11-status',
-  'crono-12-acao','crono-12-resp','crono-12-status'
+  // cronograma 18 meses (gerado dinamicamente — datas, ação, responsável e status editáveis)
+  'crono-1-mes','crono-1-acao','crono-1-resp','crono-1-status',
+  'crono-2-mes','crono-2-acao','crono-2-resp','crono-2-status',
+  'crono-3-mes','crono-3-acao','crono-3-resp','crono-3-status',
+  'crono-4-mes','crono-4-acao','crono-4-resp','crono-4-status',
+  'crono-5-mes','crono-5-acao','crono-5-resp','crono-5-status',
+  'crono-6-mes','crono-6-acao','crono-6-resp','crono-6-status',
+  'crono-7-mes','crono-7-acao','crono-7-resp','crono-7-status',
+  'crono-8-mes','crono-8-acao','crono-8-resp','crono-8-status',
+  'crono-9-mes','crono-9-acao','crono-9-resp','crono-9-status',
+  'crono-10-mes','crono-10-acao','crono-10-resp','crono-10-status',
+  'crono-11-mes','crono-11-acao','crono-11-resp','crono-11-status',
+  'crono-12-mes','crono-12-acao','crono-12-resp','crono-12-status',
+  'crono-13-mes','crono-13-acao','crono-13-resp','crono-13-status',
+  'crono-14-mes','crono-14-acao','crono-14-resp','crono-14-status',
+  'crono-15-mes','crono-15-acao','crono-15-resp','crono-15-status',
+  'crono-16-mes','crono-16-acao','crono-16-resp','crono-16-status',
+  'crono-17-mes','crono-17-acao','crono-17-resp','crono-17-status',
+  'crono-18-mes','crono-18-acao','crono-18-resp','crono-18-status'
 ];
 function salvarAnotacoes(){
   const data={};
@@ -2041,20 +2074,22 @@ function carregarAnotacoes(){
   }catch(e){console.warn('Erro ao carregar',e);}
 }
 function limparAnotacoes(){
-  if(!confirm('Limpar todas as anotações da reunião E voltar às premissas originais do simulador (aporte 361k, IPCA 6,15%, taxa reinv 5,5%, Intl R$0)?\n\nEssa ação não pode ser desfeita.'))return;
+  if(!confirm('Limpar todas as anotações da reunião E voltar às premissas originais (aporte R$460k, IPCA 4,86%, taxa reinv 5,5%, Intl R$200k, cronograma default)?\n\nEssa ação não pode ser desfeita.'))return;
   try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
   // Limpa todos os campos da reunião
   FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  // Reseta sliders do simulador para premissas originais
-  document.getElementById('sl-contrib').value=361270;
-  document.getElementById('sl-ipca').value=6.15;
+  // Reseta sliders do simulador para premissas originais (Focus 24/04/2026)
+  document.getElementById('sl-contrib').value=460000;
+  document.getElementById('sl-ipca').value=4.86;
   document.getElementById('sl-b45r').value=5.5;
-  document.getElementById('sl-intl').value=0;
+  document.getElementById('sl-intl').value=200000;
   // Limpa aportes customizados ano-a-ano
   Object.keys(customAportes).forEach(k=>delete customAportes[k]);
   // Limpa também o cenário alternativo
   const wi=document.getElementById('wi-aporte');
   if(wi)wi.value='';
+  // Restaura cronograma 12 meses para defaults (re-renderiza)
+  renderCronograma();
   // Recalcula tudo
   upd();
   calcDividendos();
@@ -2105,45 +2140,6 @@ function recalcAUM(){
     pctEl.value=(total>0&&v>0)?(v/total*100).toFixed(1).replace('.',',')+'%':'';
   });
   updateIntlUsd();
-}
-
-// ===== COBERTURA ATUARIAL — Bloco 4 =====
-function calcAtuarial(){
-  const out=document.getElementById('atuarial-result');
-  if(!out)return;
-  const renda=parseCurrency((document.getElementById('m-3-renda')||{}).value);
-  if(renda<=0){
-    out.innerHTML='<em style="color:var(--muted);font-size:.74rem">Preencha "Renda mensal líquida" no Bloco 3 para análise atuarial.</em>';
-    return;
-  }
-  const mult=+(document.getElementById('m-4-mult-anos')||{value:15}).value;
-  const cobAtual=parseCurrency((document.getElementById('m-4-cobertura-atual')||{}).value);
-  const rendaAnual=renda*12;
-  const recomendado=rendaAnual*mult;
-  const min=rendaAnual*10;
-  const max=rendaAnual*20;
-  let html=`<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px">
-    <div><span style="color:var(--muted);font-size:.7rem">Renda anual líquida</span><div style="font-weight:700;color:var(--navy)">${fmtBR(rendaAnual)}</div></div>
-    <div><span style="color:var(--muted);font-size:.7rem">Cobertura recomendada (${mult}×)</span><div style="font-weight:700;color:var(--green);font-size:.95rem">${fmtBR(recomendado)}</div></div>
-    <div><span style="color:var(--muted);font-size:.7rem">Faixa atuarial saudável</span><div style="font-size:.78rem;color:var(--navy)">${fmtBR(min)} a ${fmtBR(max)}</div></div>
-    <div><span style="color:var(--muted);font-size:.7rem">Cobertura atual</span><div style="font-weight:700;color:var(--navy)">${cobAtual>0?fmtBR(cobAtual):'—'}</div></div>
-  </div>`;
-  if(cobAtual>0){
-    const ratio=cobAtual/recomendado;
-    const gap=cobAtual-recomendado;
-    let cor,ico,msg;
-    if(ratio>=0.95){
-      cor='var(--green)';ico='✓';msg=`Cobertura adequada — ${(ratio*100).toFixed(0)}% do recomendado.`;
-    } else if(ratio>=0.65){
-      cor='var(--amber)';ico='⚠️';msg=`Cobertura insuficiente — ${(ratio*100).toFixed(0)}% do recomendado. <strong>Gap: ${fmtBR(Math.abs(gap))}</strong>. Considere aumentar a cobertura ou contratar apólice complementar.`;
-    } else {
-      cor='var(--red)';ico='🚨';msg=`Cobertura criticamente baixa — ${(ratio*100).toFixed(0)}% do recomendado. <strong>Gap: ${fmtBR(Math.abs(gap))}</strong>. Família financeiramente exposta — priorizar aumento de cobertura imediatamente.`;
-    }
-    html+=`<div style="padding:10px 12px;background:rgba(0,0,0,0.03);border-left:3px solid ${cor};border-radius:4px;color:${cor};font-weight:600">${ico} ${msg}</div>`;
-  } else {
-    html+=`<div style="font-size:.72rem;color:var(--muted);font-style:italic">Preencha "Cobertura atual contratada" acima para ver a análise de gap.</div>`;
-  }
-  out.innerHTML=html;
 }
 
 // ===== CALCULADORA EDUCAÇÃO USD — Bloco 6 =====
@@ -2214,41 +2210,93 @@ function calcConcentracao(){
 }
 
 // ===== STRESS TEST =====
+// Cada cenário RESETA primeiro para baseline (Focus), depois aplica o delta.
 function stressTest(scenario){
-  const ipca=document.getElementById('sl-ipca');
-  const taxa=document.getElementById('sl-b45r');
-  const intl=document.getElementById('sl-intl');
+  // Reset baseline (Focus 24/04/2026)
+  document.getElementById('sl-contrib').value=460000;
+  document.getElementById('sl-ipca').value=4.86;
+  document.getElementById('sl-b45r').value=5.5;
+  // sl-intl é preservado entre cenários (decisão estrutural do cliente)
+  let msgEdu=null;
   if(scenario==='ipca'){
-    ipca.value=12;
-  } else if(scenario==='selic'){
-    taxa.value=4;
+    // IPCA dispara — efeito é nominal. Real (meta) preservada. Tese central da NTN-B.
+    document.getElementById('sl-ipca').value=12;
+    msgEdu={
+      titulo:'✓ TESE NTN-B CONFIRMADA · meta real preservada mesmo com IPCA 12%',
+      corpo:'A NTN-B é indexada ao IPCA — quando a inflação dispara, a remuneração do título também sobe. O <strong>poder de compra</strong> do patrimônio fica intacto. O que muda é apenas o <strong>valor nominal</strong> (na tela do banco), que infla bruscamente — mas isso é "ilusão de número", não ganho real. <em>É exatamente para esse tipo de cenário que a NTN-B foi escolhida como núcleo do plano.</em>',
+      detalhe:'Compare: ano da meta antes (~2050) vs depois (mesmo ano). O patrimônio real continua atingindo R$20MM em poder de compra. Só o equivalente nominal na tela do banco fica maior — porque tudo no Brasil ficou mais caro.'
+    };
+  } else if(scenario==='selic_alta'){
+    // Selic alta sustentada: juros permanecem elevados, IPCA persistente, bônus mantém-se
+    // Cenário FAVORÁVEL para NTN-B (taxas continuam atrativas para novos aportes)
+    document.getElementById('sl-ipca').value=7;
+    document.getElementById('sl-b45r').value=7;
+    msgEdu={
+      titulo:'📈 SELIC ALTA SUSTENTADA · cenário favorável para o plano',
+      corpo:'Selic permanece em patamar elevado (~15%) com IPCA persistente em ~7%. Esse é o cenário <strong>mais favorável</strong> para um plano centrado em NTN-B: <strong>os aportes futuros podem entrar a taxas reais ainda mais atrativas</strong> que os 4,5% conservadores assumidos no modelo. O reinvestimento de cupons também acelera.',
+      detalhe:'O ano da meta tende a antecipar (cupons rendem mais). Boa notícia: a "premissa conservadora" do modelo (IPCA+4,5% para aportes futuros) ganha margem de segurança extra.'
+    };
   } else if(scenario==='crash'){
-    taxa.value=3;
+    // Crash NTN-B: taxas longas voltam a 3%; bônus reduzido em recessão profunda
+    document.getElementById('sl-b45r').value=3;
+    document.getElementById('sl-contrib').value=200000;
+    document.getElementById('sl-intl').value=Math.round(+document.getElementById('sl-intl').value*0.5);
   } else if(scenario==='total'){
-    ipca.value=9;
-    taxa.value=3.5;
-    if(+intl.value>500000)intl.value=Math.max(0,+intl.value-500000); // reduz intl em cenário stress (capital flight)
+    // Pessimista combinado: cenário macro adverso amplo
+    document.getElementById('sl-ipca').value=10;
+    document.getElementById('sl-b45r').value=3;
+    document.getElementById('sl-contrib').value=150000;
+    document.getElementById('sl-intl').value=0;
   }
   upd();
+  // Mostra mensagem educativa temporária (5s) para cenários com mensagem
+  if(msgEdu)mostrarStressMsg(msgEdu);
+}
+
+// Mensagem educativa temporária no topo do simulador para stress tests com lição
+function mostrarStressMsg(msg){
+  let el=document.getElementById('stress-msg');
+  if(!el){
+    el=document.createElement('div');
+    el.id='stress-msg';
+    el.style.cssText='position:fixed;top:12px;left:50%;transform:translateX(-50%);max-width:680px;width:90%;z-index:9999;background:linear-gradient(135deg,#E8F5E9 0%,#C8E6C9 100%);border:2px solid #1A5E20;border-radius:12px;padding:16px 20px;box-shadow:0 8px 28px rgba(0,0,0,0.2);animation:slideDown .3s ease-out;';
+    document.body.appendChild(el);
+  }
+  el.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+    <div style="flex:1">
+      <div style="font-size:.78rem;font-weight:800;color:#1A5E20;margin-bottom:6px;letter-spacing:.04em">${msg.titulo}</div>
+      <div style="font-size:.78rem;color:#2E5192;line-height:1.55;margin-bottom:8px">${msg.corpo}</div>
+      <div style="font-size:.72rem;color:#455A64;line-height:1.5;font-style:italic;border-top:1px dashed rgba(26,94,32,0.3);padding-top:8px">${msg.detalhe}</div>
+    </div>
+    <button onclick="document.getElementById('stress-msg').remove()" style="background:transparent;border:none;font-size:1.2rem;cursor:pointer;color:#1A5E20;padding:0 4px;line-height:1">×</button>
+  </div>`;
+  el.style.display='block';
+  setTimeout(()=>{if(el)el.style.display='none';},9000);
 }
 
 // ===== CRONOGRAMA OPERACIONAL 12 MESES =====
 const CRONO_DEFAULT=[
-  {mes:'Mai/2026',acao:'Realocação compromissadas → NTN-B B60 (R$1,5MM); cotação seguro Whole Life',resp:'A',status:'⏳ pendente'},
-  {mes:'Jun/2026',acao:'Definir alocação internacional · abrir conta global (BTG ou parceiro) · iniciar cotação Whole Life em 3 seguradoras',resp:'A+C',status:'⏳ pendente'},
+  {mes:'Mai/2026',acao:'Posição inicial NTN-B B60 (R$500k) · resto compromissadas distribuído nas demais frentes · cotação seguro Whole Life',resp:'A',status:'⏳ pendente'},
+  {mes:'Jun/2026',acao:'Abrir conta global (BTG ou parceiro) · alocar Internacional (R$200k) · seguir cotação Whole Life',resp:'A+C',status:'⏳ pendente'},
   {mes:'Jul/2026',acao:'Estruturação holding patrimonial — consulta jurídica · revisar regime de bens',resp:'3p+C',status:'⏳ pendente'},
-  {mes:'Ago/2026',acao:'Atualizar testamento · nomear beneficiários em PGBL/VGBL e seguros',resp:'3p+C',status:'⏳ pendente'},
+  {mes:'Ago/2026',acao:'Atualizar testamento · nomear beneficiários em PGBL/VGBL, seguros e conta internacional (TOD)',resp:'3p+C',status:'⏳ pendente'},
   {mes:'Set/2026',acao:'Revisão trimestral 1 — ajustes e marcação de mercado · comparar B60 a outros vértices',resp:'A+C',status:'⏳ pendente'},
-  {mes:'Out/2026',acao:'LCA Original vence (R$192k líquido) → realocação para B60 ou liquidez',resp:'A',status:'⏳ pendente'},
+  {mes:'Out/2026',acao:'LCA Original vence (R$192k líquido) → comparar taxas e realocar (B60 ou outro vértice longo)',resp:'A',status:'⏳ pendente'},
   {mes:'Nov/2026',acao:'Cotação plano de saúde família · revisar coberturas vigentes (vida + invalidez + saúde)',resp:'A+C',status:'⏳ pendente'},
   {mes:'Dez/2026',acao:'Revisão trimestral 2 + planejamento IR ano-base 2026',resp:'A+C+3p',status:'⏳ pendente'},
   {mes:'Jan/2027',acao:'Declaração IR 2026 · aproveitamento PGBL (até 12% renda)',resp:'C+3p',status:'⏳ pendente'},
   {mes:'Fev/2027',acao:'Plano de doação programada (ITCMD) · execução de holding se aprovado',resp:'3p+C',status:'⏳ pendente'},
-  {mes:'Mar/2027',acao:'Revisão trimestral 3 · preparação para janela de Abril',resp:'A+C',status:'⏳ pendente'},
-  {mes:'Abr/2027',acao:'Bônus + CDB BMG (R$204k) + LCA Bocom (R$229k) → realocação NTN-B B60 (~R$1,93MM)',resp:'A+C',status:'⏳ pendente'},
+  {mes:'Mar/2027',acao:'Revisão trimestral 3 · preparação para janela de Abril (chegada do bônus + maturities)',resp:'A+C',status:'⏳ pendente'},
+  {mes:'Abr/2027',acao:'Bônus + CDB BMG (~R$204k) + LCA Bocom (~R$229k) → comparar vértices longos disponíveis e realocar (~R$1,93MM)',resp:'A+C',status:'⏳ pendente'},
+  {mes:'Mai/2027',acao:'Revisão trimestral 4 — primeiro aniversário do plano · medir aderência vs projeção',resp:'A+C',status:'⏳ pendente'},
+  {mes:'Jun/2027',acao:'Reavaliar alocação Internacional · cotações + impactos cambiais',resp:'A+C',status:'⏳ pendente'},
+  {mes:'Jul/2027',acao:'Revisão estrutural — holding/testamento/beneficiários (auditoria anual)',resp:'3p+C',status:'⏳ pendente'},
+  {mes:'Ago/2027',acao:'Revisão de seguros (vida/invalidez/saúde/patrimonial) — verificar adequação à evolução do patrimônio',resp:'A+C',status:'⏳ pendente'},
+  {mes:'Set/2027',acao:'Revisão trimestral 5 · planejamento de fim de ano',resp:'A+C',status:'⏳ pendente'},
+  {mes:'Out/2027',acao:'LCA BTG vence (~R$227k líquido) → comparar vértices e realocar · checkpoint anual 18 meses',resp:'A',status:'⏳ pendente'},
 ];
 const CRONO_FIELDS=[];
-for(let i=1;i<=12;i++)CRONO_FIELDS.push(`crono-${i}-acao`,`crono-${i}-resp`,`crono-${i}-status`);
+for(let i=1;i<=18;i++)CRONO_FIELDS.push(`crono-${i}-mes`,`crono-${i}-acao`,`crono-${i}-resp`,`crono-${i}-status`);
 function renderCronograma(){
   const tb=document.getElementById('crono-tbody');
   if(!tb)return;
@@ -2256,7 +2304,7 @@ function renderCronograma(){
   CRONO_DEFAULT.forEach((row,i)=>{
     const idx=i+1;
     html+=`<tr>
-      <td style="text-align:left;color:var(--navy);font-weight:700">${row.mes}</td>
+      <td><input type="text" id="crono-${idx}-mes" value="${row.mes}" style="width:100%;border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:.74rem;background:#FAFBFE;color:var(--navy);font-weight:700;text-align:center"></td>
       <td><input type="text" id="crono-${idx}-acao" value="${row.acao.replace(/"/g,'&quot;')}" style="width:100%;border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:.74rem;background:#FAFBFE"></td>
       <td><input type="text" id="crono-${idx}-resp" value="${row.resp}" style="width:100%;border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:.74rem;background:#FAFBFE;text-align:center"></td>
       <td><select id="crono-${idx}-status" style="width:100%;border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:.74rem;background:#FAFBFE">
@@ -2324,15 +2372,13 @@ function calcDividendos(){
   const intEl=document.getElementById('div-integration');
   if(!intEl)return;
   if(monthly<=0){
-    intEl.innerHTML='<em>Insira o valor da posição em Dividendos acima para calcular a renda mensal.</em>';
+    intEl.style.display='none';
     return;
   }
   let html='';
   if(salario>0){
     const total=salario+monthly;
     html+=`<div><strong>Renda total mensal:</strong> salário <strong>${fmtBR(salario)}</strong> + dividendos <strong>${fmtBR(monthly)}</strong> = <strong style="color:var(--green);font-size:.95rem">${fmtBR(total)}</strong></div>`;
-  } else {
-    html+='<em>Preencha "Renda mensal líquida" no Bloco 3 para ver a renda total combinada.</em><br>';
   }
   if(despesas>0){
     const dias=Math.min(31,monthly/despesas*30);
@@ -2341,10 +2387,14 @@ function calcDividendos(){
     if(monthly>=despesas){
       html+=`<div style="margin-top:4px;color:var(--green);font-weight:600">✓ Renda passiva já cobre 100% do custo de vida — independência financeira mensal alcançada</div>`;
     }
-  } else if(salario>0){
-    html+='<div style="margin-top:6px;font-style:italic;color:var(--muted)">Adicione "Despesas fixas mensais" no Bloco 3 para ver cobertura passiva em dias do mês.</div>';
   }
-  intEl.innerHTML=html;
+  // Só renderiza se houver conteúdo a mostrar (salário ou despesas preenchidos)
+  if(html){
+    intEl.style.display='';
+    intEl.innerHTML=html;
+  } else {
+    intEl.style.display='none';
+  }
 }
 
 // ===== CENÁRIO ALTERNATIVO NTN-B — isolado, não afeta página 1 =====
@@ -2367,7 +2417,7 @@ function simWhatIf(base,ipca,aporte,intlInit){
 function setWhatIf(v){
   document.getElementById('wi-aporte').value=v;
   calcWhatIf();
-  salvarAnotacoes();
+  if(typeof salvarAnotacoes==='function')salvarAnotacoes();
 }
 function aplicarCenario(){
   const raw=document.getElementById('wi-aporte').value||'';
@@ -2586,9 +2636,9 @@ function renderCronogramaLiquidez(){
   const dates=Object.keys(byDate).sort();
   // Construir milestones
   const milestones=[{
-    label:'AMANHÃ',
+    label:'HOJE',
     dateStr:'04/05/2026',
-    days:1,
+    days:0,
     amount:compTotal,
     description:'Compromissadas BTG · liquidez D+0',
     isFirst:true,
@@ -2624,7 +2674,7 @@ function renderCronogramaLiquidez(){
     const accent=isFirst?'var(--green)':'var(--amber)';
     html+=`<div style="flex:1 1 200px;min-width:200px;background:${bg};border:1.5px solid ${border};border-radius:10px;padding:12px;display:flex;flex-direction:column">
       <div style="font-size:.66rem;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:.06em">${m.label}</div>
-      <div style="font-size:.7rem;color:var(--muted);margin-bottom:8px">${m.dateStr}${m.days>1?' · em '+m.days+' dias':''}</div>
+      <div style="font-size:.7rem;color:var(--muted);margin-bottom:8px">${m.dateStr}${m.days>0?' · em '+m.days+' dias':''}</div>
       <div style="font-size:1.2rem;font-weight:800;color:${accent};margin-bottom:4px">${isFirst?'':'+'}${fmtBR(m.amount)}</div>
       <div style="font-size:.68rem;color:#455A64;line-height:1.4;flex:1">${m.description}</div>
       ${!isFirst?`<div style="margin-top:8px;padding-top:6px;border-top:1px dashed rgba(0,0,0,.15);font-size:.68rem;color:var(--navy)">Acumulado: <strong>${fmtBR(m.cumulative)}</strong></div>`:''}
@@ -2662,8 +2712,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   carregarAnotacoes();
   // ITCMD auto-calc (Bloco 5) — pode estar vazio se imóveis ainda não foi preenchido
   calcITCMD();
-  // Cobertura atuarial, concentração, educação USD — primeiros cálculos
-  calcAtuarial();
+  // Concentração + educação USD — primeiros cálculos
   calcConcentracao();
   calcEducacao();
   // Wire eventos de formatação e recálculo
@@ -2688,6 +2737,32 @@ document.addEventListener('DOMContentLoaded',()=>{
     imovEl.addEventListener('blur',()=>{formatInputCurrency(imovEl);calcITCMD();});
     imovEl.addEventListener('input',calcITCMD);
   }
+  // Internacional — sincronização BIDIRECIONAL (campo ↔ slider)
+  const intlField=document.getElementById('m-aloc-intl-v');
+  const intlSlider=document.getElementById('sl-intl');
+  if(intlField&&intlSlider){
+    intlField.addEventListener('focus',()=>{window.__intlTyping=true;});
+    intlField.addEventListener('input',()=>{
+      // Enquanto digita: atualiza slider (clampado) sem reformatar campo
+      const v=parseCurrency(intlField.value);
+      const max=+intlSlider.max,min=+intlSlider.min;
+      const clamped=Math.max(min,Math.min(max,v));
+      intlSlider.value=clamped;
+      // Atualiza label e widgets sensíveis (sem chamar upd completo para não interferir na digitação)
+      document.getElementById('v-intl').textContent=clamped>0?Rm(clamped):'R$ 0';
+      updateIntlUsd(); recalcAUM();
+    });
+    intlField.addEventListener('blur',()=>{
+      window.__intlTyping=false;
+      // Clampa, formata e dispara recalc completo
+      let v=parseCurrency(intlField.value);
+      const max=+intlSlider.max;
+      if(v<0)v=0; if(v>max)v=max;
+      intlSlider.value=v;
+      intlField.value=v>0?fmtBR(v):'';
+      upd();
+    });
+  }
   // Concentração (Bloco 2)
   ['m-2-conc-btg','m-2-conc-outras'].forEach(id=>{
     const el=document.getElementById(id);
@@ -2695,21 +2770,6 @@ document.addEventListener('DOMContentLoaded',()=>{
       el.addEventListener('blur',()=>{formatInputCurrency(el);calcConcentracao();});
       el.addEventListener('input',calcConcentracao);
     }
-  });
-  // Cobertura atuarial (Bloco 4)
-  ['m-4-cobertura-atual'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){
-      el.addEventListener('blur',()=>{formatInputCurrency(el);calcAtuarial();});
-      el.addEventListener('input',calcAtuarial);
-    }
-  });
-  const multEl=document.getElementById('m-4-mult-anos');
-  if(multEl)multEl.addEventListener('change',calcAtuarial);
-  // Renda (Bloco 3) também recalcula atuarial
-  ['m-3-renda'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el)el.addEventListener('input',calcAtuarial);
   });
   // Calculadora educação (Bloco 6)
   ['m-6-edu-cost','m-6-edu-years','m-6-edu-duration','m-6-edu-infl'].forEach(id=>{
