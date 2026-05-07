@@ -243,6 +243,39 @@ table.dt td.cr{color:var(--navy2);font-weight:700;}
 .conv-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;font-size:.72rem;}
 .conv-pill{padding:3px 10px;border-radius:10px;font-weight:600;}
 
+/* MODO CONSOLIDADO — aba Reunião não-editável após meeting realizada */
+.view-mtg.consolidado input,
+.view-mtg.consolidado textarea,
+.view-mtg.consolidado select{
+  pointer-events:none;
+  background:#FAFBFE !important;
+  color:var(--navy) !important;
+  border-color:#E0E5F0 !important;
+  cursor:default;
+}
+.view-mtg.consolidado input[readonly],
+.view-mtg.consolidado input[type="text"]{
+  font-weight:500;
+}
+.view-mtg.consolidado .btn-r,
+.view-mtg.consolidado .btn-action{
+  /* mantém botões de exportar / navegação ativos, mas esconde resets */
+}
+.view-mtg.consolidado [onclick*="reset"]{display:none !important;}
+.view-mtg.consolidado [onclick*="limpar"]{display:none !important;}
+.view-mtg.consolidado #m-status{color:var(--navy);font-weight:600;}
+
+.consolidado-banner{
+  background:linear-gradient(135deg,#1A5E20 0%,#388E3C 100%);
+  color:#fff;border-radius:10px;padding:18px 24px;margin-bottom:16px;
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  box-shadow:0 4px 16px rgba(26,94,32,.25);
+}
+.consolidado-banner .ico{font-size:2rem}
+.consolidado-banner .txt strong{font-size:1rem;letter-spacing:.04em;display:block;margin-bottom:4px}
+.consolidado-banner .txt span{font-size:.78rem;opacity:.95;line-height:1.55}
+.consolidado-banner .meta{font-size:.7rem;opacity:.85;border-left:2px solid rgba(255,255,255,.4);padding-left:14px;margin-left:auto}
+
 /* TOOLTIPS — info icon next to labels */
 .ti{display:inline-block;width:14px;height:14px;background:#9CA3AF;color:#fff;
   border-radius:50%;font-size:.62rem;text-align:center;line-height:14px;
@@ -407,7 +440,7 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
 
 <nav class="topnav">
   <button class="topnav-tab on" onclick="showView(0)"><span class="ico">📊</span> Simulador Patrimonial</button>
-  <button class="topnav-tab" onclick="showView(1)"><span class="ico">📝</span> Anotações da Reunião</button>
+  <button class="topnav-tab" onclick="showView(1)"><span class="ico">📑</span> Plano Consolidado</button>
 </nav>
 
 <!-- ============================ VIEW 0: SIMULADOR ============================ -->
@@ -437,7 +470,7 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
     <div class="prm-sec">
       <div class="prm-sec-ttl">NTN-B — vértice e taxas (financeiro)</div>
       <div class="prm-row"><span class="lbl">Vértice escolhido</span><span class="val g">B60 (IPCA 2060)</span></div>
-      <div class="prm-row"><span class="lbl">Posição inicial (mai/2026)</span><span class="val g">R$ 460.000 · IPCA + 6,84% (até 2060)</span></div>
+      <div class="prm-row"><span class="lbl">Posição inicial (mai/2026)</span><span class="val g">R$ 600.000 · IPCA + 6,84% · Block Trade BTG (Principal s/ cupom)</span></div>
       <div class="prm-row"><span class="lbl">Aportes futuros (bônus + maturities)</span><span class="val">IPCA + 4,50% (premissa conservadora)</span></div>
       <div class="prm-row"><span class="lbl">Reinvestimento de cupons</span><span class="val">IPCA + 4,50% (flat conservador)</span></div>
       <div class="prm-row"><span class="lbl">IPCA Focus 2027/28/29</span><span class="val">4,00% / 3,61% / 3,50%</span></div>
@@ -606,8 +639,8 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
       <div class="sl-note sl-info">Cupons reinvestidos a IPCA+4,5% flat (premissa conservadora)</div>
     </div>
     <div class="slg">
-      <label>Alocação internacional (USD Treasury) <span id="v-intl">R$ 200.000</span> <button onclick="resetSlider('intl')" title="Restaurar default R$ 200.000" style="background:transparent;border:1px solid var(--border);border-radius:50%;width:18px;height:18px;font-size:.7rem;cursor:pointer;color:var(--muted);padding:0;line-height:1">↺</button></label>
-      <input type="range" id="sl-intl" min="0" max="3000000" step="50000" value="200000">
+      <label>Alocação internacional (USD Treasury) <span id="v-intl">R$ 250.000</span> <button onclick="resetSlider('intl')" title="Restaurar default R$ 250.000" style="background:transparent;border:1px solid var(--border);border-radius:50%;width:18px;height:18px;font-size:.7rem;cursor:pointer;color:var(--muted);padding:0;line-height:1">↺</button></label>
+      <input type="range" id="sl-intl" min="0" max="3000000" step="50000" value="250000">
       <div class="sl-lim"><span>R$ 0</span><span>R$ 3MM</span></div>
       <div class="sl-note sl-info" id="intl-note">Posição em US Treasury 4% USD ≈ IPCA+1% real BRL (após PPP)</div>
     </div>
@@ -758,7 +791,7 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
 <div class="card">
   <div class="card-ttl"><div class="card-ttl-l">Linha do tempo — marcos do projeto</div></div>
   <div class="tl">
-    <div class="tli"><div class="tl-dot">Mai</div><div class="tl-yr">2026</div><div class="tl-desc">Posição inicial<br>R$460k → B60<br>(IPCA+6,84%)</div></div>
+    <div class="tli"><div class="tl-dot">Mai</div><div class="tl-yr">2026</div><div class="tl-desc">Posição inicial<br>R$600k Block Trade<br>Principal s/ cupom</div></div>
     <div class="tli"><div class="tl-dot gold">Out</div><div class="tl-yr">2026</div><div class="tl-desc">LCA Original<br>vence · +R$192k</div></div>
     <div class="tli"><div class="tl-dot">Abr</div><div class="tl-yr">2027</div><div class="tl-desc">Bônus + CDB<br>+ LCA Bocom<br>(IPCA+4,5%)</div></div>
     <div class="tli"><div class="tl-dot gold">Out</div><div class="tl-yr">2027</div><div class="tl-desc">LCA BTG<br>vence · +R$227k</div></div>
@@ -824,13 +857,26 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
 </div>
 
 <!-- ============================ VIEW 1: ANOTAÇÕES DA REUNIÃO ============================ -->
-<div class="view view-mtg" id="view-1">
+<div class="view view-mtg consolidado" id="view-1">
 <div class="wrap">
 
 <div class="print-only">
   <h1>PLANEJAMENTO PATRIMONIAL · M.E.A.N.</h1>
   <p>Documento elaborado sob medida · Horizonte 25 anos · Meta em poder de compra de hoje</p>
   <p style="margin-top:4px">Cordier Investimentos · Parceiro BTG Pactual</p>
+</div>
+
+<!-- BANNER · Plano consolidado pós-reunião -->
+<div class="consolidado-banner">
+  <div class="ico">✓</div>
+  <div class="txt" style="flex:1;min-width:240px">
+    <strong>REUNIÃO REALIZADA · 04/05/2026 — PLANO CONSOLIDADO</strong>
+    <span>Informações registradas durante a reunião e a alocação patrimonial acordada estão consolidadas abaixo. Visualização não-editável. Para análise de cenários futuros, use o <strong>Simulador Patrimonial</strong>.</span>
+  </div>
+  <div class="meta">
+    <strong style="display:block;letter-spacing:.06em">PRÓXIMA REVISÃO</strong>
+    <span>Set/2026 · trimestral</span>
+  </div>
 </div>
 
 <!-- BLOCO 1: PERFIL & GOVERNANÇA -->
@@ -1313,6 +1359,63 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
       <textarea id="m-aloc-obs" placeholder="Ex.: aumentar bloco de aposentadoria de R$Xk para R$Yk; revisar liquidez em 6 meses..."></textarea>
     </div>
   </div>
+
+  <!-- Detalhamento Offshore Portfolio (BTG Solutions Analytics Tool · 05/05/2026) -->
+  <div style="margin-top:18px;padding:16px 20px;background:linear-gradient(135deg,#F3E5F5 0%,#FCE4EC 100%);border:1.5px solid #CE93D8;border-radius:10px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <span style="font-size:1.4rem">🌎</span>
+      <strong style="font-size:.92rem;color:#6A1B9A">Detalhamento da alocação Internacional · Offshore Portfolio BTG (proposta 05/05/2026)</strong>
+    </div>
+    <p style="font-size:.74rem;color:#4A148C;margin-bottom:12px;line-height:1.5">
+      Composição executada na conta global BTG: <strong>USD 50.000</strong> (≈ R$ 250.000 ao câmbio de execução). Alocação 80% Renda Fixa + 20% Caixa, perfil conservador alinhado com a tese de diversificação cambial e liquidez para viagens.
+    </p>
+    <div class="twrap" style="border:1px solid rgba(106,27,154,.2);border-radius:6px;background:#fff">
+      <table class="dt" style="font-size:.74rem">
+        <thead>
+          <tr style="background:#6A1B9A">
+            <th style="text-align:left">Ativo</th>
+            <th style="text-align:left">Classe</th>
+            <th>Peso</th>
+            <th>Valor (USD)</th>
+            <th style="text-align:left">Estratégia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left;color:var(--navy);font-weight:700">US Treasury N/B 1.75% · venc. 08/15/2041</td>
+            <td style="text-align:left">Soberano · Renda Fixa</td>
+            <td>40,0%</td>
+            <td><strong>US$ 20.000</strong></td>
+            <td style="text-align:left;font-size:.7rem">Núcleo soberano longo · proteção cambial</td>
+          </tr>
+          <tr>
+            <td style="text-align:left;color:var(--navy);font-weight:700">US Treasury N/B 2.38% · venc. 02/15/2042 · AA+</td>
+            <td style="text-align:left">EUA · Renda Fixa</td>
+            <td>40,0%</td>
+            <td><strong>US$ 20.000</strong></td>
+            <td style="text-align:left;font-size:.7rem">Soberano EUA · cupom mais alto · prazo similar</td>
+          </tr>
+          <tr>
+            <td style="text-align:left;color:var(--navy);font-weight:700">Invesco U.S. Dollar Liquidity Portfolio Reserve (Acc · USD)</td>
+            <td style="text-align:left">Caixa · Money Market</td>
+            <td>20,0%</td>
+            <td><strong>US$ 10.000</strong></td>
+            <td style="text-align:left;font-size:.7rem">Liquidez para viagens · D+0 em USD</td>
+          </tr>
+          <tr style="background:#F3E5F5;font-weight:700;color:#6A1B9A">
+            <td style="text-align:left">TOTAL</td>
+            <td style="text-align:left">100% · USD</td>
+            <td>100%</td>
+            <td><strong>US$ 50.000</strong></td>
+            <td style="text-align:left;font-size:.7rem">≈ R$ 262.500 @ R$ 5,25/USD (Focus)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:12px;padding:10px 14px;background:rgba(255,255,255,.6);border-left:3px solid #6A1B9A;border-radius:4px;font-size:.72rem;color:#4A148C;line-height:1.55">
+      <strong>📌 Métricas estimadas (BTG Solutions Analytics Tool):</strong> retorno anualizado 7y -1,33% · volatilidade 8,77% · pior retorno mensal -7,12% (abr/2022) · drawdown máximo -28,37%. <em>Histórico — não garantia de retorno futuro.</em>
+    </div>
+  </div>
 </div>
 
 <!-- BLOCO 9: RESUMO DO MODELO NTN-B -->
@@ -1457,9 +1560,8 @@ if(sessionStorage.getItem('pwAuth_p2051')==='1'){
 
 <!-- AÇÕES -->
 <div class="mtg-actions">
-  <span class="mtg-status" id="m-status">Anotações salvas automaticamente neste navegador</span>
-  <button class="btn-r" onclick="limparAnotacoes()">↺ Limpar tudo</button>
-  <button class="btn-action gold" onclick="exportarPDF()">📄 Exportar PDF da Reunião</button>
+  <span class="mtg-status" id="m-status">📑 Plano consolidado · reunião 04/05/2026</span>
+  <button class="btn-action gold" onclick="exportarPDF()">📄 Exportar PDF do Plano</button>
 </div>
 
 </div>
@@ -1476,9 +1578,10 @@ const GOAL=20e6,BONUS=1.5e6;
 // - "B55" = 0 (não usado neste plano)
 // - "B60" representa os APORTES ACUMULADOS (bônus + vencimentos de CDB/LCAs)
 // Cliente não tem NTN-B atual — o saldo inicial vem do redirecionamento das compromissadas BTG.
-// Posição inicial NTN-B = R$460k em B60, alocação imediata em mai/2026 (trava IPCA+6,84% até 2060).
-// Resto das compromissadas vai para outras frentes (Liquidez, Dividendos, Internacional, etc.) na reunião.
-const B37I=460e3;
+// Posição inicial NTN-B = R$600k acordado na reunião (Block Trade BTG · Principal sem cupom).
+// Vértice a definir (escolha do melhor disponível na hora da execução). Trava IPCA+6,84% até vencimento.
+// Resto das compromissadas distribuído: R$1MM Liquidez (Fundo Bradesco Banco + Fundo Rizza Lotus) + R$250k Internacional já alocado.
+const B37I=600e3;
 const B55I=0;
 const B60I=0;
 // Apenas o R$460k inicial trava IPCA+6,84% (vence 2060, hold to maturity).
@@ -1857,7 +1960,7 @@ function upd(){
     annoA.gyPoint={type:'point',xValue:String(gy),yValue:GOAL,backgroundColor:'#1A5E20',borderColor:'#fff',borderWidth:2,radius:7};
   }
   ch0a.options.plugins.annotation.annotations=annoA;
-  ch0a.update('none');
+  ch0a.update(); // FULL update (sem 'none') força chartjs-plugin-annotation a redesenhar anotações móveis (linha/zona/ponto da meta)
 
   ch0b.data.datasets[0].data=rows.map(r=>r.nom);
   ch0b.data.datasets[1].data=rows.map(r=>r.metaNom);
@@ -1889,7 +1992,7 @@ function upd(){
       borderRadius:6,position:'end',yAdjust:10}
   };
   ch0b.options.plugins.annotation.annotations=annoB;
-  ch0b.update('none');
+  ch0b.update(); // FULL update (sem 'none') força chartjs-plugin-annotation a redesenhar anotações móveis (linha/zona/ponto da meta)
 
   ch1.data.datasets[0].data=rows.map(r=>r.b37);  // posição inicial NTN-B
   ch1.data.datasets[1].data=rows.map(r=>r.b60);  // aportes acumulados
@@ -2008,7 +2111,7 @@ function editAporte(span,yr,def){
 function resetAportes(){Object.keys(customAportes).forEach(k=>delete customAportes[k]);upd();}
 // Reset individual de cada slider (botão ↺ ao lado de cada label)
 function resetSlider(which){
-  const defaults={contrib:460000,ipca:4.5,b45r:4.5,intl:200000};
+  const defaults={contrib:460000,ipca:4.5,b45r:4.5,intl:250000};
   const idMap={contrib:'sl-contrib',ipca:'sl-ipca',b45r:'sl-b45r',intl:'sl-intl'};
   const el=document.getElementById(idMap[which]);
   if(el&&defaults[which]!==undefined){el.value=defaults[which];upd();}
@@ -2032,7 +2135,7 @@ function resetTudo(){
   document.getElementById('sl-contrib').value=460000;
   document.getElementById('sl-ipca').value=4.5;
   document.getElementById('sl-b45r').value=4.5;
-  document.getElementById('sl-intl').value=200000;
+  document.getElementById('sl-intl').value=250000;
   Object.keys(customAportes).forEach(k=>delete customAportes[k]);
   upd();
 }
@@ -2098,16 +2201,101 @@ function salvarAnotacoes(){
     s.className='mtg-status saved';
   }catch(e){console.warn('localStorage indisponível',e);}
 }
+// Respostas consolidadas da reunião 04/05/2026 (plano fechado · não editável)
+const DEFAULTS_REUNIAO={
+  // Bloco 1 — Perfil & Governança
+  'm-1-perfil':'Moderado',
+  'm-1-liquidez':'R$ 1.000.000 (~ 14x despesas mensais)',
+  'm-1-civil':'Separação total de bens',
+  'm-1-dependentes':'3 filhos',
+  'm-1-estrutura':'Sem holding · sem offshore estruturada · só conta internacional pessoal',
+  // Bloco 2 — Patrimônio Atual
+  'm-2-imoveis':'R$ 3.000.000,00',
+  'm-2-imoveis-tipo':'Alugado · R$ 25.000/mês de aluguel recebido',
+  'm-2-participacao':'A levantar na próxima revisão',
+  'm-2-fora':'A levantar na próxima revisão',
+  'm-2-previdencia':'Possui PGBL (saldo a confirmar)',
+  'm-2-alts':'Apenas conta internacional pessoal (USD 50k)',
+  'm-2-dividas':'Sem dívidas relevantes',
+  'm-2-conc-btg':'',
+  'm-2-conc-outras':'',
+  // Bloco 3 — Fluxo de Caixa
+  'm-3-renda':'R$ 30.000,00',
+  'm-3-despesas':'R$ 70.000,00',
+  'm-3-aporte-m':'A definir após confirmação do PGBL',
+  'm-3-aporte-a':'~R$ 250.000 (estimativa do free float pós-aporte ao plano)',
+  'm-3-bonus':'~R$ 2.500.000 anuais (PLR + dividendos · abril)',
+  'm-3-eventos':'Venda de apartamento no RJ ~R$ 3.000.000 (data a definir)',
+  // Bloco 4 — Proteção
+  'm-4-vida':'A cotar — Whole Life R$5MM previsto (Prudential / Icatu / Zurich)',
+  'm-4-invalidez':'A cotar junto com o seguro de vida',
+  'm-4-patrim':'A cotar (apartamento + bens)',
+  'm-4-saude':'A confirmar com cliente',
+  'm-4-gaps':'Sem cobertura de vida atual — gap crítico para 3 filhos. Prioridade alta no cronograma.',
+  'm-4-benef-vida':'Cônjuge 50% + 3 filhos · 16,67% cada (a formalizar com seguradora)',
+  'm-4-benef-prev':'Cônjuge 50% + 3 filhos · 16,67% cada (a formalizar no PGBL)',
+  'm-4-benef-intl':'A definir — TOD na conta internacional do BTG (cônjuge 100%)',
+  // Bloco 5 — Sucessão
+  'm-5-testamento':'Não',
+  'm-5-doacao':'A planejar com advogado',
+  'm-5-itcmd':'R$ 920.000,00 (4% SP s/ patrimônio total R$ 23.000.000,00)',
+  'm-5-mitigacao':'Estudar holding patrimonial · doação programada com usufruto · seguro vida cobrindo ITCMD',
+  // Bloco 6 — Objetivos Médio Prazo
+  'm-6-educacao':'3 filhos · top schools nos EUA (graduação 4 anos · ~US$ 80k/ano por filho)',
+  'm-6-imovel':'Não há plano de troca de imóvel principal',
+  'm-6-veiculo':'Troca a cada ~5 anos (premium mid-tier)',
+  'm-6-viagens':'Frequentes — internacionais 2-3x/ano',
+  'm-6-outros':'—',
+  'm-6-edu-cost':'80000',
+  'm-6-edu-years':'15',
+  'm-6-edu-duration':'4',
+  'm-6-edu-infl':'5',
+  // Bloco 7 — Tributário
+  'm-7-decl':'Completa',
+  'm-7-pgbl':'Não utiliza atualmente — oportunidade identificada (até 12% renda bruta)',
+  'm-7-gck':'A levantar — venda do apto/RJ pode gerar GC relevante',
+  'm-7-fundos':'Não há exposição em fundos abertos sujeitos a come-cotas',
+  'm-7-otim':'Migrar para PGBL · estruturar holding · usar isenções LCA/LCI · planejar GC venda apto',
+  // Bloco 8 — Alocação Patrimonial Proposta (acordado em reunião)
+  'm-aloc-liq-v':'R$ 1.000.000,00',
+  'm-aloc-liq-pz':'0-12 meses · Fundo Bradesco Banco R$500k + Fundo Rizza Lotus R$500k',
+  'm-aloc-mid-v':'',
+  'm-aloc-mid-pz':'2-7 anos · não alocado nesta rodada',
+  'm-aloc-div-v':'',
+  'm-aloc-div-pz':'Permanente · liquidez mesa · não alocado nesta rodada',
+  'm-aloc-intl-pz':'Permanente · 80% US Treasury + 20% Invesco USD Liquidity (viagens)',
+  'm-aloc-prot-v':'A cotar — premissa R$ 35.000/ano (Whole Life + invalidez + patrimonial)',
+  'm-aloc-prot-cob':'Vida ~R$5MM · invalidez 70% renda · patrimonial 100% imóvel',
+  'm-aloc-prot-pz':'Permanente',
+  'm-aloc-obs':'NTN-B via Block Trade BTG (Principal s/ cupom · vértice ótimo a definir na execução). Resto das compromissadas (R$1,86MM) distribuído em Liquidez (R$1MM em 2 fundos cetipados) + Internacional (R$250k já realocados via BTG offshore).',
+  // Bloco 10 — Próximos Passos
+  'm-10-docs':'Extrato BTG completo · IR ano-base 2025 · escritura do apto/RJ · contratos PGBL',
+  'm-10-prox':'Revisão trimestral em set/2026 · sondar mercado para vértice NTN-B em mai/2026',
+  // Bloco 11 — Observações
+  'm-11-obs':'Cliente decidido e tecnicamente preparado (formação WU Vienna). Apreciou a tese NTN-B e a estrutura conservadora pós-Focus. Tom analítico/técnico — gosta de números e justificativas. Sensível a planejamento sucessório (3 filhos). Próxima reunião deve focar em execução: cotações de seguro, escolha de vértice, beneficiários nomeados.'
+};
+function aplicarDefaultsReuniao(){
+  Object.keys(DEFAULTS_REUNIAO).forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&!el.value)el.value=DEFAULTS_REUNIAO[id];
+  });
+}
 function carregarAnotacoes(){
   try{
     const raw=localStorage.getItem(STORAGE_KEY);
-    if(!raw)return;
+    if(!raw){
+      // Primeira abertura: aplica defaults da reunião
+      aplicarDefaultsReuniao();
+      return;
+    }
     const data=JSON.parse(raw);
     FIELDS.forEach(id=>{const el=document.getElementById(id);if(el&&data[id]!==undefined)el.value=data[id];});
+    // Aplica defaults para campos que ainda estão vazios (caso o user tenha limpado parcialmente)
+    aplicarDefaultsReuniao();
   }catch(e){console.warn('Erro ao carregar',e);}
 }
 function limparAnotacoes(){
-  if(!confirm('Limpar todas as anotações da reunião E voltar às premissas originais (aporte R$460k, IPCA pós-Focus 4,5%, taxa reinv 4,5%, Intl R$200k, cronograma default)?\n\nEssa ação não pode ser desfeita.'))return;
+  if(!confirm('Limpar todas as anotações da reunião E voltar às premissas originais (aporte R$460k, IPCA pós-Focus 4,5%, taxa reinv 4,5%, Intl R$250k, cronograma default)?\n\nEssa ação não pode ser desfeita.'))return;
   try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
   // Limpa todos os campos da reunião
   FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
@@ -2115,7 +2303,7 @@ function limparAnotacoes(){
   document.getElementById('sl-contrib').value=460000;
   document.getElementById('sl-ipca').value=4.5;
   document.getElementById('sl-b45r').value=4.5;
-  document.getElementById('sl-intl').value=200000;
+  document.getElementById('sl-intl').value=250000;
   // Limpa aportes customizados ano-a-ano
   Object.keys(customAportes).forEach(k=>delete customAportes[k]);
   // Limpa também o cenário alternativo
@@ -2309,7 +2497,7 @@ function mostrarStressMsg(msg){
 
 // ===== CRONOGRAMA OPERACIONAL 12 MESES =====
 const CRONO_DEFAULT=[
-  {mes:'Mai/2026',acao:'Posição inicial NTN-B B60 (R$460k a IPCA+6,84%) · resto das compromissadas distribuído entre Liquidez/Dividendos/Internacional · cotação seguro Whole Life',resp:'A',status:'⏳ pendente'},
+  {mes:'Mai/2026',acao:'NTN-B R$600k via Block Trade BTG (Principal s/ cupom) + Liquidez R$1MM (Bradesco Banco R$500k + Rizza Lotus R$500k) + Internacional R$250k (80% Treasury + 20% liquidez viagens) · cotação Whole Life',resp:'A+C',status:'⏳ pendente'},
   {mes:'Jun/2026',acao:'Abrir conta global (BTG ou parceiro) · alocar Internacional (R$200k) · seguir cotação Whole Life',resp:'A+C',status:'⏳ pendente'},
   {mes:'Jul/2026',acao:'Estruturação holding patrimonial — consulta jurídica · revisar regime de bens',resp:'3p+C',status:'⏳ pendente'},
   {mes:'Ago/2026',acao:'Atualizar testamento · nomear beneficiários em PGBL/VGBL, seguros e conta internacional (TOD)',resp:'3p+C',status:'⏳ pendente'},
